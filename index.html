@@ -2,32 +2,524 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>فلاح سوق</title>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --vert:#1a4a2e;--vert2:#2d6e47;--vert3:#4caf72;--vertp:#e8f5ed;
-  --or:#c8952a;--orc:#e8b84b;
-  --noir:#0d1117;--encre:#1a1f2e;
+  --or:#c8952a;--orc:#e8b84b;--orp:#f5dfa0;
+  --noir:#0d1117;--encre:#1a1f2e;--ardoise:#252d3d;
   --creme:#f7f2e8;--blanc:#ffffff;--gris:#8a9ab0;--border:#e2e8f0;
-  --rouge:#c0392b;
+  --rouge:#c0392b;--orange:#e67e22;
+  --sh:0 2px 12px rgba(0,0,0,.08);--shd:0 8px 32px rgba(0,0,0,.15);
 }
-body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width:430px;margin:0 auto;min-height:100vh;direction:rtl}
+body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width:430px;margin:0 auto;min-height:100vh;overflow-x:hidden;direction:rtl}
+#splash{position:fixed;inset:0;background:linear-gradient(160deg,var(--vert),#0a2018);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9000;transition:opacity .6s,transform .6s}
+#splash.out{opacity:0;pointer-events:none;transform:scale(1.04)}
+.sp-icon{font-size:5rem;animation:breathe 2.5s ease-in-out infinite;margin-bottom:16px}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.sp-title{font-family:'Amiri',serif;font-size:2.8rem;color:var(--orc);margin-bottom:6px}
+.sp-sub{font-size:.95rem;color:rgba(255,255,255,.5);margin-bottom:48px}
+.sp-bar{width:180px;height:3px;background:rgba(255,255,255,.15);border-radius:2px;overflow:hidden}
+.sp-fill{height:100%;background:linear-gradient(90deg,var(--or),var(--orc));animation:load 2.2s ease forwards}
+@keyframes load{from{width:0}to{width:100%}}
+.screen{display:none;min-height:100vh;padding-bottom:80px}
+.screen.active{display:block;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--vert);color:#fff;padding:11px 22px;border-radius:24px;font-size:.85rem;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:all .3s;white-space:nowrap;max-width:88vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.loading{display:flex;gap:5px;justify-content:center;padding:30px}
+.ld{width:8px;height:8px;border-radius:50%;background:var(--vert3);animation:ld 1.2s infinite}
+.ld:nth-child(2){animation-delay:.2s}.ld:nth-child(3){animation-delay:.4s}
+@keyframes ld{0%,80%,100%{transform:scale(.5);opacity:.4}40%{transform:scale(1);opacity:1}}
 </style>
 </head>
 <body>
-<div id="app">جاري التحميل...</div>
+  <div id="splash">
+  <div class="sp-icon">🌿</div>
+  <div class="sp-title">فلاح سوق</div>
+  <div class="sp-sub">سوق الخضر والفواكه</div>
+  <div class="sp-bar"><div class="sp-fill"></div></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- AUTH -->
+<div class="screen active" id="screen-auth">
+<style>
+.auth-wrap{min-height:100vh;background:linear-gradient(160deg,var(--vert),#0a2018);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.auth-card{background:#fff;border-radius:20px;padding:28px 22px;width:100%;max-width:380px;box-shadow:var(--shd)}
+.auth-logo{text-align:center;margin-bottom:24px}
+.auth-logo-icon{font-size:3rem;display:block;margin-bottom:8px}
+.auth-logo-title{font-family:'Amiri',serif;font-size:1.8rem;color:var(--vert);font-weight:700}
+.auth-logo-sub{font-size:.82rem;color:var(--gris);margin-top:2px}
+.auth-tab{display:flex;background:#f5f7fa;border-radius:10px;padding:3px;margin-bottom:22px}
+.auth-tab-btn{flex:1;padding:9px;border:none;background:transparent;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;color:var(--gris);transition:all .2s}
+.auth-tab-btn.active{background:#fff;color:var(--vert);box-shadow:var(--sh)}
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:.75rem;font-weight:800;color:#555;margin-bottom:5px;text-align:right;text-transform:uppercase;letter-spacing:.04em}
+.form-input,.form-select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'Tajawal',sans-serif;font-size:.92rem;color:#1a1a2e;background:#fff;outline:none;transition:border-color .2s;direction:rtl;text-align:right}
+.form-input:focus,.form-select:focus{border-color:var(--vert3)}
+.form-input::placeholder{color:#bbb}
+.btn-primary{width:100%;padding:13px;background:linear-gradient(135deg,var(--vert),var(--vert2));color:#fff;border:none;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;margin-top:6px;transition:all .2s;box-shadow:0 4px 16px rgba(26,74,46,.3)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed}
+.btn-gold{background:linear-gradient(135deg,var(--or),var(--orc));color:var(--noir)}
+.auth-error{background:#fdecea;border:1px solid #f5c6c6;border-radius:8px;padding:10px 14px;font-size:.83rem;color:var(--rouge);margin-bottom:12px;text-align:right;display:none}
+.auth-error.show{display:block}
+</style>
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <span class="auth-logo-icon">🌿</span>
+      <div class="auth-logo-title">فلاح سوق</div>
+      <div class="auth-logo-sub">سوق الخضر والفواكه — بالدارجة</div>
+    </div>
+    <div class="auth-tab">
+      <button class="auth-tab-btn active" onclick="switchAuth('login')">دخول</button>
+      <button class="auth-tab-btn" onclick="switchAuth('register')">تسجيل</button>
+    </div>
+    <div class="auth-error" id="auth-error"></div>
+    <div id="form-login">
+      <div class="form-group">
+        <label class="form-label">رقم الهاتف</label>
+        <input type="tel" class="form-input" id="login-tel" placeholder="06XXXXXXXX"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">الاسم</label>
+        <input type="text" class="form-input" id="login-nom" placeholder="اسمك الكامل"/>
+      </div>
+      <button class="btn-primary" onclick="login()">🔑 دخول</button>
+    </div>
+    <div id="form-register" style="display:none">
+      <div class="form-group">
+        <label class="form-label">الاسم الكامل</label>
+        <input type="text" class="form-input" id="reg-nom" placeholder="مثلا: سي محمد"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">رقم الهاتف</label>
+        <input type="tel" class="form-input" id="reg-tel" placeholder="06XXXXXXXX"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">المنطقة</label>
+        <select class="form-select" id="reg-region">
+          <option value="">اختار المنطقة</option>
+          <option>سوس ماسة</option><option>مراكش آسفي</option>
+          <option>الدار البيضاء سطات</option><option>الرباط سلا القنيطرة</option>
+          <option>فاس مكناس</option><option>طنجة تطوان الحسيمة</option>
+          <option>الشرق</option><option>درعة تافيلالت</option>
+          <option>بني ملال خنيفرة</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">أنا</label>
+        <select class="form-select" id="reg-type">
+          <option value="vendeur">بياع (فلاح)</option>
+          <option value="acheteur">مشتري</option>
+          <option value="les_deux">بياع ومشتري</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="register()">✅ إنشاء الحساب</button>
+    </div>
+  </div>
+</div>
+</div><!-- HOME -->
+<div class="screen" id="screen-home">
+<style>
+.home-header{background:linear-gradient(135deg,var(--vert),var(--vert2));padding:20px 16px 24px;position:relative;overflow:hidden}
+.home-header::after{content:'🌾';position:absolute;left:10px;bottom:-8px;font-size:5rem;opacity:.1}
+.home-greeting{color:rgba(255,255,255,.7);font-size:.82rem;margin-bottom:2px}
+.home-name{color:#fff;font-size:1.3rem;font-weight:800;margin-bottom:16px}
+.search-bar{background:rgba(255,255,255,.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer}
+.search-bar-text{color:rgba(255,255,255,.7);font-size:.88rem;flex:1;text-align:right}
+.filters-wrap{padding:14px 16px 8px;overflow-x:auto;scrollbar-width:none}
+.filters-wrap::-webkit-scrollbar{display:none}
+.filters{display:flex;gap:8px;direction:rtl}
+.filter-chip{flex-shrink:0;padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-family:'Tajawal',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;color:#555}
+.filter-chip.active{background:var(--vert);border-color:var(--vert);color:#fff}
+.section-title{padding:8px 16px 10px;font-size:.72rem;font-weight:800;color:var(--gris);text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;justify-content:space-between}
+.section-title a{color:var(--vert2);font-size:.72rem;font-weight:700;text-decoration:none}
+.annonces-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px}
+.ann-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--sh);cursor:pointer;transition:all .2s;border:1px solid var(--border)}
+.ann-card:hover{transform:translateY(-2px);box-shadow:var(--shd)}
+.ann-photo{width:100%;height:130px;object-fit:cover}
+.ann-photo-placeholder{width:100%;height:130px;background:linear-gradient(135deg,var(--vertp),#d4edda);display:flex;align-items:center;justify-content:center;font-size:3rem}
+.ann-body{padding:10px}
+.ann-produit{font-weight:800;font-size:.92rem;color:#1a1a2e;margin-bottom:3px}
+.ann-region{font-size:.72rem;color:var(--gris);margin-bottom:6px}
+.ann-footer{display:flex;align-items:center;justify-content:space-between}
+.ann-prix{font-size:1.1rem;font-weight:900;color:var(--vert);font-family:'Amiri',serif}
+.ann-unite{font-size:.65rem;color:var(--gris)}
+.ann-qty{font-size:.72rem;background:var(--vertp);color:var(--vert2);padding:2px 7px;border-radius:10px;font-weight:700}
+.fab{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateX(-155px);width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--or),var(--orc));border:none;box-shadow:0 4px 20px rgba(200,149,42,.5);display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;z-index:200;transition:all .2s;color:var(--noir)}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid var(--border);display:flex;padding:8px 0 18px;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.06)}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px;position:relative}
+.nav-icon{font-size:1.25rem}
+.nav-label{font-size:.6rem;font-weight:700;color:var(--gris);font-family:'Tajawal',sans-serif}
+.nav-item.active .nav-label{color:var(--vert)}
+.nav-item.active::before{content:'';position:absolute;top:-8px;width:28px;height:2px;background:var(--vert);border-radius:0 0 2px 2px}
+</style>
+<div class="home-header">
+  <div class="home-greeting">صباح الخير،</div>
+  <div class="home-name" id="home-name">سي فلاح 👋</div>
+  <div class="search-bar" onclick="showToast('البحث — قريبا!')">
+    <span>🔍</span>
+    <span class="search-bar-text">دور على منتج، منطقة...</span>
+  </div>
+</div>
+<div class="filters-wrap">
+  <div class="filters">
+    <div class="filter-chip active" onclick="filterAnn(this,'')">الكل</div>
+    <div class="filter-chip" onclick="filterAnn(this,'legumes')">🥕 خضر</div>
+    <div class="filter-chip" onclick="filterAnn(this,'fruits')">🍊 فواكه</div>
+    <div class="filter-chip" onclick="filterAnn(this,'region')">📍 منطقتي</div>
+  </div>
+</div>
+<div class="section-title"><span>إعلانات اليوم</span></div>
+<div class="annonces-grid" id="annonces-grid">
+  <div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>
+</div>
+<button class="fab" onclick="goTo('publish')">＋</button>
+</div>
+<!-- PUBLISH -->
+<div class="screen" id="screen-publish">
+<style>
+.pub-header{background:linear-gradient(135deg,var(--vert),var(--vert2));padding:16px;display:flex;align-items:center;gap:12px}
+.pub-back{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pub-title{font-family:'Amiri',serif;font-size:1.3rem;color:var(--orc)}
+.pub-body{padding:16px}
+.photo-upload-zone{border:2px dashed var(--border);border-radius:14px;padding:30px;text-align:center;cursor:pointer;background:#fafafa;transition:all .2s;margin-bottom:16px}
+.photo-upload-zone:hover{border-color:var(--vert3);background:var(--vertp)}
+.photo-upload-zone input{display:none}
+.puz-icon{font-size:2.5rem;margin-bottom:8px}
+.puz-text{font-size:.85rem;color:var(--gris)}
+.puz-text strong{color:var(--vert);display:block;margin-bottom:3px}
+#photo-preview{width:100%;height:180px;object-fit:cover;border-radius:10px;display:none}
+.produits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px}
+.produit-btn{padding:10px 6px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:'Tajawal',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;color:#555}
+.produit-btn.active{background:var(--vert);border-color:var(--vert);color:#fff}
+.produit-btn span{display:block;font-size:1.3rem;margin-bottom:3px}
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+</style>
+<div class="pub-header">
+  <button class="pub-back" onclick="goTo('home')">←</button>
+  <div class="pub-title">نشر إعلان جديد</div>
+</div>
+<div class="pub-body">
+  <div class="photo-upload-zone" onclick="document.getElementById('photo-input').click()">
+    <input type="file" id="photo-input" accept="image/*" onchange="previewPhoto(event)"/>
+    <img id="photo-preview"/>
+    <div id="photo-prompt">
+      <div class="puz-icon">📸</div>
+      <div class="puz-text"><strong>صور المنتج ديالك</strong>صورة واضحة تجلب المشترين</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="form-label">نوع المنتج</label>
+    <div class="produits-grid">
+      <button class="produit-btn" onclick="selectProduit(this,'الطماطم','legumes')"><span>🍅</span>الطماطم</button>
+      <button class="produit-btn" onclick="selectProduit(this,'الفلفلة','legumes')"><span>🫑</span>الفلفلة</button>
+      <button class="produit-btn" onclick="selectProduit(this,'الخيار','legumes')"><span>🥒</span>الخيار</button>
+      <button class="produit-btn" onclick="selectProduit(this,'البصلة','legumes')"><span>🧅</span>البصلة</button>
+      <button class="produit-btn" onclick="selectProduit(this,'البطاطا','legumes')"><span>🥔</span>البطاطا</button>
+      <button class="produit-btn" onclick="selectProduit(this,'الجزر','legumes')"><span>🥕</span>الجزر</button>
+      <button class="produit-btn" onclick="selectProduit(this,'البرتقال','fruits')"><span>🍊</span>البرتقال</button>
+      <button class="produit-btn" onclick="selectProduit(this,'الليمون','fruits')"><span>🍋</span>الليمون</button>
+      <button class="produit-btn" onclick="selectProduit(this,'البطيخ','fruits')"><span>🍉</span>البطيخ</button>
+      <button class="produit-btn" onclick="selectProduit(this,'التفاح','fruits')"><span>🍎</span>التفاح</button>
+      <button class="produit-btn" onclick="selectProduit(this,'العنب','fruits')"><span>🍇</span>العنب</button>
+      <button class="produit-btn" onclick="selectProduit(this,'التين','fruits')"><span>🫐</span>التين</button>
+    </div>
+  </div>
+  <div class="input-row">
+    <div class="form-group">
+      <label class="form-label">الكمية</label>
+      <input type="number" class="form-input" id="pub-qte" placeholder="50"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">الوحدة</label>
+      <select class="form-select" id="pub-unite">
+        <option value="kg">كغ</option>
+        <option value="qintar">قنطار</option>
+        <option value="caisse">كرطونة</option>
+        <option value="lot">لوط</option>
+      </select>
+    </div>
+  </div>
+  <div class="input-row">
+    <div class="form-group">
+      <label class="form-label">السعر (د.م)</label>
+      <input type="number" class="form-input" id="pub-prix" placeholder="3.50"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">المدينة</label>
+      <input type="text" class="form-input" id="pub-ville" placeholder="تارودانت"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="form-label">وصف (اختياري)</label>
+    <input type="text" class="form-input" id="pub-desc" placeholder="جودة عالية، طازجة..."/>
+  </div>
+  <button class="btn-primary btn-gold" onclick="publierAnnonce()">📢 نشر الإعلان الآن</button>
+</div>
+</div>
+
+<!-- PROFIL -->
+<div class="screen" id="screen-profil">
+<style>
+.profil-header{background:linear-gradient(135deg,var(--vert),var(--vert2));padding:30px 16px;text-align:center}
+.profil-avatar{width:78px;height:78px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 12px;border:3px solid rgba(255,255,255,.3)}
+.profil-nom{color:#fff;font-size:1.3rem;font-weight:800;margin-bottom:4px}
+.profil-region{color:rgba(255,255,255,.65);font-size:.82rem;margin-bottom:16px}
+.profil-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.2);border-radius:12px;overflow:hidden}
+.profil-stat{background:rgba(255,255,255,.1);padding:12px;text-align:center}
+.profil-stat-v{font-size:1.3rem;font-weight:900;color:var(--orc);font-family:'Amiri',serif}
+.profil-stat-l{font-size:.62rem;color:rgba(255,255,255,.65);margin-top:2px}
+.profil-menu{margin:16px}
+.profil-item{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;cursor:pointer;transition:all .15s}
+.profil-item:hover{border-color:var(--vert3)}
+.profil-item-left{display:flex;align-items:center;gap:10px}
+.profil-item-label{font-size:.9rem;font-weight:600}
+</style>
+<div class="profil-header">
+  <div class="profil-avatar">👨‍🌾</div>
+  <div class="profil-nom" id="profil-nom">—</div>
+  <div class="profil-region" id="profil-region">—</div>
+  <div class="profil-stats">
+    <div class="profil-stat"><div class="profil-stat-v" id="profil-anns">0</div><div class="profil-stat-l">إعلانات</div></div>
+    <div class="profil-stat"><div class="profil-stat-v" id="profil-note">—</div><div class="profil-stat-l">التقييم</div></div>
+    <div class="profil-stat"><div class="profil-stat-v" id="profil-trans">0</div><div class="profil-stat-l">مبيعات</div></div>
+  </div>
+</div>
+<div class="profil-menu">
+  <div class="profil-item" onclick="showToast('إعلاناتي — قريبا!')">
+    <div class="profil-item-left"><span>📋</span><span class="profil-item-label">إعلاناتي</span></div><span>›</span>
+  </div>
+  <div class="profil-item" onclick="showToast('الإعدادات — قريبا!')">
+    <div class="profil-item-left"><span>⚙️</span><span class="profil-item-label">الإعدادات</span></div><span>›</span>
+  </div>
+  <div class="profil-item" onclick="logout()">
+    <div class="profil-item-left"><span>🚪</span><span class="profil-item-label" style="color:var(--rouge)">خروج</span></div><span>›</span>
+  </div>
+</div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bnav" id="bnav" style="display:none">
+  <div class="nav-item active" id="ni-home" onclick="goTo('home')"><div class="nav-icon">🏠</div><div class="nav-label">الرئيسية</div></div>
+  <div class="nav-item" id="ni-publish" onclick="goTo('publish')"><div class="nav-icon">➕</div><div class="nav-label">نشر</div></div>
+  <div class="nav-item" id="ni-messages" onclick="showToast('الرسائل — قريبا!')"><div class="nav-icon">💬</div><div class="nav-label">رسائل</div></div>
+  <div class="nav-item" id="ni-profil" onclick="goTo('profil')"><div class="nav-icon">👤</div><div class="nav-label">حسابي</div></div>
+</div>
 <script>
-const SURL = 'https://ryzhqtcukeypsqqbxrqp.supabase.co';
-const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjeWNxcHhqeGFndmJwamt4Z2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNTU5NDYsImV4cCI6MjA5MzkzMTk0Nn0.c3EDpAqMuAlOVD0cdDIIClW_iwQZhpueR5-xGmWM_jc';
-const sb = supabase.createClient(SURL, SKEY);
-window.onload = () => {
-  document.getElementById('app').innerHTML = '<h1 style="text-align:center;padding:40px;color:#1a4a2e;font-family:Amiri,serif">فلاح سوق 🌿</h1><p style="text-align:center;color:#8a9ab0">الاتصال بقاعدة البيانات...</p>';
-  setTimeout(() => { document.getElementById('app').innerHTML = '<h1 style="text-align:center;padding:40px;color:#1a4a2e;font-family:Amiri,serif">✅ فلاح سوق يعمل!</h1><p style="text-align:center;color:#2d6e47;font-size:1.1rem">قاعدة البيانات متصلة</p>'; }, 1500);
+const SURL='https://ryzhqtcukeypsqqbxrqp.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjeWNxcHhqeGFndmJwamt4Z2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNTU5NDYsImV4cCI6MjA5MzkzMTk0Nn0.c3EDpAqMuAlOVD0cdDIIClW_iwQZhpueR5-xGmWM_jc';
+const sb=supabase.createClient(SURL,SKEY);
+
+let currentUser=null;
+let selectedProduit='';
+let selectedCategorie='';
+
+const EMOJIS={
+  'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','البصلة':'🧅',
+  'البطاطا':'🥔','الجزر':'🥕','البرتقال':'🍊','الليمون':'🍋',
+  'البطيخ':'🍉','التفاح':'🍎','العنب':'🍇','التين':'🫐'
 };
+
+window.onload=()=>{
+  setTimeout(()=>document.getElementById('splash').classList.add('out'),2400);
+  const saved=localStorage.getItem('fellah_user');
+  if(saved){currentUser=JSON.parse(saved);showApp();}
+};
+
+function showToast(msg,duration=3000){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),duration);
+}
+
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const sc=document.getElementById('screen-'+id);
+  if(sc)sc.classList.add('active');
+  const ni=document.getElementById('ni-'+id);
+  if(ni)ni.classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='home')loadAnnonces();
+  if(id==='profil')loadProfil();
+}
+
+function showApp(){
+  document.getElementById('bnav').style.display='flex';
+  goTo('home');
+  if(currentUser)document.getElementById('home-name').textContent=currentUser.nom+' 👋';
+}
+
+function switchAuth(type){
+  document.querySelectorAll('.auth-tab-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('form-login').style.display=type==='login'?'block':'none';
+  document.getElementById('form-register').style.display=type==='register'?'block':'none';
+  document.getElementById('auth-error').classList.remove('show');
+}
+
+function showError(msg){
+  const el=document.getElementById('auth-error');
+  el.textContent=msg;el.classList.add('show');
+}
+
+async function login(){
+  const tel=document.getElementById('login-tel').value.trim();
+  const nom=document.getElementById('login-nom').value.trim();
+  if(!tel||!nom){showError('دخل رقم الهاتف والاسم');return;}
+  const btn=event.target;btn.disabled=true;btn.textContent='...';
+  const{data,error}=await sb.from('utilisateurs')
+    .select('*').eq('telephone',tel).eq('nom',nom).single();
+  btn.disabled=false;btn.textContent='🔑 دخول';
+  if(error||!data){showError('ما لقيناكش — تحقق من الاسم ورقم الهاتف');return;}
+  currentUser=data;
+  localStorage.setItem('fellah_user',JSON.stringify(data));
+  showApp();showToast('مرحبا '+data.nom+' 👋');
+}
+
+async function register(){
+  const nom=document.getElementById('reg-nom').value.trim();
+  const tel=document.getElementById('reg-tel').value.trim();
+  const region=document.getElementById('reg-region').value;
+  const type=document.getElementById('reg-type').value;
+  if(!nom||!tel||!region){showError('كمل جميع المعلومات');return;}
+  if(tel.length<9){showError('رقم الهاتف غير صحيح');return;}
+  const btn=event.target;btn.disabled=true;btn.textContent='...';
+  const{data:existing}=await sb.from('utilisateurs')
+    .select('id').eq('telephone',tel).single();
+  if(existing){
+    btn.disabled=false;btn.textContent='✅ إنشاء الحساب';
+    showError('هاد الرقم مسجل — استعمل دخول');return;
+  }
+  const{data,error}=await sb.from('utilisateurs')
+    .insert([{nom,telephone:tel,region,type_compte:type}])
+    .select().single();
+  btn.disabled=false;btn.textContent='✅ إنشاء الحساب';
+  if(error){showError('مشكلة في التسجيل — حاول مرة أخرى');return;}
+  currentUser=data;
+  localStorage.setItem('fellah_user',JSON.stringify(data));
+  showApp();showToast('مرحبا بك '+nom+' 🎉');
+}
+
+function logout(){
+  currentUser=null;
+  localStorage.removeItem('fellah_user');
+  document.getElementById('bnav').style.display='none';
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-auth').classList.add('active');
+  showToast('تم الخروج بنجاح');
+}async function loadAnnonces(filter=''){
+  const grid=document.getElementById('annonces-grid');
+  grid.innerHTML='<div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
+  let query=sb.from('annonces')
+    .select('*,utilisateurs(nom,region,note_moyenne)')
+    .eq('statut','active')
+    .order('created_at',{ascending:false})
+    .limit(20);
+  if(filter==='legumes')query=query.eq('categorie','legumes');
+  if(filter==='fruits')query=query.eq('categorie','fruits');
+  if(filter==='region'&&currentUser)query=query.eq('region',currentUser.region);
+  const{data,error}=await query;
+  if(error||!data||data.length===0){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:50px 20px"><div style="font-size:3.5rem;margin-bottom:14px">🌿</div><div style="font-size:1.1rem;font-weight:800;margin-bottom:6px">ما كاين إعلانات بعد</div><div style="font-size:.85rem;color:var(--gris)">كن أول من ينشر إعلان!</div></div>';
+    return;
+  }
+  grid.innerHTML=data.map(a=>`
+    <div class="ann-card">
+      ${a.photo_url
+        ?`<img class="ann-photo" src="${a.photo_url}" alt="${a.produit}" loading="lazy"/>`
+        :`<div class="ann-photo-placeholder">${EMOJIS[a.produit]||'🌿'}</div>`}
+      <div class="ann-body">
+        <div class="ann-produit">${EMOJIS[a.produit]||''} ${a.produit}</div>
+        <div class="ann-region">📍 ${a.ville}</div>
+        <div class="ann-footer">
+          <div><span class="ann-prix">${a.prix}</span><span class="ann-unite"> د.م/${a.unite}</span></div>
+          <div class="ann-qty">${a.quantite} ${a.unite}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function filterAnn(el,type){
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  loadAnnonces(type);
+}
+
+function previewPhoto(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    document.getElementById('photo-preview').src=ev.target.result;
+    document.getElementById('photo-preview').style.display='block';
+    document.getElementById('photo-prompt').style.display='none';
+  };r.readAsDataURL(f);
+}
+
+function selectProduit(el,nom,categorie){
+  document.querySelectorAll('.produit-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  selectedProduit=nom;selectedCategorie=categorie;
+}
+
+async function publierAnnonce(){
+  if(!selectedProduit){showToast('⚠️ اختار المنتج');return;}
+  const qte=document.getElementById('pub-qte').value;
+  const prix=document.getElementById('pub-prix').value;
+  const ville=document.getElementById('pub-ville').value.trim();
+  if(!qte||!prix||!ville){showToast('⚠️ كمل جميع المعلومات');return;}
+  const btn=event.target;btn.disabled=true;btn.textContent='...';
+  let photoUrl=null;
+  const photoInput=document.getElementById('photo-input');
+  if(photoInput.files[0]){
+    const file=photoInput.files[0];
+    const fileName=currentUser.id+'_'+Date.now()+'.jpg';
+    const{data:upData,error:upErr}=await sb.storage
+      .from('photos-annonces').upload(fileName,file,{cacheControl:'3600',upsert:false});
+    if(!upErr&&upData){
+      const{data:urlData}=sb.storage.from('photos-annonces').getPublicUrl(fileName);
+      photoUrl=urlData?.publicUrl;
+    }
+  }
+  const{error}=await sb.from('annonces').insert([{
+    vendeur_id:currentUser.id,
+    produit:selectedProduit,
+    categorie:selectedCategorie,
+    quantite:parseFloat(qte),
+    unite:document.getElementById('pub-unite').value,
+    prix:parseFloat(prix),
+    ville,
+    region:currentUser.region,
+    description:document.getElementById('pub-desc').value,
+    photo_url:photoUrl,
+  }]);
+  btn.disabled=false;btn.textContent='📢 نشر الإعلان الآن';
+  if(error){showToast('❌ مشكلة في النشر');return;}
+  showToast('✅ الإعلان نُشر بنجاح!');
+  selectedProduit='';selectedCategorie='';
+  document.querySelectorAll('.produit-btn').forEach(b=>b.classList.remove('active'));
+  ['pub-qte','pub-prix','pub-ville','pub-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('photo-preview').style.display='none';
+  document.getElementById('photo-prompt').style.display='block';
+  goTo('home');
+}
+
+async function loadProfil(){
+  if(!currentUser)return;
+  document.getElementById('profil-nom').textContent=currentUser.nom;
+  document.getElementById('profil-region').textContent='📍 '+currentUser.region;
+  const{data:anns}=await sb.from('annonces').select('id').eq('vendeur_id',currentUser.id);
+  document.getElementById('profil-anns').textContent=anns?.length||0;
+  document.getElementById('profil-note').textContent=currentUser.note_moyenne>0?currentUser.note_moyenne+'⭐':'—';
+  document.getElementById('profil-trans').textContent=currentUser.nb_transactions||0;
+}
 </script>
 </body>
 </html>
