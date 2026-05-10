@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>فلاح سوق</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+<h2 id="res">Test connexion...</h2>
 <script>
-const SURL='https://ryzhqtcukeypsqqbxrqp.supabase.co';
-const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ5emhxdGN1a2V5cHNxcWJ4cnFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNDI1NTIsImV4cCI6MjA2MTcxODU1Mn0.Wlb5_ybMBmMr8cWmMDhIFOH4DpRNeSoZOJYl7rFSxRY';
-const sb=supabase.createClient(SURL,SKEY);
-window.onload=async()=>{
-  const{data}=await sb.from('utilisateurs').select('nom').limit(1);
-  document.body.innerHTML='<h1 style="font-family:Arial;padding:40px;color:green">'+(data?'✅ Connexion OK ! Nombre users: '+data.length:'❌ Erreur connexion')+'</h1>';
-};
+const sb=supabase.createClient(
+  'https://ryzhqtcukeypsqqbxrqp.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjeWNxcHhqeGFndmJwamt4Z2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNTU5NDYsImV4cCI6MjA5MzkzMTk0Nn0.c3EDpAqMuAlOVD0cdDIIClW_iwQZhpueR5-xGmWM_jc'
+);
+sb.from('utilisateurs').select('nom').limit(3).then(({data,error})=>{
+  document.getElementById('res').innerHTML=
+    error?'❌ Erreur: '+error.message:
+    '✅ Connecté! Users: '+JSON.stringify(data);
+});
 </script>
 </body>
 </html>
