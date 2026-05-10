@@ -8,13 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{
-  --vert:#1a4a2e;--vert2:#2d6e47;--vert3:#4caf72;--vertp:#e8f5ed;
-  --or:#c8952a;--orc:#e8b84b;
-  --creme:#f7f2e8;--blanc:#ffffff;--gris:#8a9ab0;--border:#e2e8f0;
-  --rouge:#c0392b;
-  --sh:0 2px 12px rgba(0,0,0,.08);--shd:0 8px 32px rgba(0,0,0,.15);
-}
+:root{--vert:#1a4a2e;--vert2:#2d6e47;--vert3:#4caf72;--vertp:#e8f5ed;--or:#c8952a;--orc:#e8b84b;--blanc:#ffffff;--gris:#8a9ab0;--border:#e2e8f0;--rouge:#c0392b;--sh:0 2px 12px rgba(0,0,0,.08);--shd:0 8px 32px rgba(0,0,0,.15)}
 body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width:430px;margin:0 auto;min-height:100vh;overflow-x:hidden;direction:rtl}
 #splash{position:fixed;inset:0;background:linear-gradient(160deg,var(--vert),#0a2018);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9000;transition:opacity .6s,transform .6s}
 #splash.out{opacity:0;pointer-events:none;transform:scale(1.04)}
@@ -44,20 +38,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .btn-gold{background:linear-gradient(135deg,var(--or),var(--orc));color:#1a1a2e}
 .auth-error{background:#fdecea;border:1px solid #f5c6c6;border-radius:8px;padding:10px 14px;font-size:.83rem;color:var(--rouge);margin-bottom:12px;text-align:right;display:none}
 .auth-error.show{display:block}
-</style>
-</head>
-<body>
-<div id="splash">
-  <div class="sp-icon">🌿</div>
-  <div class="sp-title">فلاح سوق</div>
-  <div class="sp-sub">سوق الخضر والفواكه</div>
-  <div class="sp-bar"><div class="sp-fill"></div></div>
-</div>
-<div class="toast" id="toast"></div>
-
-<!-- AUTH -->
-<div class="screen active" id="screen-auth">
-<style>
 .auth-wrap{min-height:100vh;background:linear-gradient(160deg,var(--vert),#0a2018);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
 .auth-card{background:#fff;border-radius:20px;padding:28px 22px;width:100%;max-width:380px;box-shadow:var(--shd)}
 .auth-logo{text-align:center;margin-bottom:24px}
@@ -67,65 +47,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .auth-tab{display:flex;background:#f5f7fa;border-radius:10px;padding:3px;margin-bottom:22px}
 .auth-tab-btn{flex:1;padding:9px;border:none;background:transparent;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;color:var(--gris);transition:all .2s}
 .auth-tab-btn.active{background:#fff;color:var(--vert);box-shadow:var(--sh)}
-</style>
-<div class="auth-wrap">
-  <div class="auth-card">
-    <div class="auth-logo">
-      <span class="auth-logo-icon">🌿</span>
-      <div class="auth-logo-title">فلاح سوق</div>
-      <div class="auth-logo-sub">سوق الخضر والفواكه — بالدارجة</div>
-    </div>
-    <div class="auth-tab">
-      <button class="auth-tab-btn active" onclick="switchAuth('login')">دخول</button>
-      <button class="auth-tab-btn" onclick="switchAuth('register')">تسجيل</button>
-    </div>
-    <div class="auth-error" id="auth-error"></div>
-    <div id="form-login">
-      <div class="form-group">
-        <label class="form-label">رقم الهاتف</label>
-        <input type="tel" class="form-input" id="login-tel" placeholder="06XXXXXXXX"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">الاسم</label>
-        <input type="text" class="form-input" id="login-nom" placeholder="اسمك الكامل"/>
-      </div>
-      <button class="btn-primary" onclick="login()">🔑 دخول</button>
-    </div>
-    <div id="form-register" style="display:none">
-      <div class="form-group">
-        <label class="form-label">الاسم الكامل</label>
-        <input type="text" class="form-input" id="reg-nom" placeholder="مثلا: سي محمد"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">رقم الهاتف</label>
-        <input type="tel" class="form-input" id="reg-tel" placeholder="06XXXXXXXX"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">المنطقة</label>
-        <select class="form-select" id="reg-region">
-          <option value="">اختار المنطقة</option>
-          <option>سوس ماسة</option><option>مراكش آسفي</option>
-          <option>الدار البيضاء سطات</option><option>الرباط سلا القنيطرة</option>
-          <option>فاس مكناس</option><option>طنجة تطوان الحسيمة</option>
-          <option>الشرق</option><option>درعة تافيلالت</option>
-          <option>بني ملال خنيفرة</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">أنا</label>
-        <select class="form-select" id="reg-type">
-          <option value="vendeur">بياع (فلاح)</option>
-          <option value="acheteur">مشتري</option>
-          <option value="les_deux">بياع ومشتري</option>
-        </select>
-      </div>
-      <button class="btn-primary" onclick="register()">✅ إنشاء الحساب</button>
-    </div>
-  </div>
-</div>
-</div>  <!-- HOME -->
-<div class="screen" id="screen-home">
-<style>
 .home-header{background:linear-gradient(135deg,var(--vert),var(--vert2));padding:20px 16px 24px;position:relative;overflow:hidden}
 .home-header::after{content:'🌾';position:absolute;left:10px;bottom:-8px;font-size:5rem;opacity:.1}
 .home-greeting{color:rgba(255,255,255,.7);font-size:.82rem;margin-bottom:2px}
@@ -137,7 +58,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .filters{display:flex;gap:8px;direction:rtl}
 .filter-chip{flex-shrink:0;padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-family:'Tajawal',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;color:#555}
 .filter-chip.active{background:var(--vert);border-color:var(--vert);color:#fff}
-.section-title{padding:8px 16px 10px;font-size:.72rem;font-weight:800;color:var(--gris);text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;justify-content:space-between}
+.section-title{padding:8px 16px 10px;font-size:.72rem;font-weight:800;color:var(--gris);text-transform:uppercase;letter-spacing:.1em}
 .annonces-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px}
 .ann-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--sh);cursor:pointer;transition:all .2s;border:1px solid var(--border)}
 .ann-card:hover{transform:translateY(-2px);box-shadow:var(--shd)}
@@ -157,143 +78,18 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .nav-label{font-size:.6rem;font-weight:700;color:var(--gris);font-family:'Tajawal',sans-serif}
 .nav-item.active .nav-label{color:var(--vert)}
 .nav-item.active::before{content:'';position:absolute;top:-8px;width:28px;height:2px;background:var(--vert);border-radius:0 0 2px 2px}
-</style>
-<div class="home-header">
-  <div class="home-greeting">صباح الخير،</div>
-  <div class="home-name" id="home-name">سي فلاح 👋</div>
-  <div class="search-bar" onclick="showToast('البحث — قريبا!')">
-    <span>🔍</span>
-    <span class="search-bar-text">دور على منتج، منطقة...</span>
-  </div>
-</div>
-<div class="filters-wrap">
-  <div class="filters">
-    <div class="filter-chip active" onclick="filterAnn(this,'')">الكل</div>
-    <div class="filter-chip" onclick="filterAnn(this,'legumes')">🥕 خضر</div>
-    <div class="filter-chip" onclick="filterAnn(this,'fruits')">🍊 فواكه</div>
-    <div class="filter-chip" onclick="filterAnn(this,'region')">📍 منطقتي</div>
-  </div>
-</div>
-<div class="section-title"><span>إعلانات اليوم</span></div>
-<div class="annonces-grid" id="annonces-grid">
-  <div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>
-</div>
-<button class="fab" onclick="goTo('publish')">＋</button>
-</div>
-
-<!-- PUBLISH -->
-<div class="screen" id="screen-publish">
-<style>
 .pub-header{background:linear-gradient(135deg,var(--vert),var(--vert2));padding:16px;display:flex;align-items:center;gap:12px}
 .pub-back{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:1.1rem;cursor:pointer}
 .pub-title{font-family:'Amiri',serif;font-size:1.3rem;color:var(--orc)}
 .pub-body{padding:16px}
-.photo-zone{border:2px dashed var(--border);border-radius:14px;padding:30px;text-align:center;cursor:pointer;background:#fafafa;margin-bottom:16px}
+.photo-zone{border:2px dashed var(--border);border-radius:14px;padding:24px;text-align:center;cursor:pointer;background:#fafafa;margin-bottom:16px}
 .photo-zone input{display:none}
 #photo-preview{width:100%;height:180px;object-fit:cover;border-radius:10px;display:none}
 .produits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px}
-.produit-btn{padding:10px 6px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:'Tajawal',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;color:#555}
+.produit-btn{padding:10px 6px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:'Tajawal',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;color:#555}
 .produit-btn.active{background:var(--vert);border-color:var(--vert);color:#fff}
-.produit-btn span{display:block;font-size:1.3rem;margin-bottom:3px}
+.produit-btn span{display:block;font-size:1.2rem;margin-bottom:3px}
 .input-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-</style>
-<div class="pub-header">
-  <button class="pub-back" onclick="goTo('home')">←</button>
-  <div class="pub-title">نشر إعلان جديد</div>
-</div>
-<div class="pub-body">
-  <div class="photo-zone" onclick="document.getElementById('photo-input').click()">
-    <input type="file" id="photo-input" accept="image/*" onchange="previewPhoto(event)"/>
-    <img id="photo-preview"/>
-    <div id="photo-prompt"><div style="font-size:2.5rem;margin-bottom:8px">📸</div><div style="font-size:.85rem;color:var(--gris)"><strong style="color:var(--vert);display:block;margin-bottom:3px">صور المنتج ديالك</strong>صورة واضحة تجلب المشترين</div></div>
-  </div>
-  <div class="form-group">
-    <label class="form-label">نوع المنتج</label>
-    <div class="produits-grid">
-      <div class="produits-grid">
-  <button class="produit-btn" onclick="selectProduit(this,'الطماطم','legumes')"><span>🍅</span>الطماطم</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الفلفلة','legumes')"><span>🫑</span>الفلفلة</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الخيار','legumes')"><span>🥒</span>الخيار</button>
-  <button class="produit-btn" onclick="selectProduit(this,'البصلة','legumes')"><span>🧅</span>البصلة</button>
-  <button class="produit-btn" onclick="selectProduit(this,'البطاطا','legumes')"><span>🥔</span>البطاطا</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الجزر','legumes')"><span>🥕</span>الجزر</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الثوم','legumes')"><span>🧄</span>الثوم</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الكوسة','legumes')"><span>🥬</span>الكوسة</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الباذنجان','legumes')"><span>🍆</span>الباذنجان</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الملفوف','legumes')"><span>🥦</span>الملفوف</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الخس','legumes')"><span>🥗</span>الخس</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الفاصوليا','legumes')"><span>🫘</span>الفاصوليا</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الحمص','legumes')"><span>🟡</span>الحمص</button>
-  <button class="produit-btn" onclick="selectProduit(this,'العدس','legumes')"><span>🟤</span>العدس</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الفول','legumes')"><span>🫘</span>الفول</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الشمندر','legumes')"><span>🔴</span>الشمندر</button>
-  <button class="produit-btn" onclick="selectProduit(this,'اللفت','legumes')"><span>🟣</span>اللفت</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الكرفس','legumes')"><span>🌿</span>الكرفس</button>
-  <button class="produit-btn" onclick="selectProduit(this,'البرتقال','fruits')"><span>🍊</span>البرتقال</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الليمون','fruits')"><span>🍋</span>الليمون</button>
-  <button class="produit-btn" onclick="selectProduit(this,'البطيخ','fruits')"><span>🍉</span>البطيخ</button>
-  <button class="produit-btn" onclick="selectProduit(this,'التفاح','fruits')"><span>🍎</span>التفاح</button>
-  <button class="produit-btn" onclick="selectProduit(this,'العنب','fruits')"><span>🍇</span>العنب</button>
-  <button class="produit-btn" onclick="selectProduit(this,'التين','fruits')"><span>🫐</span>التين</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الكليمنتين','fruits')"><span>🍊</span>الكليمنتين</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الرمان','fruits')"><span>🍎</span>الرمان</button>
-  <button class="produit-btn" onclick="selectProduit(this,'المشماش','fruits')"><span>🍑</span>المشماش</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الكرز','fruits')"><span>🍒</span>الكرز</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الخوخ','fruits')"><span>🍑</span>الخوخ</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الفراولة','fruits')"><span>🍓</span>الفراولة</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الموز','fruits')"><span>🍌</span>الموز</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الأفوكا','fruits')"><span>🥑</span>الأفوكا</button>
-  <button class="produit-btn" onclick="selectProduit(this,'التمر','fruits')"><span>🌴</span>التمر</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الزيتون','fruits')"><span>🫒</span>الزيتون</button>
-  <button class="produit-btn" onclick="selectProduit(this,'الدلاح','fruits')"><span>🍈</span>الدلاح</button>
-function selectAutre(el){
-  document.querySelectorAll('.produit-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  selectedProduit='';selectedCategorie='';
-  document.getElementById('autre-produit').style.display='block';
-  document.getElementById('autre-nom').focus();
-}
-function updateAutre(){
-  const nom=document.getElementById('autre-nom').value.trim();
-  if(nom)selectedProduit=nom;
-}
-function setType(cat,el){
-  document.getElementById('type-legume').classList.remove('active');
-  document.getElementById('type-fruit').classList.remove('active');
-  el.classList.add('active');
-  selectedCategorie=cat;
-}
-        
-  <button class="produit-btn autre" onclick="selectAutre(this)"><span>✏️</span>منتج آخر</button>
-</div>
-<div id="autre-produit" style="display:none;margin-top:10px">
-  <input type="text" class="form-input" id="autre-nom" placeholder="اكتب اسم المنتج..." oninput="updateAutre()"/>
-  <div style="margin-top:8px">
-    <label class="form-label">نوع</label>
-    <div style="display:flex;gap:8px;margin-top:4px">
-      <button class="produit-btn" id="type-legume" onclick="setType('legumes',this)" style="flex:1"><span>🥕</span>خضر</button>
-      <button class="produit-btn" id="type-fruit" onclick="setType('fruits',this)" style="flex:1"><span>🍊</span>فواكه</button>
-    </div>
-  </div>
-</div>
-    </div>
-  </div>
-  <div class="input-row">
-    <div class="form-group"><label class="form-label">الكمية</label><input type="number" class="form-input" id="pub-qte" placeholder="50"/></div>
-    <div class="form-group"><label class="form-label">الوحدة</label><select class="form-select" id="pub-unite"><option value="kg">كغ</option><option value="qintar">قنطار</option><option value="caisse">كرطونة</option></select></div>
-  </div>
-  <div class="input-row">
-    <div class="form-group"><label class="form-label">السعر (د.م)</label><input type="number" class="form-input" id="pub-prix" placeholder="3.50"/></div>
-    <div class="form-group"><label class="form-label">المدينة</label><input type="text" class="form-input" id="pub-ville" placeholder="تارودانت"/></div>
-  </div>
-  <div class="form-group"><label class="form-label">وصف (اختياري)</label><input type="text" class="form-input" id="pub-desc" placeholder="جودة عالية، طازجة..."/></div>
-  <button class="btn-primary btn-gold" onclick="publierAnnonce()">📢 نشر الإعلان الآن</button>
-</div>
-</div>
-
-<!-- PROFIL -->
-<div class="screen" id="screen-profil">
-<style>
 .profil-header{background:linear-gradient(135deg,var(--vert),var(--vert2));padding:30px 16px;text-align:center}
 .profil-avatar{width:78px;height:78px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 12px;border:3px solid rgba(255,255,255,.3)}
 .profil-nom{color:#fff;font-size:1.3rem;font-weight:800;margin-bottom:4px}
@@ -307,73 +103,153 @@ function setType(cat,el){
 .profil-item-left{display:flex;align-items:center;gap:10px}
 .profil-item-label{font-size:.9rem;font-weight:600}
 </style>
-<div class="profil-header">
-  <div class="profil-avatar">👨‍🌾</div>
-  <div class="profil-nom" id="profil-nom">—</div>
-  <div class="profil-region" id="profil-region">—</div>
-  <div class="profil-stats">
-    <div class="profil-stat"><div class="profil-stat-v" id="profil-anns">0</div><div class="profil-stat-l">إعلانات</div></div>
-    <div class="profil-stat"><div class="profil-stat-v" id="profil-note">—</div><div class="profil-stat-l">التقييم</div></div>
-    <div class="profil-stat"><div class="profil-stat-v" id="profil-trans">0</div><div class="profil-stat-l">مبيعات</div></div>
-  </div>
+</head>
+<body><div id="splash"><div class="sp-icon">🌿</div><div class="sp-title">فلاح سوق</div><div class="sp-sub">سوق الخضر والفواكه</div><div class="sp-bar"><div class="sp-fill"></div></div></div>
+<div class="toast" id="toast"></div>
+
+<div class="screen active" id="screen-auth">
+<div class="auth-wrap"><div class="auth-card">
+<div class="auth-logo"><span class="auth-logo-icon">🌿</span><div class="auth-logo-title">فلاح سوق</div><div class="auth-logo-sub">سوق الخضر والفواكه — بالدارجة</div></div>
+<div class="auth-tab"><button class="auth-tab-btn active" onclick="switchAuth('login')">دخول</button><button class="auth-tab-btn" onclick="switchAuth('register')">تسجيل</button></div>
+<div class="auth-error" id="auth-error"></div>
+<div id="form-login">
+<div class="form-group"><label class="form-label">رقم الهاتف</label><input type="tel" class="form-input" id="login-tel" placeholder="06XXXXXXXX"/></div>
+<div class="form-group"><label class="form-label">الاسم</label><input type="text" class="form-input" id="login-nom" placeholder="اسمك الكامل"/></div>
+<button class="btn-primary" onclick="login()">🔑 دخول</button>
 </div>
-<div class="profil-menu">
-  <div class="profil-item" onclick="showToast('قريبا!')"><div class="profil-item-left"><span>📋</span><span class="profil-item-label">إعلاناتي</span></div><span>›</span></div>
-  <div class="profil-item" onclick="logout()"><div class="profil-item-left"><span>🚪</span><span class="profil-item-label" style="color:var(--rouge)">خروج</span></div><span>›</span></div>
+<div id="form-register" style="display:none">
+<div class="form-group"><label class="form-label">الاسم الكامل</label><input type="text" class="form-input" id="reg-nom" placeholder="مثلا: سي محمد"/></div>
+<div class="form-group"><label class="form-label">رقم الهاتف</label><input type="tel" class="form-input" id="reg-tel" placeholder="06XXXXXXXX"/></div>
+<div class="form-group"><label class="form-label">المنطقة</label>
+<select class="form-select" id="reg-region"><option value="">اختار المنطقة</option><option>سوس ماسة</option><option>مراكش آسفي</option><option>الدار البيضاء سطات</option><option>الرباط سلا القنيطرة</option><option>فاس مكناس</option><option>طنجة تطوان الحسيمة</option><option>الشرق</option><option>درعة تافيلالت</option><option>بني ملال خنيفرة</option></select></div>
+<div class="form-group"><label class="form-label">أنا</label>
+<select class="form-select" id="reg-type"><option value="vendeur">بياع (فلاح)</option><option value="acheteur">مشتري</option><option value="les_deux">بياع ومشتري</option></select></div>
+<button class="btn-primary" onclick="register()">✅ إنشاء الحساب</button>
+</div>
+</div></div>
+</div>
+
+<div class="screen" id="screen-home">
+<div class="home-header"><div class="home-greeting">صباح الخير،</div><div class="home-name" id="home-name">سي فلاح 👋</div><div class="search-bar" onclick="showToast('البحث — قريبا!')"><span>🔍</span><span class="search-bar-text">دور على منتج، منطقة...</span></div></div>
+<div class="filters-wrap"><div class="filters">
+<div class="filter-chip active" onclick="filterAnn(this,'')">الكل</div>
+<div class="filter-chip" onclick="filterAnn(this,'legumes')">🥕 خضر</div>
+<div class="filter-chip" onclick="filterAnn(this,'fruits')">🍊 فواكه</div>
+<div class="filter-chip" onclick="filterAnn(this,'region')">📍 منطقتي</div>
+</div></div>
+<div class="section-title">إعلانات اليوم</div>
+<div class="annonces-grid" id="annonces-grid"><div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
+<button class="fab" onclick="goTo('publish')">＋</button>
+</div>
+
+<div class="screen" id="screen-publish">
+<div class="pub-header"><button class="pub-back" onclick="goTo('home')">←</button><div class="pub-title">نشر إعلان جديد</div></div>
+<div class="pub-body">
+<div class="photo-zone" onclick="document.getElementById('photo-input').click()">
+<input type="file" id="photo-input" accept="image/*" onchange="previewPhoto(event)"/>
+<img id="photo-preview"/>
+<div id="photo-prompt"><div style="font-size:2.5rem;margin-bottom:8px">📸</div><div style="font-size:.85rem;color:var(--gris)"><strong style="color:var(--vert);display:block;margin-bottom:3px">صور المنتج ديالك</strong>صورة واضحة تجلب المشترين</div></div>
+</div>
+<div class="form-group"><label class="form-label">نوع المنتج</label>
+<div class="produits-grid">
+<button class="produit-btn" onclick="selectProduit(this,'الطماطم','legumes')"><span>🍅</span>الطماطم</button>
+<button class="produit-btn" onclick="selectProduit(this,'الفلفلة','legumes')"><span>🫑</span>الفلفلة</button>
+<button class="produit-btn" onclick="selectProduit(this,'الخيار','legumes')"><span>🥒</span>الخيار</button>
+<button class="produit-btn" onclick="selectProduit(this,'البصلة','legumes')"><span>🧅</span>البصلة</button>
+<button class="produit-btn" onclick="selectProduit(this,'البطاطا','legumes')"><span>🥔</span>البطاطا</button>
+<button class="produit-btn" onclick="selectProduit(this,'الجزر','legumes')"><span>🥕</span>الجزر</button>
+<button class="produit-btn" onclick="selectProduit(this,'الثوم','legumes')"><span>🧄</span>الثوم</button>
+<button class="produit-btn" onclick="selectProduit(this,'الكوسة','legumes')"><span>🥬</span>الكوسة</button>
+<button class="produit-btn" onclick="selectProduit(this,'الباذنجان','legumes')"><span>🍆</span>الباذنجان</button>
+<button class="produit-btn" onclick="selectProduit(this,'الملفوف','legumes')"><span>🥦</span>الملفوف</button>
+<button class="produit-btn" onclick="selectProduit(this,'الخس','legumes')"><span>🥗</span>الخس</button>
+<button class="produit-btn" onclick="selectProduit(this,'الفاصوليا','legumes')"><span>🫘</span>الفاصوليا</button>
+<button class="produit-btn" onclick="selectProduit(this,'الحمص','legumes')"><span>🟡</span>الحمص</button>
+<button class="produit-btn" onclick="selectProduit(this,'العدس','legumes')"><span>🟤</span>العدس</button>
+<button class="produit-btn" onclick="selectProduit(this,'الفول','legumes')"><span>🫘</span>الفول</button>
+<button class="produit-btn" onclick="selectProduit(this,'الشمندر','legumes')"><span>🔴</span>الشمندر</button>
+<button class="produit-btn" onclick="selectProduit(this,'الكرفس','legumes')"><span>🌿</span>الكرفس</button>
+<button class="produit-btn" onclick="selectProduit(this,'اللفت','legumes')"><span>🟣</span>اللفت</button>
+<button class="produit-btn" onclick="selectProduit(this,'البرتقال','fruits')"><span>🍊</span>البرتقال</button>
+<button class="produit-btn" onclick="selectProduit(this,'الليمون','fruits')"><span>🍋</span>الليمون</button>
+<button class="produit-btn" onclick="selectProduit(this,'البطيخ','fruits')"><span>🍉</span>البطيخ</button>
+<button class="produit-btn" onclick="selectProduit(this,'التفاح','fruits')"><span>🍎</span>التفاح</button>
+<button class="produit-btn" onclick="selectProduit(this,'العنب','fruits')"><span>🍇</span>العنب</button>
+<button class="produit-btn" onclick="selectProduit(this,'التين','fruits')"><span>🫐</span>التين</button>
+<button class="produit-btn" onclick="selectProduit(this,'الكليمنتين','fruits')"><span>🍊</span>الكليمنتين</button>
+<button class="produit-btn" onclick="selectProduit(this,'الرمان','fruits')"><span>🍎</span>الرمان</button>
+<button class="produit-btn" onclick="selectProduit(this,'المشماش','fruits')"><span>🍑</span>المشماش</button>
+<button class="produit-btn" onclick="selectProduit(this,'الكرز','fruits')"><span>🍒</span>الكرز</button>
+<button class="produit-btn" onclick="selectProduit(this,'الخوخ','fruits')"><span>🍑</span>الخوخ</button>
+<button class="produit-btn" onclick="selectProduit(this,'الفراولة','fruits')"><span>🍓</span>الفراولة</button>
+<button class="produit-btn" onclick="selectProduit(this,'الموز','fruits')"><span>🍌</span>الموز</button>
+<button class="produit-btn" onclick="selectProduit(this,'الأفوكا','fruits')"><span>🥑</span>الأفوكا</button>
+<button class="produit-btn" onclick="selectProduit(this,'التمر','fruits')"><span>🌴</span>التمر</button>
+<button class="produit-btn" onclick="selectProduit(this,'الزيتون','fruits')"><span>🫒</span>الزيتون</button>
+<button class="produit-btn" onclick="selectProduit(this,'الدلاح','fruits')"><span>🍈</span>الدلاح</button>
+<button class="produit-btn" style="background:#f0f9f0;border-color:var(--vert3)" onclick="selectAutre(this)"><span>✏️</span>منتج آخر</button>
+</div>
+<div id="autre-zone" style="display:none;margin-top:10px">
+<input type="text" class="form-input" id="autre-nom" placeholder="اكتب اسم المنتج..." style="margin-bottom:8px" oninput="updateAutre()"/>
+<div style="display:flex;gap:8px">
+<button class="produit-btn" id="type-leg" onclick="setType('legumes',this)" style="flex:1"><span>🥕</span>خضر</button>
+<button class="produit-btn" id="type-frt" onclick="setType('fruits',this)" style="flex:1"><span>🍊</span>فواكه</button>
+</div>
+</div>
+</div>
+<div class="input-row">
+<div class="form-group"><label class="form-label">الكمية</label><input type="number" class="form-input" id="pub-qte" placeholder="50"/></div>
+<div class="form-group"><label class="form-label">الوحدة</label><select class="form-select" id="pub-unite"><option value="kg">كغ</option><option value="qintar">قنطار</option><option value="caisse">كرطونة</option><option value="lot">لوط</option></select></div>
+</div>
+<div class="input-row">
+<div class="form-group"><label class="form-label">السعر (د.م)</label><input type="number" class="form-input" id="pub-prix" placeholder="3.50"/></div>
+<div class="form-group"><label class="form-label">المدينة</label><input type="text" class="form-input" id="pub-ville" placeholder="تارودانت"/></div>
+</div>
+<div class="form-group"><label class="form-label">وصف (اختياري)</label><input type="text" class="form-input" id="pub-desc" placeholder="جودة عالية، طازجة..."/></div>
+<button class="btn-primary btn-gold" onclick="publierAnnonce()">📢 نشر الإعلان الآن</button>
 </div>
 </div>
 
-<!-- BOTTOM NAV -->
+<div class="screen" id="screen-profil">
+<div class="profil-header"><div class="profil-avatar">👨‍🌾</div><div class="profil-nom" id="profil-nom">—</div><div class="profil-region" id="profil-region">—</div>
+<div class="profil-stats"><div class="profil-stat"><div class="profil-stat-v" id="profil-anns">0</div><div class="profil-stat-l">إعلانات</div></div><div class="profil-stat"><div class="profil-stat-v" id="profil-note">—</div><div class="profil-stat-l">التقييم</div></div><div class="profil-stat"><div class="profil-stat-v" id="profil-trans">0</div><div class="profil-stat-l">مبيعات</div></div></div></div>
+<div class="profil-menu">
+<div class="profil-item" onclick="showToast('قريبا!')"><div class="profil-item-left"><span>📋</span><span class="profil-item-label">إعلاناتي</span></div><span>›</span></div>
+<div class="profil-item" onclick="logout()"><div class="profil-item-left"><span>🚪</span><span class="profil-item-label" style="color:var(--rouge)">خروج</span></div><span>›</span></div>
+</div>
+</div>
+
 <div class="bnav" id="bnav" style="display:none">
-  <div class="nav-item active" id="ni-home" onclick="goTo('home')"><div class="nav-icon">🏠</div><div class="nav-label">الرئيسية</div></div>
-  <div class="nav-item" id="ni-publish" onclick="goTo('publish')"><div class="nav-icon">➕</div><div class="nav-label">نشر</div></div>
-  <div class="nav-item" id="ni-messages" onclick="showToast('قريبا!')"><div class="nav-icon">💬</div><div class="nav-label">رسائل</div></div>
-  <div class="nav-item" id="ni-profil" onclick="goTo('profil')"><div class="nav-icon">👤</div><div class="nav-label">حسابي</div></div>
+<div class="nav-item active" id="ni-home" onclick="goTo('home')"><div class="nav-icon">🏠</div><div class="nav-label">الرئيسية</div></div>
+<div class="nav-item" id="ni-publish" onclick="goTo('publish')"><div class="nav-icon">➕</div><div class="nav-label">نشر</div></div>
+<div class="nav-item" onclick="showToast('قريبا!')"><div class="nav-icon">💬</div><div class="nav-label">رسائل</div></div>
+<div class="nav-item" id="ni-profil" onclick="goTo('profil')"><div class="nav-icon">👤</div><div class="nav-label">حسابي</div></div>
 </div><script>
 const SURL='https://ryzhqtcukeypsqqbxrqp.supabase.co';
 const SKEY='sb_publishable__s1wfkhIKodWAGThY8r-pw_Tg6NioE1';
 const sb=supabase.createClient(SURL,SKEY);
-
-let currentUser=null;
-let selectedProduit='';
-let selectedCategorie='';
-
-const EMOJIS={
-  'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','البصلة':'🧅',
-  'البطاطا':'🥔','الجزر':'🥕','البرتقال':'🍊','الليمون':'🍋',
-  'البطيخ':'🍉','التفاح':'🍎','العنب':'🍇','التين':'🫐'
-};
-
+let currentUser=null,selectedProduit='',selectedCategorie='';
+const EMOJIS={'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','البصلة':'🧅','البطاطا':'🥔','الجزر':'🥕','الثوم':'🧄','الكوسة':'🥬','الباذنجان':'🍆','الملفوف':'🥦','الخس':'🥗','الفاصوليا':'🫘','الحمص':'🟡','العدس':'🟤','الفول':'🫘','الشمندر':'🔴','الكرفس':'🌿','اللفت':'🟣','البرتقال':'🍊','الليمون':'🍋','البطيخ':'🍉','التفاح':'🍎','العنب':'🍇','التين':'🫐','الكليمنتين':'🍊','الرمان':'🍎','المشماش':'🍑','الكرز':'🍒','الخوخ':'🍑','الفراولة':'🍓','الموز':'🍌','الأفوكا':'🥑','التمر':'🌴','الزيتون':'🫒','الدلاح':'🍈'};
 window.onload=()=>{
   setTimeout(()=>document.getElementById('splash').classList.add('out'),2400);
   const saved=localStorage.getItem('fellah_user');
   if(saved){currentUser=JSON.parse(saved);showApp();}
 };
-
-function showToast(msg,duration=3000){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('on');
-  setTimeout(()=>t.classList.remove('on'),duration);
-}
-
+function showToast(msg,duration=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),duration);}
 function goTo(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  const sc=document.getElementById('screen-'+id);
-  if(sc)sc.classList.add('active');
-  const ni=document.getElementById('ni-'+id);
-  if(ni)ni.classList.add('active');
+  const sc=document.getElementById('screen-'+id);if(sc)sc.classList.add('active');
+  const ni=document.getElementById('ni-'+id);if(ni)ni.classList.add('active');
   window.scrollTo(0,0);
   if(id==='home')loadAnnonces();
   if(id==='profil')loadProfil();
 }
-
 function showApp(){
   document.getElementById('bnav').style.display='flex';
   goTo('home');
   if(currentUser)document.getElementById('home-name').textContent=currentUser.nom+' 👋';
 }
-
 function switchAuth(type){
   document.querySelectorAll('.auth-tab-btn').forEach(b=>b.classList.remove('active'));
   event.target.classList.add('active');
@@ -381,26 +257,18 @@ function switchAuth(type){
   document.getElementById('form-register').style.display=type==='register'?'block':'none';
   document.getElementById('auth-error').classList.remove('show');
 }
-
-function showError(msg){
-  const el=document.getElementById('auth-error');
-  el.textContent=msg;el.classList.add('show');
-}
-
+function showError(msg){const el=document.getElementById('auth-error');el.textContent=msg;el.classList.add('show');}
 async function login(){
   const tel=document.getElementById('login-tel').value.trim();
   const nom=document.getElementById('login-nom').value.trim();
   if(!tel||!nom){showError('دخل رقم الهاتف والاسم');return;}
   const btn=event.target;btn.disabled=true;btn.textContent='...';
-  const{data,error}=await sb.from('utilisateurs')
-    .select('*').eq('telephone',tel).eq('nom',nom).single();
+  const{data,error}=await sb.from('utilisateurs').select('*').eq('telephone',tel).eq('nom',nom).single();
   btn.disabled=false;btn.textContent='🔑 دخول';
   if(error||!data){showError('ما لقيناكش — تحقق من الاسم ورقم الهاتف');return;}
-  currentUser=data;
-  localStorage.setItem('fellah_user',JSON.stringify(data));
+  currentUser=data;localStorage.setItem('fellah_user',JSON.stringify(data));
   showApp();showToast('مرحبا '+data.nom+' 👋');
 }
-
 async function register(){
   const nom=document.getElementById('reg-nom').value.trim();
   const tel=document.getElementById('reg-tel').value.trim();
@@ -411,29 +279,23 @@ async function register(){
   const btn=event.target;btn.disabled=true;btn.textContent='...';
   const{data:ex}=await sb.from('utilisateurs').select('id').eq('telephone',tel).maybeSingle();
   if(ex){btn.disabled=false;btn.textContent='✅ إنشاء الحساب';showError('هاد الرقم مسجل — استعمل دخول');return;}
-  const{data,error}=await sb.from('utilisateurs')
-    .insert([{nom,telephone:tel,region,type_compte:type}]).select().single();
+  const{data,error}=await sb.from('utilisateurs').insert([{nom,telephone:tel,region,type_compte:type}]).select().single();
   btn.disabled=false;btn.textContent='✅ إنشاء الحساب';
   if(error){showError('مشكلة: '+error.message);return;}
-  currentUser=data;
-  localStorage.setItem('fellah_user',JSON.stringify(data));
+  currentUser=data;localStorage.setItem('fellah_user',JSON.stringify(data));
   showApp();showToast('مرحبا بك '+nom+' 🎉');
 }
-
 function logout(){
   currentUser=null;localStorage.removeItem('fellah_user');
   document.getElementById('bnav').style.display='none';
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-auth').classList.add('active');
   showToast('تم الخروج');
-}async function loadAnnonces(filter=''){
+}
+async function loadAnnonces(filter=''){
   const grid=document.getElementById('annonces-grid');
   grid.innerHTML='<div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
-  let query=sb.from('annonces')
-    .select('*,utilisateurs(nom,region)')
-    .eq('statut','active')
-    .order('created_at',{ascending:false})
-    .limit(20);
+  let query=sb.from('annonces').select('*,utilisateurs(nom,region)').eq('statut','active').order('created_at',{ascending:false}).limit(20);
   if(filter==='legumes')query=query.eq('categorie','legumes');
   if(filter==='fruits')query=query.eq('categorie','fruits');
   if(filter==='region'&&currentUser)query=query.eq('region',currentUser.region);
@@ -442,45 +304,35 @@ function logout(){
     grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:50px 20px"><div style="font-size:3.5rem;margin-bottom:14px">🌿</div><div style="font-size:1.1rem;font-weight:800;margin-bottom:6px">ما كاين إعلانات بعد</div><div style="font-size:.85rem;color:var(--gris)">كن أول من ينشر إعلان!</div></div>';
     return;
   }
-  grid.innerHTML=data.map(a=>`
-    <div class="ann-card">
-      ${a.photo_url
-        ?`<img class="ann-photo" src="${a.photo_url}" loading="lazy"/>`
-        :`<div class="ann-photo-placeholder">${EMOJIS[a.produit]||'🌿'}</div>`}
-      <div class="ann-body">
-        <div class="ann-produit">${EMOJIS[a.produit]||''} ${a.produit}</div>
-        <div class="ann-region">📍 ${a.ville}</div>
-        <div class="ann-footer">
-          <div><span class="ann-prix">${a.prix}</span><span class="ann-unite"> د.م/${a.unite}</span></div>
-          <div class="ann-qty">${a.quantite} ${a.unite}</div>
-        </div>
-      </div>
-    </div>`).join('');
+  grid.innerHTML=data.map(a=>`<div class="ann-card">${a.photo_url?`<img class="ann-photo" src="${a.photo_url}" loading="lazy"/>`:`<div class="ann-photo-placeholder">${EMOJIS[a.produit]||'🌿'}</div>`}<div class="ann-body"><div class="ann-produit">${EMOJIS[a.produit]||'🌿'} ${a.produit}</div><div class="ann-region">📍 ${a.ville}</div><div class="ann-footer"><div><span class="ann-prix">${a.prix}</span><span class="ann-unite"> د.م/${a.unite}</span></div><div class="ann-qty">${a.quantite} ${a.unite}</div></div></div></div>`).join('');
 }
-
-function filterAnn(el,type){
-  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');loadAnnonces(type);
-}
-
+function filterAnn(el,type){document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');loadAnnonces(type);}
 function previewPhoto(e){
   const f=e.target.files[0];if(!f)return;
   const r=new FileReader();
-  r.onload=ev=>{
-    document.getElementById('photo-preview').src=ev.target.result;
-    document.getElementById('photo-preview').style.display='block';
-    document.getElementById('photo-prompt').style.display='none';
-  };r.readAsDataURL(f);
+  r.onload=ev=>{document.getElementById('photo-preview').src=ev.target.result;document.getElementById('photo-preview').style.display='block';document.getElementById('photo-prompt').style.display='none';};
+  r.readAsDataURL(f);
 }
-
 function selectProduit(el,nom,categorie){
   document.querySelectorAll('.produit-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  selectedProduit=nom;selectedCategorie=categorie;
+  el.classList.add('active');selectedProduit=nom;selectedCategorie=categorie;
+  document.getElementById('autre-zone').style.display='none';
 }
-
+function selectAutre(el){
+  document.querySelectorAll('.produit-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');selectedProduit='';selectedCategorie='';
+  document.getElementById('autre-zone').style.display='block';
+  document.getElementById('autre-nom').focus();
+}
+function updateAutre(){const nom=document.getElementById('autre-nom').value.trim();if(nom)selectedProduit=nom;}
+function setType(cat,el){
+  document.getElementById('type-leg').classList.remove('active');
+  document.getElementById('type-frt').classList.remove('active');
+  el.classList.add('active');selectedCategorie=cat;
+}
 async function publierAnnonce(){
   if(!selectedProduit){showToast('⚠️ اختار المنتج');return;}
+  if(!selectedCategorie){showToast('⚠️ اختار خضر أو فواكه');return;}
   const qte=document.getElementById('pub-qte').value;
   const prix=document.getElementById('pub-prix').value;
   const ville=document.getElementById('pub-ville').value.trim();
@@ -491,25 +343,10 @@ async function publierAnnonce(){
   if(photoInput.files[0]){
     const file=photoInput.files[0];
     const fileName=currentUser.id+'_'+Date.now()+'.jpg';
-    const{data:upData,error:upErr}=await sb.storage
-      .from('photos-annonces').upload(fileName,file,{cacheControl:'3600',upsert:false});
-    if(!upErr&&upData){
-      const{data:urlData}=sb.storage.from('photos-annonces').getPublicUrl(fileName);
-      photoUrl=urlData?.publicUrl;
-    }
+    const{data:upData,error:upErr}=await sb.storage.from('photos-annonces').upload(fileName,file,{cacheControl:'3600',upsert:false});
+    if(!upErr&&upData){const{data:urlData}=sb.storage.from('photos-annonces').getPublicUrl(fileName);photoUrl=urlData?.publicUrl;}
   }
-  const{error}=await sb.from('annonces').insert([{
-    vendeur_id:currentUser.id,
-    produit:selectedProduit,
-    categorie:selectedCategorie,
-    quantite:parseFloat(qte),
-    unite:document.getElementById('pub-unite').value,
-    prix:parseFloat(prix),
-    ville,
-    region:currentUser.region,
-    description:document.getElementById('pub-desc').value,
-    photo_url:photoUrl,
-  }]);
+  const{error}=await sb.from('annonces').insert([{vendeur_id:currentUser.id,produit:selectedProduit,categorie:selectedCategorie,quantite:parseFloat(qte),unite:document.getElementById('pub-unite').value,prix:parseFloat(prix),ville,region:currentUser.region,description:document.getElementById('pub-desc').value,photo_url:photoUrl}]);
   btn.disabled=false;btn.textContent='📢 نشر الإعلان الآن';
   if(error){showToast('❌ مشكلة: '+error.message);return;}
   showToast('✅ الإعلان نُشر بنجاح!');
@@ -518,9 +355,9 @@ async function publierAnnonce(){
   ['pub-qte','pub-prix','pub-ville','pub-desc'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('photo-preview').style.display='none';
   document.getElementById('photo-prompt').style.display='block';
+  document.getElementById('autre-zone').style.display='none';
   goTo('home');
 }
-
 async function loadProfil(){
   if(!currentUser)return;
   document.getElementById('profil-nom').textContent=currentUser.nom;
@@ -529,6 +366,7 @@ async function loadProfil(){
   document.getElementById('profil-anns').textContent=anns?.length||0;
   document.getElementById('profil-note').textContent='—';
   document.getElementById('profil-trans').textContent=currentUser.nb_transactions||0;
-}</script>
+}
+</script>
 </body>
 </html>
