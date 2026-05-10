@@ -8,7 +8,7 @@
 <script>
 const sb=supabase.createClient(
   'https://ryzhqtcukeypsqqbxrqp.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjeWNxcHhqeGFndmJwamt4Z2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNTU5NDYsImV4cCI6MjA5MzkzMTk0Nn0.c3EDpAqMuAlOVD0cdDIIClW_iwQZhpueR5-xGmWM_jc'
+  'sb_publishable__s1wfkhIKodWAGThY8r-pw_Tg6NioE1'
 );
 sb.from('utilisateurs').select('nom').limit(3).then(({data,error})=>{
   document.getElementById('res').innerHTML=
