@@ -274,12 +274,18 @@ let currentUser=null,selectedProduit='',selectedCategorie='',_anns=[];
 const EMOJIS={'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','البصلة':'🧅','البطاطا':'🥔','الجزر':'🥕','الثوم':'🧄','الكوسة':'🥬','الباذنجان':'🍆','الملفوف':'🥦','الخس':'🥗','الفاصوليا':'🫘','الحمص':'🟡','العدس':'🟤','الفول':'🫘','الشمندر':'🔴','الكرفس':'🌿','اللفت':'🟣','الفلفل الحار':'🌶️','الذرة':'🌽','البرتقال':'🍊','الليمون':'🍋','البطيخ':'🍉','التفاح':'🍎','العنب':'🍇','التين':'🫐','الكليمنتين':'🍊','الرمان':'🍎','المشماش':'🍑','الكرز':'🍒','الخوخ':'🍑','الفراولة':'🍓','الموز':'🍌','الأفوكا':'🥑','التمر':'🌴','الزيتون':'🫒','الدلاح':'🍈','حليب':'🥛','دجاج':'🐓','بيض':'🥚','أغنام':'🐑','بقر':'🐄','ماعز':'🐐','سمك':'🐟','عسل':'🍯'};
 const CAT_LABELS={'legumes':'🥕 خضر','fruits':'🍊 فواكه','agricole':'🌾 فلاحية','animal':'🐄 حيوانية'};
 
-window.onload=()=>{
-  document.getElementById('splash').classList.add('out');
-  const saved=localStorage.getItem('fellah_user');
-  if(saved){currentUser=JSON.parse(saved);showApp();}
-  else{document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-auth').classList.add('active');}
+window.onload=async()=>{
+  try{
+    const splash=document.getElementById('splash');
+    if(splash)splash.classList.add('out');
+    document.getElementById('screen-auth').classList.add('active');
+    const saved=localStorage.getItem('fellah_user');
+    if(saved){currentUser=JSON.parse(saved);showApp();}
+  }catch(e){
+    document.getElementById('screen-auth').classList.add('active');
+  }
 };
+
 
 function showToast(msg,duration=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),duration);}
 
