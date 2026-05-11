@@ -622,7 +622,7 @@ async function publier(){
     var rb=await sb.from('demandes').insert([{acheteur_id:CU.id,produit:SP,categorie:SC,quantite:parseFloat(qte),unite:document.getElementById('pub-unite').value,prix_max:parseFloat(prix),ville:ville,region:CU.region,description:document.getElementById('pub-desc').value}]);
     btn.disabled=false;btn.textContent='🛒 نشر طلب الشراء';
     if(rb.error){showToast('❌ '+rb.error.message);return;}
-    showToast('✅ طلب الشراء نُشر بنجاح!');goTo('home');return;
+    showToast('✅ طلب الشراء نُشر بنجاح!');goTo('home');setTimeout(function(){switchHomeTab('demandes');},100);return;
   }
   var photoUrl=null;
   var pi=document.getElementById('photo-input');
