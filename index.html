@@ -511,3 +511,563 @@ async function loadProfil(){
 </script>
 </body>
 </html>
+<div id="splash"><div class="sp-icon">🌾</div><div class="sp-title">سوق الفلاح</div><div class="sp-sub">كل المنتجات الفلاحية في يدك</div><div class="sp-bar"><div class="sp-fill"></div></div></div>
+<div class="toast" id="toast"></div>
+
+<!-- AUTH -->
+<div class="screen active" id="screen-auth">
+<div class="auth-wrap"><div class="auth-card">
+<div class="auth-logo"><span class="auth-logo-icon">🌾</span><div class="auth-logo-title">سوق الفلاح</div><div class="auth-logo-sub">كل المنتجات الفلاحية في يدك</div></div>
+<div class="auth-tab"><button class="auth-tab-btn active" onclick="switchAuth('login')">دخول</button><button class="auth-tab-btn" onclick="switchAuth('register')">تسجيل</button></div>
+<div class="auth-error" id="auth-error"></div>
+<div id="form-login">
+<div class="form-group"><label class="form-label">رقم الهاتف</label><input type="tel" class="form-input" id="login-tel" placeholder="06XXXXXXXX"/></div>
+<div class="form-group"><label class="form-label">الاسم</label><input type="text" class="form-input" id="login-nom" placeholder="اسمك الكامل"/></div>
+<button class="btn-primary" onclick="login()">🔑 دخول</button>
+</div>
+<div id="form-register" style="display:none">
+<div class="form-group"><label class="form-label">الاسم الكامل</label><input type="text" class="form-input" id="reg-nom" placeholder="مثلا: سي محمد"/></div>
+<div class="form-group"><label class="form-label">رقم الهاتف</label><input type="tel" class="form-input" id="reg-tel" placeholder="06XXXXXXXX"/></div>
+<div class="form-group"><label class="form-label">المنطقة</label>
+<select class="form-select" id="reg-region"><option value="">اختار المنطقة</option><option>سوس ماسة</option><option>مراكش آسفي</option><option>الدار البيضاء سطات</option><option>الرباط سلا القنيطرة</option><option>فاس مكناس</option><option>طنجة تطوان الحسيمة</option><option>الشرق</option><option>درعة تافيلالت</option><option>بني ملال خنيفرة</option></select></div>
+<div class="form-group"><label class="form-label">أنا</label>
+<select class="form-select" id="reg-type"><option value="vendeur">بياع (فلاح)</option><option value="acheteur">مشتري</option><option value="les_deux">بياع ومشتري</option></select></div>
+<button class="btn-primary" onclick="register()">✅ إنشاء الحساب</button>
+</div></div></div></div>
+
+<!-- HOME -->
+<div class="screen" id="screen-home">
+<div class="home-header">
+<div class="home-greeting">صباح الخير،</div>
+<div class="home-name" id="home-name">سي فلاح 👋</div>
+<div class="search-bar" onclick="showToast('البحث — قريبا!')"><span>🔍</span><span class="search-bar-text">دور على منتج، منطقة...</span></div>
+<div class="home-tabs">
+<button class="home-tab active" id="tab-offres" onclick="switchHomeTab('offres')">📢 عروض البيع</button>
+<button class="home-tab" id="tab-demandes" onclick="switchHomeTab('demandes')">🛒 طلبات الشراء</button>
+</div>
+</div>
+<div class="filters-wrap" id="filters-offres">
+<div class="filters">
+<div class="filter-chip active" onclick="filterAnn(this,'')">الكل</div>
+<div class="filter-chip" onclick="filterAnn(this,'legumes')">🥕 خضر</div>
+<div class="filter-chip" onclick="filterAnn(this,'fruits')">🍊 فواكه</div>
+<div class="filter-chip" onclick="filterAnn(this,'agricole')">🌾 فلاحية</div>
+<div class="filter-chip" onclick="filterAnn(this,'animal')">🐄 حيوانية</div>
+<div class="filter-chip" onclick="filterAnn(this,'region')">📍 منطقتي</div>
+</div></div>
+<div class="filters-wrap" id="filters-demandes" style="display:none">
+<div class="filters">
+<div class="filter-chip active" onclick="filterDemandes(this,'')">الكل</div>
+<div class="filter-chip" onclick="filterDemandes(this,'legumes')">🥕 خضر</div>
+<div class="filter-chip" onclick="filterDemandes(this,'fruits')">🍊 فواكه</div>
+<div class="filter-chip" onclick="filterDemandes(this,'agricole')">🌾 فلاحية</div>
+<div class="filter-chip" onclick="filterDemandes(this,'animal')">🐄 حيوانية</div>
+</div></div>
+<div class="section-title" id="section-label">إعلانات اليوم</div>
+<div class="annonces-grid" id="annonces-grid"><div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
+<button class="fab" onclick="goTo('publish')">＋</button>
+</div>
+
+<!-- PUBLISH -->
+<div class="screen" id="screen-publish">
+<div class="pub-header"><button class="pub-back" onclick="goTo('home')">←</button><div class="pub-title" id="pub-screen-title">نشر إعلان</div></div>
+<div class="pub-body">
+<div class="pub-type-tabs">
+<button class="pub-type-btn active-sell" id="ptype-sell" onclick="setPubType('sell')">📢 عرض بيع</button>
+<button class="pub-type-btn" id="ptype-buy" onclick="setPubType('buy')">🛒 طلب شراء</button>
+</div>
+<div id="pub-sell-section">
+<div class="photo-zone" onclick="document.getElementById('photo-input').click()">
+<input type="file" id="photo-input" accept="image/*" onchange="previewPhoto(event)"/>
+<img id="photo-preview"/>
+<div id="photo-prompt"><div style="font-size:2.5rem;margin-bottom:8px">📸</div><div style="font-size:.85rem;color:var(--gris)"><strong style="color:var(--vert);display:block;margin-bottom:3px">صور المنتج ديالك</strong>صورة واضحة تجلب المشترين</div></div>
+</div></div>
+<div class="form-group"><label class="form-label">1 — اختار نوع المنتج</label></div>
+<div class="cat-grid">
+<button class="cat-btn cat-legumes" onclick="selectCategorie('legumes',this)"><span>🥕</span>خضر</button>
+<button class="cat-btn cat-fruits" onclick="selectCategorie('fruits',this)"><span>🍊</span>فواكه</button>
+<button class="cat-btn cat-agricole" onclick="selectCategorie('agricole',this)"><span>🌾</span>منتجات فلاحية</button>
+<button class="cat-btn cat-animal" onclick="selectCategorie('animal',this)"><span>🐄</span>منتجات حيوانية</button>
+</div>
+<div id="step-produit" style="display:none">
+<div class="form-group"><label class="form-label">2 — اختار المنتج</label></div>
+<div id="list-legumes" style="display:none"><div class="produits-grid">
+<button class="produit-btn" onclick="selectProduit(this,'الطماطم')"><span>🍅</span>الطماطم</button>
+<button class="produit-btn" onclick="selectProduit(this,'الفلفلة')"><span>🫑</span>الفلفلة</button>
+<button class="produit-btn" onclick="selectProduit(this,'الخيار')"><span>🥒</span>الخيار</button>
+<button class="produit-btn" onclick="selectProduit(this,'البصلة')"><span>🧅</span>البصلة</button>
+<button class="produit-btn" onclick="selectProduit(this,'البطاطا')"><span>🥔</span>البطاطا</button>
+<button class="produit-btn" onclick="selectProduit(this,'الجزر')"><span>🥕</span>الجزر</button>
+<button class="produit-btn" onclick="selectProduit(this,'الثوم')"><span>🧄</span>الثوم</button>
+<button class="produit-btn" onclick="selectProduit(this,'الكوسة')"><span>🥬</span>الكوسة</button>
+<button class="produit-btn" onclick="selectProduit(this,'الباذنجان')"><span>🍆</span>الباذنجان</button>
+<button class="produit-btn" onclick="selectProduit(this,'الملفوف')"><span>🥦</span>الملفوف</button>
+<button class="produit-btn" onclick="selectProduit(this,'الخس')"><span>🥗</span>الخس</button>
+<button class="produit-btn" onclick="selectProduit(this,'الفاصوليا')"><span>🫘</span>الفاصوليا</button>
+<button class="produit-btn" onclick="selectProduit(this,'الحمص')"><span>🟡</span>الحمص</button>
+<button class="produit-btn" onclick="selectProduit(this,'العدس')"><span>🟤</span>العدس</button>
+<button class="produit-btn" onclick="selectProduit(this,'الفول')"><span>🫘</span>الفول</button>
+<button class="produit-btn" onclick="selectProduit(this,'الشمندر')"><span>🔴</span>الشمندر</button>
+<button class="produit-btn" onclick="selectProduit(this,'الكرفس')"><span>🌿</span>الكرفس</button>
+<button class="produit-btn" onclick="selectProduit(this,'اللفت')"><span>🟣</span>اللفت</button>
+<button class="produit-btn" onclick="selectProduit(this,'الفلفل الحار')"><span>🌶️</span>الفلفل الحار</button>
+<button class="produit-btn" onclick="selectProduit(this,'الذرة')"><span>🌽</span>الذرة</button>
+<button class="produit-btn" style="background:#f0f9f0;border-color:var(--vert3)" onclick="selectAutre(this)"><span>✏️</span>آخر</button>
+</div></div>
+<div id="list-fruits" style="display:none"><div class="produits-grid">
+<button class="produit-btn" onclick="selectProduit(this,'البرتقال')"><span>🍊</span>البرتقال</button>
+<button class="produit-btn" onclick="selectProduit(this,'الليمون')"><span>🍋</span>الليمون</button>
+<button class="produit-btn" onclick="selectProduit(this,'البطيخ')"><span>🍉</span>البطيخ</button>
+<button class="produit-btn" onclick="selectProduit(this,'التفاح')"><span>🍎</span>التفاح</button>
+<button class="produit-btn" onclick="selectProduit(this,'العنب')"><span>🍇</span>العنب</button>
+<button class="produit-btn" onclick="selectProduit(this,'التين')"><span>🫐</span>التين</button>
+<button class="produit-btn" onclick="selectProduit(this,'الكليمنتين')"><span>🍊</span>الكليمنتين</button>
+<button class="produit-btn" onclick="selectProduit(this,'الرمان')"><span>🍎</span>الرمان</button>
+<button class="produit-btn" onclick="selectProduit(this,'المشماش')"><span>🍑</span>المشماش</button>
+<button class="produit-btn" onclick="selectProduit(this,'الكرز')"><span>🍒</span>الكرز</button>
+<button class="produit-btn" onclick="selectProduit(this,'الخوخ')"><span>🍑</span>الخوخ</button>
+<button class="produit-btn" onclick="selectProduit(this,'الفراولة')"><span>🍓</span>الفراولة</button>
+<button class="produit-btn" onclick="selectProduit(this,'الموز')"><span>🍌</span>الموز</button>
+<button class="produit-btn" onclick="selectProduit(this,'الأفوكا')"><span>🥑</span>الأفوكا</button>
+<button class="produit-btn" onclick="selectProduit(this,'التمر')"><span>🌴</span>التمر</button>
+<button class="produit-btn" onclick="selectProduit(this,'الزيتون')"><span>🫒</span>الزيتون</button>
+<button class="produit-btn" onclick="selectProduit(this,'الدلاح')"><span>🍈</span>الدلاح</button>
+<button class="produit-btn" style="background:#f0f9f0;border-color:var(--vert3)" onclick="selectAutre(this)"><span>✏️</span>آخر</button>
+</div></div>
+<div id="list-agricole" style="display:none">
+<div style="background:#f3e5f5;border-radius:12px;padding:14px;margin-bottom:12px;font-size:.85rem;color:#6a1b9a;font-weight:600">🌾 أدخل اسم المنتج الفلاحي</div>
+<input type="text" class="form-input" id="agricole-nom" placeholder="مثلا: عسل، زعفران، أركان..." oninput="updateNomLibre()"/>
+</div>
+<div id="list-animal" style="display:none"><div class="produits-grid">
+<button class="produit-btn" onclick="selectProduit(this,'حليب')"><span>🥛</span>حليب</button>
+<button class="produit-btn" onclick="selectProduit(this,'دجاج')"><span>🐓</span>دجاج</button>
+<button class="produit-btn" onclick="selectProduit(this,'بيض')"><span>🥚</span>بيض</button>
+<button class="produit-btn" onclick="selectProduit(this,'أغنام')"><span>🐑</span>أغنام</button>
+<button class="produit-btn" onclick="selectProduit(this,'بقر')"><span>🐄</span>بقر</button>
+<button class="produit-btn" onclick="selectProduit(this,'ماعز')"><span>🐐</span>ماعز</button>
+<button class="produit-btn" onclick="selectProduit(this,'سمك')"><span>🐟</span>سمك</button>
+<button class="produit-btn" onclick="selectProduit(this,'عسل')"><span>🍯</span>عسل</button>
+<button class="produit-btn" style="background:#fce4ec;border-color:#f48fb1" onclick="selectAutre(this)"><span>✏️</span>آخر</button>
+</div></div>
+<div id="autre-zone" style="display:none;margin-top:10px">
+<input type="text" class="form-input" id="autre-nom" placeholder="اكتب اسم المنتج..." oninput="updateAutre()"/>
+</div>
+</div>
+<div id="step-details" style="display:none;margin-top:16px">
+<div class="form-group"><label class="form-label">3 — التفاصيل</label></div>
+<div id="selected-display" style="background:var(--vertp);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-weight:700;color:var(--vert);font-size:.9rem"></div>
+<div class="input-row">
+<div class="form-group"><label class="form-label">الكمية</label><input type="number" class="form-input" id="pub-qte" placeholder="50"/></div>
+<div class="form-group"><label class="form-label">الوحدة</label>
+<select class="form-select" id="pub-unite"><option value="kg">كغ</option><option value="qintar">قنطار</option><option value="caisse">كرطونة</option><option value="lot">لوط</option><option value="litre">لتر</option><option value="unite">وحدة</option></select></div>
+</div>
+<div class="input-row">
+<div class="form-group"><label class="form-label" id="prix-label">السعر (د.م)</label><input type="number" class="form-input" id="pub-prix" placeholder="3.50"/></div>
+<div class="form-group"><label class="form-label">المدينة</label><input type="text" class="form-input" id="pub-ville" placeholder="تارودانت"/></div>
+</div>
+<div class="form-group"><label class="form-label">وصف / ملاحظات</label><input type="text" class="form-input" id="pub-desc" placeholder="جودة عالية، تسليم سريع..."/></div>
+<button class="btn-primary btn-gold" id="pub-submit-btn" onclick="publierAnnonce()">📢 نشر الإعلان الآن</button>
+</div>
+</div></div>
+
+<!-- MESSAGES -->
+<div class="screen" id="screen-messages">
+<div style="background:linear-gradient(135deg,var(--vert),var(--vert2));padding:16px;display:flex;align-items:center;justify-content:space-between">
+<div style="font-family:'Amiri',serif;font-size:1.3rem;color:var(--orc)">💬 الرسائل</div>
+</div>
+<div class="msg-list" id="msg-list">
+<div class="loading"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>
+</div>
+</div>
+
+<!-- PROFIL -->
+<div class="screen" id="screen-profil">
+<div class="profil-header"><div class="profil-avatar">👨‍🌾</div><div class="profil-nom" id="profil-nom">—</div><div class="profil-region" id="profil-region">—</div>
+<div class="profil-stats"><div class="profil-stat"><div class="profil-stat-v" id="profil-anns">0</div><div class="profil-stat-l">إعلانات</div></div><div class="profil-stat"><div class="profil-stat-v" id="profil-note">—</div><div class="profil-stat-l">التقييم</div></div><div class="profil-stat"><div class="profil-stat-v" id="profil-trans">0</div><div class="profil-stat-l">مبيعات</div></div></div></div>
+<div class="profil-menu">
+<div class="profil-item" onclick="showToast('قريبا!')"><div class="profil-item-left"><span>📋</span><span class="profil-item-label">إعلاناتي</span></div><span>›</span></div>
+<div class="profil-item" onclick="showToast('قريبا!')"><div class="profil-item-left"><span>⚙️</span><span class="profil-item-label">الإعدادات</span></div><span>›</span></div>
+<div class="profil-item" onclick="logout()"><div class="profil-item-left"><span>🚪</span><span class="profil-item-label" style="color:var(--rouge)">خروج</span></div><span>›</span></div>
+</div></div>
+
+<!-- BOTTOM NAV -->
+<div class="bnav" id="bnav" style="display:none">
+<div class="nav-item active" id="ni-home" onclick="goTo('home')"><div class="nav-icon">🏠</div><div class="nav-label">الرئيسية</div></div>
+<div class="nav-item" id="ni-publish" onclick="goTo('publish')"><div class="nav-icon">➕</div><div class="nav-label">نشر</div></div>
+<div class="nav-item" id="ni-messages" onclick="goTo('messages')"><div class="nav-icon">💬</div><div class="nav-label">رسائل</div><div class="nav-badge" id="msg-badge" style="display:none">0</div></div>
+<div class="nav-item" id="ni-profil" onclick="goTo('profil')"><div class="nav-icon">👤</div><div class="nav-label">حسابي</div></div>
+</div><script>
+const SURL='https://ryzhqtcukeypsqqbxrqp.supabase.co';
+const SKEY='sb_publishable__s1wfkhIKodWAGThY8r-pw_Tg6NioE1';
+const sb=supabase.createClient(SURL,SKEY);
+let currentUser=null,selectedProduit='',selectedCategorie='',pubType='sell',_anns=[],_demandes=[],homeTab='offres';
+const EMOJIS={'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','البصلة':'🧅','البطاطا':'🥔','الجزر':'🥕','الثوم':'🧄','الكوسة':'🥬','الباذنجان':'🍆','الملفوف':'🥦','الخس':'🥗','الفاصوليا':'🫘','الحمص':'🟡','العدس':'🟤','الفول':'🫘','الشمندر':'🔴','الكرفس':'🌿','اللفت':'🟣','الفلفل الحار':'🌶️','الذرة':'🌽','البرتقال':'🍊','الليمون':'🍋','البطيخ':'🍉','التفاح':'🍎','العنب':'🍇','التين':'🫐','الكليمنتين':'🍊','الرمان':'🍎','المشماش':'🍑','الكرز':'🍒','الخوخ':'🍑','الفراولة':'🍓','الموز':'🍌','الأفوكا':'🥑','التمر':'🌴','الزيتون':'🫒','الدلاح':'🍈','حليب':'🥛','دجاج':'🐓','بيض':'🥚','أغنام':'🐑','بقر':'🐄','ماعز':'🐐','سمك':'🐟','عسل':'🍯'};
+const CAT_LABELS={'legumes':'🥕 خضر','fruits':'🍊 فواكه','agricole':'🌾 فلاحية','animal':'🐄 حيوانية'};
+
+window.onload=()=>{
+  setTimeout(()=>document.getElementById('splash').classList.add('out'),2400);
+  const saved=localStorage.getItem('fellah_user');
+  if(saved){currentUser=JSON.parse(saved);showApp();}
+};
+
+function showToast(msg,duration=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),duration);}
+
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const sc=document.getElementById('screen-'+id);if(sc)sc.classList.add('active');
+  const ni=document.getElementById('ni-'+id);if(ni)ni.classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='home')homeTab==='offres'?loadAnnonces():loadDemandes();
+  if(id==='profil')loadProfil();
+  if(id==='publish')resetPublish();
+  if(id==='messages')loadMessages();
+}
+
+function showApp(){
+  document.getElementById('bnav').style.display='flex';
+  goTo('home');
+  if(currentUser)document.getElementById('home-name').textContent=currentUser.nom+' 👋';
+}
+
+function switchAuth(type){
+  document.querySelectorAll('.auth-tab-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('form-login').style.display=type==='login'?'block':'none';
+  document.getElementById('form-register').style.display=type==='register'?'block':'none';
+  document.getElementById('auth-error').classList.remove('show');
+}
+
+function showError(msg){const el=document.getElementById('auth-error');el.textContent=msg;el.classList.add('show');}
+
+async function login(){
+  const tel=document.getElementById('login-tel').value.trim();
+  const nom=document.getElementById('login-nom').value.trim();
+  if(!tel||!nom){showError('دخل رقم الهاتف والاسم');return;}
+  const btn=event.target;btn.disabled=true;btn.textContent='...';
+  const{data,error}=await sb.from('utilisateurs').select('*').eq('telephone',tel).eq('nom',nom).single();
+  btn.disabled=false;btn.textContent='🔑 دخول';
+  if(error||!data){showError('ما لقيناكش — تحقق من الاسم ورقم الهاتف');return;}
+  currentUser=data;localStorage.setItem('fellah_user',JSON.stringify(data));
+  showApp();showToast('مرحبا '+data.nom+' 👋');
+}
+
+async function register(){
+  const nom=document.getElementById('reg-nom').value.trim();
+  const tel=document.getElementById('reg-tel').value.trim();
+  const region=document.getElementById('reg-region').value;
+  const type=document.getElementById('reg-type').value;
+  if(!nom||!tel||!region){showError('كمل جميع المعلومات');return;}
+  if(tel.length<9){showError('رقم الهاتف غير صحيح');return;}
+  const btn=event.target;btn.disabled=true;btn.textContent='...';
+  const{data:ex}=await sb.from('utilisateurs').select('id').eq('telephone',tel).maybeSingle();
+  if(ex){btn.disabled=false;btn.textContent='✅ إنشاء الحساب';showError('هاد الرقم مسجل — استعمل دخول');return;}
+  const{data,error}=await sb.from('utilisateurs').insert([{nom,telephone:tel,region,type_compte:type}]).select().single();
+  btn.disabled=false;btn.textContent='✅ إنشاء الحساب';
+  if(error){showError('مشكلة: '+error.message);return;}
+  currentUser=data;localStorage.setItem('fellah_user',JSON.stringify(data));
+  showApp();showToast('مرحبا بك '+nom+' 🎉');
+}
+
+function logout(){
+  currentUser=null;localStorage.removeItem('fellah_user');
+  document.getElementById('bnav').style.display='none';
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-auth').classList.add('active');
+}
+
+function switchHomeTab(tab){
+  homeTab=tab;
+  document.getElementById('tab-offres').classList.toggle('active',tab==='offres');
+  document.getElementById('tab-demandes').classList.toggle('active',tab==='demandes');
+  document.getElementById('filters-offres').style.display=tab==='offres'?'block':'none';
+  document.getElementById('filters-demandes').style.display=tab==='demandes'?'block':'none';
+  document.getElementById('section-label').textContent=tab==='offres'?'إعلانات اليوم':'طلبات الشراء';
+  tab==='offres'?loadAnnonces():loadDemandes();
+}
+
+async function loadAnnonces(filter=''){
+  const grid=document.getElementById('annonces-grid');
+  grid.innerHTML='<div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
+  let query=sb.from('annonces').select('*,utilisateurs(nom,region)').eq('statut','active').order('created_at',{ascending:false}).limit(30);
+  if(filter==='legumes')query=query.eq('categorie','legumes');
+  else if(filter==='fruits')query=query.eq('categorie','fruits');
+  else if(filter==='agricole')query=query.eq('categorie','agricole');
+  else if(filter==='animal')query=query.eq('categorie','animal');
+  else if(filter==='region'&&currentUser)query=query.eq('region',currentUser.region);
+  const{data,error}=await query;
+  if(error||!data||data.length===0){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:50px 20px"><div style="font-size:3.5rem;margin-bottom:14px">🌾</div><div style="font-size:1.1rem;font-weight:800;margin-bottom:6px">ما كاين عروض بعد</div><div style="font-size:.85rem;color:var(--gris)">كن أول من ينشر!</div></div>';
+    return;
+  }
+  _anns=data;
+  grid.innerHTML=data.map((a,i)=>`<div class="ann-card" onclick="ouvrirDetail(${i})">
+    ${a.photo_url?`<img class="ann-photo" src="${a.photo_url}" loading="lazy"/>`:`<div class="ann-photo-placeholder">${EMOJIS[a.produit]||'🌾'}</div>`}
+    <div class="ann-body">
+      <div class="ann-produit">${EMOJIS[a.produit]||'🌾'} ${a.produit}</div>
+      <div class="ann-region">📍 ${a.ville}</div>
+      <div class="ann-footer"><div><span class="ann-prix">${a.prix}</span><span class="ann-unite"> د.م/${a.unite}</span></div><div class="ann-qty">${a.quantite} ${a.unite}</div></div>
+    </div></div>`).join('');
+}
+
+async function loadDemandes(filter=''){
+  const grid=document.getElementById('annonces-grid');
+  grid.innerHTML='<div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
+  let query=sb.from('demandes').select('*,utilisateurs(nom,region)').eq('statut','active').order('created_at',{ascending:false}).limit(30);
+  if(filter&&filter!=='')query=query.eq('categorie',filter);
+  const{data,error}=await query;
+  if(error||!data||data.length===0){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:50px 20px"><div style="font-size:3.5rem;margin-bottom:14px">🛒</div><div style="font-size:1.1rem;font-weight:800;margin-bottom:6px">ما كاين طلبات بعد</div><div style="font-size:.85rem;color:var(--gris)">انشر أول طلب شراء!</div></div>';
+    return;
+  }
+  _demandes=data;
+  grid.innerHTML=data.map((d,i)=>`<div class="ann-card" onclick="ouvrirDetailDemande(${i})">
+    <div class="ann-photo-placeholder bleu">🛒</div>
+    <div class="ann-body">
+      <div class="ann-produit">${EMOJIS[d.produit]||'🛒'} ${d.produit}</div>
+      <div class="ann-region">📍 ${d.ville} · ${d.utilisateurs?.nom||''}</div>
+      <div class="ann-footer"><div><span class="ann-prix bleu">${d.prix_max}</span><span class="ann-unite"> د.م/${d.unite}</span></div><div class="ann-qty bleu">${d.quantite} ${d.unite}</div></div>
+    </div></div>`).join('');
+}
+
+function filterAnn(el,type){document.querySelectorAll('#filters-offres .filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');loadAnnonces(type);}
+function filterDemandes(el,type){document.querySelectorAll('#filters-demandes .filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');loadDemandes(type);}
+
+function ouvrirDetail(i){
+  const a=_anns[i];if(!a)return;
+  const em=EMOJIS[a.produit]||'🌾';
+  const old=document.getElementById('detail-screen');if(old)old.remove();
+  const isOwn=currentUser&&a.vendeur_id===currentUser.id;
+  const div=document.createElement('div');div.id='detail-screen';div.className='detail-screen';
+  div.innerHTML=`
+    <div class="detail-header"><button class="detail-back" onclick="fermerDetail()">←</button><div class="detail-title">${em} ${a.produit}</div></div>
+    ${a.photo_url?`<img src="${a.photo_url}" style="width:100%;height:240px;object-fit:cover"/>`:`<div style="height:240px;background:linear-gradient(135deg,var(--vertp),#d4edda);display:flex;align-items:center;justify-content:center;font-size:7rem">${em}</div>`}
+    <div style="padding:16px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px">
+        <div><div style="font-size:1.4rem;font-weight:900">${em} ${a.produit}</div><div style="font-size:.82rem;color:var(--gris);margin-top:3px">📍 ${a.ville} · ${a.region}</div></div>
+        <div style="text-align:left"><div style="font-family:'Amiri',serif;font-size:1.6rem;font-weight:700;color:var(--vert)">${a.prix}</div><div style="font-size:.72rem;color:var(--gris)">د.م/${a.unite}</div></div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+        <div style="background:#f5f7fa;border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">⚖️ ${a.quantite} ${a.unite}</div>
+        <div style="background:#f5f7fa;border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">${CAT_LABELS[a.categorie]||a.categorie}</div>
+        ${a.description?`<div style="background:#f5f7fa;border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">💬 ${a.description}</div>`:''}
+      </div>
+      <div style="background:var(--vertp);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <div style="width:46px;height:46px;border-radius:50%;background:var(--vert);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">👨‍🌾</div>
+        <div><div style="font-weight:800;font-size:.92rem">${a.utilisateurs?.nom||'بياع'}</div><div style="font-size:.75rem;color:var(--gris);margin-top:2px">📍 ${a.utilisateurs?.region||''}</div></div>
+      </div>
+      ${isOwn?`<div style="background:var(--vertp);border-radius:10px;padding:12px;text-align:center;font-size:.85rem;color:var(--vert2);font-weight:700">هذا إعلانك الخاص 🌿</div>`:
+      `<button class="interest-btn" onclick="ouvrirChat('${a.id}','${a.vendeur_id}','${a.utilisateurs?.nom||'بياع'}','${a.produit}','sell')">💬 تواصل مع البياع</button>`}
+    </div>`;
+  document.body.appendChild(div);
+}
+
+function ouvrirDetailDemande(i){
+  const d=_demandes[i];if(!d)return;
+  const em=EMOJIS[d.produit]||'🛒';
+  const old=document.getElementById('detail-screen');if(old)old.remove();
+  const isOwn=currentUser&&d.acheteur_id===currentUser.id;
+  const div=document.createElement('div');div.id='detail-screen';div.className='detail-screen';
+  div.innerHTML=`
+    <div class="detail-header bleu"><button class="detail-back" onclick="fermerDetail()">←</button><div class="detail-title">🛒 ${d.produit}</div></div>
+    <div style="height:200px;background:linear-gradient(135deg,var(--bleup),#bbdefb);display:flex;align-items:center;justify-content:center;font-size:6rem">${em}</div>
+    <div style="padding:16px">
+      <div style="background:var(--bleup);border-radius:10px;padding:8px 14px;margin-bottom:12px;font-size:.82rem;color:var(--bleu);font-weight:700">🛒 طلب شراء — المشتري يبحث عن هذا المنتج</div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px">
+        <div><div style="font-size:1.4rem;font-weight:900">${em} ${d.produit}</div><div style="font-size:.82rem;color:var(--gris);margin-top:3px">📍 ${d.ville} · ${d.region}</div></div>
+        <div style="text-align:left"><div style="font-family:'Amiri',serif;font-size:1.4rem;font-weight:700;color:var(--bleu)">${d.prix_max}</div><div style="font-size:.72rem;color:var(--gris)">سعر أقصى/${d.unite}</div></div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+        <div style="background:var(--bleup);border:1px solid #bbdefb;border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">⚖️ ${d.quantite} ${d.unite}</div>
+        <div style="background:var(--bleup);border:1px solid #bbdefb;border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">${CAT_LABELS[d.categorie]||d.categorie}</div>
+        ${d.description?`<div style="background:var(--bleup);border:1px solid #bbdefb;border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">💬 ${d.description}</div>`:''}
+      </div>
+      <div style="background:var(--bleup);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <div style="width:46px;height:46px;border-radius:50%;background:var(--bleu);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">🛒</div>
+        <div><div style="font-weight:800;font-size:.92rem">${d.utilisateurs?.nom||'مشتري'}</div><div style="font-size:.75rem;color:var(--gris);margin-top:2px">📍 ${d.utilisateurs?.region||''}</div></div>
+      </div>
+      ${isOwn?`<div style="background:var(--bleup);border-radius:10px;padding:12px;text-align:center;font-size:.85rem;color:var(--bleu);font-weight:700">هذا طلبك الخاص 🛒</div>`:
+      `<button class="interest-btn bleu" onclick="ouvrirChat('${d.id}','${d.acheteur_id}','${d.utilisateurs?.nom||'مشتري'}','${d.produit}','buy')">💬 أنا عندي هذا المنتج — تواصل</button>`}
+    </div>`;
+  document.body.appendChild(div);
+}
+
+function fermerDetail(){const d=document.getElementById('detail-screen');if(d)d.remove();}
+
+async function ouvrirChat(annonceId,autreUserId,autreNom,produit,type){
+  fermerDetail();
+  const old=document.getElementById('chat-screen');if(old)old.remove();
+  const isBleu=type==='buy';
+  const div=document.createElement('div');div.id='chat-screen';div.className='chat-screen';
+  div.innerHTML=`
+    <div class="chat-header">
+      <button class="chat-back" onclick="fermerChat()">←</button>
+      <div class="chat-info"><div class="chat-name">${autreNom}</div><div class="chat-produit">${EMOJIS[produit]||'🌾'} ${produit}</div></div>
+    </div>
+    <div class="chat-messages" id="chat-msgs"></div>
+    <div class="chat-input-bar">
+      <button class="chat-send" style="${isBleu?'background:var(--bleu)':''}" onclick="envoyerMessage('${annonceId}','${autreUserId}')">➤</button>
+      <input class="chat-input" id="chat-input" placeholder="اكتب رسالتك..." onkeypress="if(event.key==='Enter')envoyerMessage('${annonceId}','${autreUserId}')"/>
+    </div>`;
+  document.body.appendChild(div);
+  await chargerMessages(annonceId,autreUserId);
+  const msgs=document.getElementById('chat-msgs');if(msgs)msgs.scrollTop=msgs.scrollHeight;
+}
+
+function fermerChat(){const c=document.getElementById('chat-screen');if(c)c.remove();}
+
+async function chargerMessages(annonceId,autreUserId){
+  const{data}=await sb.from('messages').select('*').eq('annonce_id',annonceId).or(`expediteur_id.eq.${currentUser.id},destinataire_id.eq.${currentUser.id}`).order('created_at',{ascending:true});
+  const container=document.getElementById('chat-msgs');if(!container)return;
+  if(!data||data.length===0){container.innerHTML=`<div style="text-align:center;color:var(--gris);font-size:.85rem;padding:20px">ابدأ المحادثة 👋</div>`;return;}
+  container.innerHTML=data.map(m=>{
+    const isSent=m.expediteur_id===currentUser.id;
+    const time=new Date(m.created_at).toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'});
+    return `<div style="display:flex;flex-direction:column;align-items:${isSent?'flex-start':'flex-end'}">
+      <div class="msg-bubble ${isSent?'sent':'received'}">${m.contenu}<div class="msg-time-small ${isSent?'':'received'}">${time}</div></div>
+    </div>`;
+  }).join('');
+}
+
+async function envoyerMessage(annonceId,destinataireId){
+  const input=document.getElementById('chat-input');
+  const contenu=input?.value.trim();if(!contenu)return;
+  input.value='';
+  const{error}=await sb.from('messages').insert([{annonce_id:annonceId,expediteur_id:currentUser.id,destinataire_id:destinataireId,contenu}]);
+  if(error){showToast('مشكلة في الإرسال');return;}
+  await chargerMessages(annonceId,destinataireId);
+  const msgs=document.getElementById('chat-msgs');if(msgs)msgs.scrollTop=msgs.scrollHeight;
+}
+
+async function loadMessages(){
+  const list=document.getElementById('msg-list');
+  list.innerHTML='<div class="loading"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
+  const{data,error}=await sb.from('messages').select('*,expediteur:utilisateurs!messages_expediteur_id_fkey(nom),destinataire:utilisateurs!messages_destinataire_id_fkey(nom)').or(`expediteur_id.eq.${currentUser.id},destinataire_id.eq.${currentUser.id}`).order('created_at',{ascending:false});
+  if(error||!data||data.length===0){list.innerHTML='<div style="text-align:center;padding:50px 20px"><div style="font-size:3.5rem;margin-bottom:14px">💬</div><div style="font-size:1.1rem;font-weight:800;margin-bottom:6px">ما عندكش رسائل بعد</div><div style="font-size:.85rem;color:var(--gris)">تواصل مع بياع أو مشتري</div></div>';return;}
+  const seen=new Set();
+  const unique=data.filter(m=>{const key=m.annonce_id+'_'+(m.expediteur_id===currentUser.id?m.destinataire_id:m.expediteur_id);if(seen.has(key))return false;seen.add(key);return true;});
+  list.innerHTML=unique.map(m=>{
+    const isExp=m.expediteur_id===currentUser.id;
+    const autreNom=isExp?m.destinataire?.nom:m.expediteur?.nom;
+    const time=new Date(m.created_at).toLocaleDateString('ar');
+    const autreId=isExp?m.destinataire_id:m.expediteur_id;
+    return `<div class="msg-conv" onclick="ouvrirChat('${m.annonce_id}','${autreId}','${autreNom||'مجهول'}','رسالة','sell')">
+      <div class="msg-avatar">${(autreNom||'م')[0]}</div>
+      <div class="msg-info"><div class="msg-name">${autreNom||'مجهول'}</div><div class="msg-preview">${isExp?'أنت: ':''} ${m.contenu}</div></div>
+      <div class="msg-time">${time}</div>
+    </div>`;
+  }).join('');
+}
+
+function resetPublish(){
+  selectedProduit='';selectedCategorie='';pubType='sell';
+  document.getElementById('step-produit').style.display='none';
+  document.getElementById('step-details').style.display='none';
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.produit-btn').forEach(b=>b.classList.remove('active'));
+  ['list-legumes','list-fruits','list-agricole','list-animal','autre-zone'].forEach(id=>document.getElementById(id).style.display='none');
+  ['pub-qte','pub-prix','pub-ville','pub-desc','agricole-nom','autre-nom'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('photo-preview').style.display='none';
+  document.getElementById('photo-prompt').style.display='block';
+  document.getElementById('pub-sell-section').style.display='block';
+  document.getElementById('ptype-sell').className='pub-type-btn active-sell';
+  document.getElementById('ptype-buy').className='pub-type-btn';
+  document.getElementById('pub-submit-btn').textContent='📢 نشر الإعلان الآن';
+  document.getElementById('pub-submit-btn').className='btn-primary btn-gold';
+  document.getElementById('prix-label').textContent='السعر (د.م)';
+}
+
+function setPubType(type){
+  pubType=type;
+  document.getElementById('ptype-sell').className='pub-type-btn'+(type==='sell'?' active-sell':'');
+  document.getElementById('ptype-buy').className='pub-type-btn'+(type==='buy'?' active-buy':'');
+  document.getElementById('pub-sell-section').style.display=type==='sell'?'block':'none';
+  document.getElementById('pub-submit-btn').textContent=type==='sell'?'📢 نشر الإعلان الآن':'🛒 نشر طلب الشراء';
+  document.getElementById('pub-submit-btn').className='btn-primary '+(type==='sell'?'btn-gold':'btn-bleu');
+  document.getElementById('prix-label').textContent=type==='sell'?'السعر (د.م)':'السعر الأقصى (د.م)';
+}
+
+function selectCategorie(cat,el){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');selectedCategorie=cat;selectedProduit='';
+  document.getElementById('step-produit').style.display='block';
+  document.getElementById('step-details').style.display='none';
+  ['list-legumes','list-fruits','list-agricole','list-animal','autre-zone'].forEach(id=>document.getElementById(id).style.display='none');
+  document.querySelectorAll('.produit-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('list-'+cat).style.display='block';
+}
+
+function selectProduit(el,nom){
+  document.querySelectorAll('.produit-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');selectedProduit=nom;
+  document.getElementById('autre-zone').style.display='none';
+  document.getElementById('step-details').style.display='block';
+  document.getElementById('selected-display').textContent=(EMOJIS[nom]||'🌾')+' '+nom;
+}
+
+function selectAutre(el){
+  document.querySelectorAll('.produit-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');selectedProduit='';
+  document.getElementById('autre-zone').style.display='block';
+  document.getElementById('step-details').style.display='none';
+  document.getElementById('autre-nom').focus();
+}
+
+function updateAutre(){
+  const nom=document.getElementById('autre-nom').value.trim();selectedProduit=nom;
+  if(nom){document.getElementById('step-details').style.display='block';document.getElementById('selected-display').textContent='✏️ '+nom;}
+  else document.getElementById('step-details').style.display='none';
+}
+
+function updateNomLibre(){
+  const nom=document.getElementById('agricole-nom').value.trim();selectedProduit=nom;
+  if(nom){document.getElementById('step-details').style.display='block';document.getElementById('selected-display').textContent='🌾 '+nom;}
+  else document.getElementById('step-details').style.display='none';
+}
+
+function previewPhoto(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{document.getElementById('photo-preview').src=ev.target.result;document.getElementById('photo-preview').style.display='block';document.getElementById('photo-prompt').style.display='none';};
+  r.readAsDataURL(f);
+}
+
+async function publierAnnonce(){
+  if(!selectedProduit){showToast('⚠️ اكتب اسم المنتج');return;}
+  if(!selectedCategorie){showToast('⚠️ اختار نوع المنتج');return;}
+  const qte=document.getElementById('pub-qte').value;
+  const prix=document.getElementById('pub-prix').value;
+  const ville=document.getElementById('pub-ville').value.trim();
+  if(!qte||!prix||!ville){showToast('⚠️ كمل جميع المعلومات');return;}
+  const btn=event.target;btn.disabled=true;btn.textContent='...';
+  if(pubType==='buy'){
+    const{error}=await sb.from('demandes').insert([{acheteur_id:currentUser.id,produit:selectedProduit,categorie:selectedCategorie,quantite:parseFloat(qte),unite:document.getElementById('pub-unite').value,prix_max:parseFloat(prix),ville,region:currentUser.region,description:document.getElementById('pub-desc').value}]);
+    btn.disabled=false;btn.textContent='🛒 نشر طلب الشراء';
+    if(error){showToast('❌ مشكلة: '+error.message);return;}
+    showToast('✅ طلب الشراء نُشر بنجاح!');goTo('home');return;
+  }
+  let photoUrl=null;
+  const photoInput=document.getElementById('photo-input');
+  if(photoInput.files[0]){
+    const file=photoInput.files[0];const fileName=currentUser.id+'_'+Date.now()+'.jpg';
+    const{data:upData,error:upErr}=await sb.storage.from('photos-annonces').upload(fileName,file,{cacheControl:'3600',upsert:false});
+    if(!upErr&&upData){const{data:urlData}=sb.storage.from('photos-annonces').getPublicUrl(fileName);photoUrl=urlData?.publicUrl;}
+  }
+  const{error}=await sb.from('annonces').insert([{vendeur_id:currentUser.id,produit:selectedProduit,categorie:selectedCategorie,quantite:parseFloat(qte),unite:document.getElementById('pub-unite').value,prix:parseFloat(prix),ville,region:currentUser.region,description:document.getElementById('pub-desc').value,photo_url:photoUrl}]);
+  btn.disabled=false;btn.textContent='📢 نشر الإعلان الآن';
+  if(error){showToast('❌ مشكلة: '+error.message);return;}
+  showToast('✅ الإعلان نُشر بنجاح!');goTo('home');
+}
+
+async function loadProfil(){
+  if(!currentUser)return;
+  document.getElementById('profil-nom').textContent=currentUser.nom;
+  document.getElementById('profil-region').textContent='📍 '+currentUser.region;
+  const{data:anns}=await sb.from('annonces').select('id').eq('vendeur_id',currentUser.id);
+  document.getElementById('profil-anns').textContent=anns?.length||0;
+  document.getElementById('profil-note').textContent='—';
+  document.getElementById('profil-trans').textContent=currentUser.nb_transactions||0;
+}
+</script>
+</body>
+</html>
