@@ -705,9 +705,9 @@ const EMOJIS={'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'�
 const CAT_LABELS={'legumes':'🥕 خضر','fruits':'🍊 فواكه','agricole':'🌾 فلاحية','animal':'🐄 حيوانية'};
 
 window.onload=()=>{
-  setTimeout(()=>document.getElementById('splash').classList.add('out'),2400);
+  setTimeout(()=>document.getElementById('splash').classList.add('out'),1500);
   const saved=localStorage.getItem('fellah_user');
-  if(saved){currentUser=JSON.parse(saved);showApp();}
+  if(saved){currentUser=JSON.parse(saved);showApp();}else{document.getElementById('splash').classList.add('out');}
 };
 
 function showToast(msg,duration=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),duration);}
