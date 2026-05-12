@@ -366,7 +366,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="nav-item" id="ni-profil" onclick="goTo('profil')"><div class="nav-icon">👤</div><div class="nav-label">حسابي</div></div>
 </div><script>
 var sb=supabase.createClient('https://ryzhqtcukeypsqqbxrqp.supabase.co','sb_publishable__s1wfkhIKodWAGThY8r-pw_Tg6NioE1');
-var CU=null,SP='',SC='',PT='sell',_a=[],_d=[],_eid=null,_et=null,_htab='offres',_matab='ann';
+var CU=null,SP='',SC='',PT='sell',_a=[],_d=[],_eid=null,_et=null,_htab='offres',_matab='ann',_fann='',_fdem='';
 var EM={'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','البصلة':'🧅','البطاطا':'🥔','الجزر':'🥕','الثوم':'🧄','الكوسة':'🥬','الباذنجان':'🍆','الملفوف':'🥦','الخس':'🥗','الفاصوليا':'🫘','الحمص':'🟡','العدس':'🟤','الفول':'🫘','الذرة':'🌽','الفلفل الحار':'🌶️','الكرفس':'🌿','الشمندر':'🔴','اللفت':'🟣','البرتقال':'🍊','الليمون':'🍋','البطيخ':'🍉','التفاح':'🍎','العنب':'🍇','التين':'🫐','الكليمنتين':'🍊','الرمان':'🍎','المشماش':'🍑','الكرز':'🍒','الخوخ':'🍑','الفراولة':'🍓','الموز':'🍌','الأفوكا':'🥑','التمر':'🌴','الزيتون':'🫒','الدلاح':'🍈','حليب':'🥛','دجاج':'🐓','بيض':'🥚','أغنام':'🐑','بقر':'🐄','ماعز':'🐐','سمك':'🐟','عسل':'🍯'};
 var CL={'legumes':'🥕 خضر','fruits':'🍊 فواكه','agricole':'🌾 فلاحية','animal':'🐄 حيوانية'};
 
@@ -479,8 +479,8 @@ async function loadDem(filter){
   }).join('');
 }
 
-function fAnn(el,t){document.querySelectorAll('#fo .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');loadAnn(t);}
-function fDem(el,t){document.querySelectorAll('#fd .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');loadDem(t);}
+function fAnn(el,t){document.querySelectorAll('#fo .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fann=t;loadAnn(t);}
+function fDem(el,t){document.querySelectorAll('#fd .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fdem=t;loadDem(t);}
 
 function openA(i){
   var a=_a[i];if(!a)return;
@@ -559,7 +559,7 @@ async function saveEdit(){
   closeModal();
   closeDet();
   showToast('✅ تم التعديل بنجاح!');
-  if(_htab==='demandes')loadDem();else loadAnn();
+  if(_htab==='demandes')loadDem(_fdem);else loadAnn(_fann);
   loadMA();
 }
 
