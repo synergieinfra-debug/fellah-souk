@@ -387,7 +387,7 @@ function goTo(id){
   var sc=document.getElementById('screen-'+id);if(sc)sc.classList.add('active');
   var ni=document.getElementById('ni-'+id);if(ni)ni.classList.add('active');
   window.scrollTo(0,0);
-  if(id==='home'){if(_htab==='demandes')loadDem();else loadAnn();}
+  if(id==='home'){if(_htab==='demandes')loadDem(_fdem);else loadAnn(_fann);}
   if(id==='profil')loadProfil();
   if(id==='publish')resetPub();
   if(id==='messages')loadMsgs();
