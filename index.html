@@ -500,9 +500,11 @@ function openA(i){
   var vcard='<div style="background:var(--vertp);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:16px"><div style="width:46px;height:46px;border-radius:50%;background:var(--vert);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">👨‍🌾</div><div><div style="font-weight:800;font-size:.9rem">'+unom+'</div><div style="font-size:.75rem;color:var(--gris)">📍 '+ureg+'</div></div></div>';
   var btns=own?
     '<button class="cbtn o" onclick="openEdit(\''+a.id+'\',\'ann\')">✏️ تعديل الإعلان</button>'+
-    '<button class="cbtn g" onclick="markVendu(\''+a.id+'\')">✅ تم البيع</button>'+
+    '<button class="cbtn g" onclick="openChat(\''+a.id+'\',\''+a.vendeur_id+'\',\''+unom+'\',\''+a.produit+'\')">💬 تواصل مع البياع</button>'+
+'<button class="cbtn o" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\',\'ann\')">⭐ قيم البياع</button>';
     '<button class="cbtn r" onclick="delAnn(\''+a.id+'\')">🗑️ حذف الإعلان</button>':
-    '<button class="cbtn g" onclick="openChat(\''+a.id+'\',\''+a.vendeur_id+'\',\''+unom+'\',\''+a.produit+'\')">💬 تواصل مع البياع</button>';
+    '<button class="cbtn g" onclick="openChat(\''+a.id+'\',\''+a.vendeur_id+'\',\''+unom+'\',\''+a.produit+'\')">💬 تواصل مع البياع</button>'+
+'<button class="cbtn o" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\',\'ann\')">⭐ قيم البياع</button>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header"><button class="det-back" onclick="closeDet()">←</button><div class="det-title">'+em+' '+a.produit+'</div></div>'+img+'<div style="padding:16px"><div style="display:flex;justify-content:space-between;margin-bottom:12px"><div><div style="font-size:1.3rem;font-weight:900">'+em+' '+a.produit+'</div><div style="font-size:.8rem;color:var(--gris);margin-top:3px">📍 '+a.ville+' · '+a.region+'</div></div><div style="text-align:left"><div style="font-family:Amiri,serif;font-size:1.5rem;font-weight:700;color:var(--vert)">'+a.prix+'</div><div style="font-size:.7rem;color:var(--gris)">د.م/'+a.unite+'</div></div></div>'+tags+vcard+btns+'</div>';
   document.body.appendChild(div);
@@ -571,7 +573,48 @@ async function saveEdit(){
 async function markVendu(id){
   if(!confirm('تأكيد: تم بيع هذا المنتج؟'))return;
   await sb.from('annonces').update({statut:'vendue'}).eq('id',id);
-  closeDet();showToast('✅ تم تسجيل البيع!');loadAnn(_fann);loadMA();
+  var ann=window._ca;
+  closeDet();
+  showToast('✅ تم تسجيل البيع!');
+  loadAnn(_fann);loadMA();
+  if(ann)ouvrirNotation(ann.id,ann.vendeur_id,'ann');
+}
+
+function ouvrirNotation(annId,autreId,type){
+  var old=document.getElementById('modal-notation');if(old)old.remove();
+  var div=document.createElement('div');div.id='modal-notation';
+  div.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;display:flex;align-items:flex-end';
+  div.innerHTML='<div style="background:#fff;width:100%;border-radius:20px 20px 0 0;padding:22px 18px 40px;max-height:85vh;overflow-y:auto" onclick="event.stopPropagation()"><div style="width:38px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px"></div><div style="font-family:Amiri,serif;font-size:1.2rem;color:var(--vert);margin-bottom:8px">⭐ قيم هذه المعاملة</div><div style="font-size:.85rem;color:var(--gris);margin-bottom:18px">اعطي تقييمك لهذه المعاملة</div><div style="display:flex;justify-content:center;gap:12px;margin-bottom:20px" id="stars-row"><span onclick="selStar(1)" style="font-size:2.5rem;cursor:pointer;opacity:.4">⭐</span><span onclick="selStar(2)" style="font-size:2.5rem;cursor:pointer;opacity:.4">⭐</span><span onclick="selStar(3)" style="font-size:2.5rem;cursor:pointer;opacity:.4">⭐</span><span onclick="selStar(4)" style="font-size:2.5rem;cursor:pointer;opacity:.4">⭐</span><span onclick="selStar(5)" style="font-size:2.5rem;cursor:pointer;opacity:.4">⭐</span></div><div style="margin-bottom:16px"><input type="text" class="form-input" id="nota-comment" placeholder="تعليق اختياري..."/></div><button class="btn-primary" onclick="saveNotation(\''+annId+'\',\''+autreId+'\')">✅ إرسال التقييم</button><button style="width:100%;padding:12px;border:none;background:transparent;color:var(--gris);font-family:Tajawal,sans-serif;font-size:.9rem;cursor:pointer;margin-top:8px" onclick="closeNotation()">تخطي</button></div>';
+  div.onclick=closeNotation;
+  document.body.appendChild(div);
+  window._notaSelected=0;
+}
+
+function selStar(n){
+  window._notaSelected=n;
+  var stars=document.querySelectorAll('#stars-row span');
+  stars.forEach(function(s,i){s.style.opacity=i<n?'1':'.4';});
+}
+
+function closeNotation(){var m=document.getElementById('modal-notation');if(m)m.remove();}
+
+async function saveNotation(annId,autreId){
+  var note=window._notaSelected;
+  if(!note){showToast('⚠️ اختار عدد النجوم');return;}
+  var comment=document.getElementById('nota-comment').value.trim();
+  var r=await sb.from('notations').insert([{annonce_id:annId,noteur_id:CU.id,note_id:autreId,note:note,commentaire:comment}]);
+  if(r.error){showToast('❌ مشكلة: '+r.error.message);return;}
+  await majNote(autreId);
+  closeNotation();
+  showToast('✅ شكرا على تقييمك!');
+}
+
+async function majNote(userId){
+  var r=await sb.from('notations').select('note').eq('note_id',userId);
+  if(r.error||!r.data||r.data.length===0)return;
+  var total=r.data.reduce(function(s,n){return s+n.note;},0);
+  var moy=Math.round((total/r.data.length)*10)/10;
+  await sb.from('utilisateurs').update({note_moyenne:moy,nb_transactions:r.data.length}).eq('id',userId);
 }
 
 async function delAnn(id){
@@ -789,7 +832,7 @@ async function loadProfil(){
   document.getElementById('p-reg').textContent='📍 '+CU.region;
   var r=await sb.from('annonces').select('id').eq('vendeur_id',CU.id);
   document.getElementById('p-anns').textContent=r.data?r.data.length:0;
-  document.getElementById('p-note').textContent='—';
+  document.getElementById('p-note').textContent=CU.note_moyenne?CU.note_moyenne+' ⭐':'—';
   document.getElementById('p-trans').textContent=CU.nb_transactions||0;
 }
 </script>
