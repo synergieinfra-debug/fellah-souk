@@ -488,7 +488,7 @@ function fAnn(el,t){document.querySelectorAll('#fo .filter-chip').forEach(functi
 function fDem(el,t){document.querySelectorAll('#fd .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');loadDem(t);}
 
 function detHTML(isBleu,title,img,body){
-  return '<div class="det-header'+(isBleu?' bleu':'')+'"><button class="det-back" onclick="closeDet()">←</button><div class="det-title">'+title+'</div></div>'+img+'<div style="padding:16px">'+body+'</div>';
+  return '<div class="det-header'+(isBleu?' bleu':'')+'"><button class="det-back" onclick="closeDet(true)">←</button><div class="det-title">'+title+'</div></div>'+img+'<div style="padding:16px">'+body+'</div>';
 }
 
 function openA(i){
@@ -534,9 +534,9 @@ function openDem(i){
   window._curD=d;
 }
 
-function closeDet(){
+function closeDet(reload){
   var d=document.getElementById('det');if(d)d.remove();
-  if(_htab==='demandes')loadDem();else loadAnn();
+  if(reload){if(_htab==='demandes')loadDem();else loadAnn();}
 }
 
 function openEdit(id,type){
@@ -577,19 +577,19 @@ async function saveEdit(){
 async function markVendu(id){
   if(!confirm('تأكيد: تم بيع هذا المنتج؟'))return;
   await sb.from('annonces').update({statut:'vendue'}).eq('id',id);
-  closeDet();showToast('✅ تم تسجيل البيع!');loadAnn();loadMA();
+  closeDet(true);showToast('✅ تم تسجيل البيع!');loadAnn();loadMA();
 }
 
 async function delAnn(id){
   if(!confirm('تأكيد: حذف هذا الإعلان؟'))return;
   await sb.from('annonces').delete().eq('id',id);
-  closeDet();showToast('🗑️ تم الحذف');loadAnn();loadMA();
+  closeDet(true);showToast('🗑️ تم الحذف');loadAnn();loadMA();
 }
 
 async function delDem(id){
   if(!confirm('تأكيد: حذف هذا الطلب؟'))return;
   await sb.from('demandes').delete().eq('id',id);
-  closeDet();showToast('🗑️ تم الحذف');loadDem();loadMA();
+  closeDet(true);showToast('🗑️ تم الحذف');loadDem();loadMA();
 }
 
 async function loadMA(){
@@ -625,7 +625,7 @@ function switchMA(tab){
 }
 
 function openChat(aid,uid,nom,prod){
-  closeDet();
+  closeDet(true);
   var old=document.getElementById('chat');if(old)old.remove();
   var em=EM[prod]||'🌾';
   var div=document.createElement('div');div.id='chat';div.className='chat-screen';
