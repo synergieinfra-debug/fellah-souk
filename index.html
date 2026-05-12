@@ -769,7 +769,7 @@ async function pub(){
   var rs=await sb.from('annonces').insert([{vendeur_id:CU.id,produit:SP,categorie:SC,quantite:parseFloat(qte),unite:document.getElementById('p-unite').value,prix:parseFloat(prix),ville:ville,region:CU.region,description:document.getElementById('p-desc').value,photo_url:photoUrl}]);
   btn.disabled=false;btn.textContent='📢 نشر الإعلان الآن';
   if(rs.error){showToast('❌ '+rs.error.message);return;}
-  showToast('✅ الإعلان نُشر!');goTo('home');
+  showToast('✅ الإعلان نُشر!');goTo('home');setTimeout(function(){loadAnn(_fann);},100);
 }
 
 async function loadProfil(){
