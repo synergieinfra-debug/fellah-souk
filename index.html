@@ -568,7 +568,7 @@ async function saveEdit(){
   btn.disabled=false;btn.textContent='✅ حفظ التعديلات';
   if(r.error){showToast('❌ '+r.error.message);return;}
   closeModal();closeDet();showToast('✅ تم التعديل بنجاح!');
-  if(_et==='ann')loadAnn();else loadDem();
+  if(_htab==='demandes')loadDem();else loadAnn();
   loadMA();
 }
 
