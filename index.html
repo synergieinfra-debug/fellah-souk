@@ -686,6 +686,17 @@ function resetPub(){
   document.getElementById('p-btn').className='btn-primary btn-gold';
   document.getElementById('p-prix-lbl').textContent='السعر (د.م)';
   if(_htab==='demandes')setPT('buy');
+if(_fann&&_htab==='offres'){
+  var mapcat={legumes:'legumes',fruits:'fruits',agricole:'agricole',animal:'animal'};
+  if(mapcat[_fann]){
+    var catbtn=document.querySelector('.cat-btn.cat-'+_fann);
+    if(catbtn)selCat(_fann,catbtn);
+  }
+}
+if(_fdem&&_htab==='demandes'){
+  var catbtn2=document.querySelector('.cat-btn.cat-'+_fdem);
+  if(catbtn2)selCat(_fdem,catbtn2);
+}
 }
 
 function setPT(t){
