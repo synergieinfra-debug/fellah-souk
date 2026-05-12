@@ -58,7 +58,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .home-tab{flex:1;padding:8px;border:none;background:transparent;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;color:rgba(255,255,255,.6);transition:all .2s}
 .home-tab.active{background:#fff;color:var(--vert)}
 .filters-wrap{padding:10px 16px 6px}
-.filters{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;direction:rtl;width:100%}
+.filters{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%}
 .filter-chip{padding:6px 4px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-family:'Tajawal',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;color:#555}
 .filter-chip.active{background:var(--vert);border-color:var(--vert);color:#fff}
 .section-title{padding:8px 16px 6px;font-size:.72rem;font-weight:800;color:var(--gris);text-transform:uppercase;letter-spacing:.1em}
@@ -161,13 +161,16 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .cbtn.b{background:linear-gradient(135deg,var(--bleu),#1976d2);color:#fff}
 .cbtn.o{background:linear-gradient(135deg,var(--or),var(--orc));color:#1a1a2e}
 .cbtn.r{background:linear-gradient(135deg,var(--rouge),#e53935);color:#fff}
+.cbtn.star{background:linear-gradient(135deg,#f39c12,#f1c40f);color:#1a1a2e}
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:flex-end}
 .modal{background:#fff;width:100%;border-radius:20px 20px 0 0;padding:22px 18px 40px;max-height:85vh;overflow-y:auto}
 .modal-handle{width:38px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px}
 .modal-title{font-family:'Amiri',serif;font-size:1.2rem;color:var(--vert);margin-bottom:16px}
-</style>
-</head>
-<body><div id="splash"><div class="sp-icon">🌾</div><div class="sp-title">سوق الفلاح</div><div class="sp-sub">كل المنتجات الفلاحية في يدك</div><div class="sp-bar"><div class="sp-fill"></div></div></div>
+.nota-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;display:flex;align-items:flex-end}
+.nota-box{background:#fff;width:100%;border-radius:20px 20px 0 0;padding:22px 18px 40px}
+.star-btn{font-size:2.5rem;cursor:pointer;opacity:.3;border:none;background:transparent;padding:4px;transition:opacity .2s}
+.star-btn.on{opacity:1}
+</style><div id="splash"><div class="sp-icon">🌾</div><div class="sp-title">سوق الفلاح</div><div class="sp-sub">كل المنتجات الفلاحية في يدك</div><div class="sp-bar"><div class="sp-fill"></div></div></div>
 <div class="toast" id="toast"></div>
 
 <div id="modal-bg" class="modal-bg" style="display:none" onclick="closeModal()">
@@ -182,6 +185,23 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="form-group"><label class="form-label" id="e-prix-lbl">السعر (د.م)</label><input type="number" class="form-input" id="e-prix"/></div>
 <div class="form-group"><label class="form-label">وصف</label><input type="text" class="form-input" id="e-desc"/></div>
 <button class="btn-primary" id="e-save" onclick="saveEdit()">✅ حفظ التعديلات</button>
+</div></div>
+
+<div id="nota-bg" class="nota-bg" style="display:none">
+<div class="nota-box">
+<div style="width:38px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px"></div>
+<div style="font-family:'Amiri',serif;font-size:1.2rem;color:var(--vert);margin-bottom:6px;text-align:center">⭐ قيم هذه المعاملة</div>
+<div style="font-size:.85rem;color:var(--gris);margin-bottom:18px;text-align:center">اعطي تقييمك للبائع</div>
+<div style="display:flex;justify-content:center;gap:8px;margin-bottom:20px">
+<button class="star-btn" id="star1" onclick="selStar(1)">⭐</button>
+<button class="star-btn" id="star2" onclick="selStar(2)">⭐</button>
+<button class="star-btn" id="star3" onclick="selStar(3)">⭐</button>
+<button class="star-btn" id="star4" onclick="selStar(4)">⭐</button>
+<button class="star-btn" id="star5" onclick="selStar(5)">⭐</button>
+</div>
+<div style="margin-bottom:16px"><input type="text" class="form-input" id="nota-comment" placeholder="تعليق اختياري..."/></div>
+<button class="btn-primary" onclick="saveNotation()">✅ إرسال التقييم</button>
+<button style="width:100%;padding:12px;border:none;background:transparent;color:var(--gris);font-family:'Tajawal',sans-serif;font-size:.9rem;cursor:pointer;margin-top:8px" onclick="closeNotation()">تخطي</button>
 </div></div>
 
 <div class="screen active" id="screen-auth">
@@ -364,11 +384,14 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="nav-item" id="ni-publish" onclick="goTo('publish')"><div class="nav-icon">➕</div><div class="nav-label">نشر</div></div>
 <div class="nav-item" id="ni-messages" onclick="goTo('messages')"><div class="nav-icon">💬</div><div class="nav-label">رسائل</div></div>
 <div class="nav-item" id="ni-profil" onclick="goTo('profil')"><div class="nav-icon">👤</div><div class="nav-label">حسابي</div></div>
-</div><script>
+</div>
+</head>
+<body><script>
 var sb=supabase.createClient('https://ryzhqtcukeypsqqbxrqp.supabase.co','sb_publishable__s1wfkhIKodWAGThY8r-pw_Tg6NioE1');
 var CU=null,SP='',SC='',PT='sell',_a=[],_d=[],_eid=null,_et=null,_htab='offres',_matab='ann',_fann='',_fdem='';
 var EM={'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','البصلة':'🧅','البطاطا':'🥔','الجزر':'🥕','الثوم':'🧄','الكوسة':'🥬','الباذنجان':'🍆','الملفوف':'🥦','الخس':'🥗','الفاصوليا':'🫘','الحمص':'🟡','العدس':'🟤','الفول':'🫘','الذرة':'🌽','الفلفل الحار':'🌶️','الكرفس':'🌿','الشمندر':'🔴','اللفت':'🟣','البرتقال':'🍊','الليمون':'🍋','البطيخ':'🍉','التفاح':'🍎','العنب':'🍇','التين':'🫐','الكليمنتين':'🍊','الرمان':'🍎','المشماش':'🍑','الكرز':'🍒','الخوخ':'🍑','الفراولة':'🍓','الموز':'🍌','الأفوكا':'🥑','التمر':'🌴','الزيتون':'🫒','الدلاح':'🍈','حليب':'🥛','دجاج':'🐓','بيض':'🥚','أغنام':'🐑','بقر':'🐄','ماعز':'🐐','سمك':'🐟','عسل':'🍯'};
 var CL={'legumes':'🥕 خضر','fruits':'🍊 فواكه','agricole':'🌾 فلاحية','animal':'🐄 حيوانية'};
+var _nAid=null,_nUid=null,_nStar=0;
 
 window.onload=function(){
   setTimeout(function(){
@@ -451,11 +474,10 @@ function switchTab(tab){
   if(tab==='offres')loadAnn();else loadDem();
 }
 
-
 async function loadAnn(filter){
   var g=document.getElementById('grid');
   g.innerHTML='<div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
-  var q=sb.from('annonces').select('*,u:utilisateurs(nom,region)').eq('statut','active').order('created_at',{ascending:false}).limit(30);
+  var q=sb.from('annonces').select('*,u:utilisateurs(nom,region,note_moyenne)').eq('statut','active').order('created_at',{ascending:false}).limit(30);
   if(filter==='legumes')q=q.eq('categorie','legumes');
   else if(filter==='fruits')q=q.eq('categorie','fruits');
   else if(filter==='agricole')q=q.eq('categorie','agricole');
@@ -466,7 +488,8 @@ async function loadAnn(filter){
   _a=r.data;
   g.innerHTML=r.data.map(function(a,i){
     var em=EM[a.produit]||'🌾';
-    return '<div class="ann-card" onclick="openA('+i+')">'+(a.photo_url?'<img class="ann-photo" src="'+a.photo_url+'" loading="lazy"/>':'<div class="ann-pp">'+em+'</div>')+'<div class="ann-body"><div class="ann-produit">'+em+' '+a.produit+'</div><div class="ann-region">📍 '+a.ville+'</div><div class="ann-footer"><div><span class="ann-prix">'+a.prix+'</span><span class="ann-unite"> د.م/'+a.unite+'</span></div><div class="ann-qty">'+a.quantite+' '+a.unite+'</div></div></div></div>';
+    var note=a.u&&a.u.note_moyenne?'<div style="font-size:.65rem;color:var(--or)">'+a.u.note_moyenne+' ⭐</div>':'';
+    return '<div class="ann-card" onclick="openA('+i+')">'+(a.photo_url?'<img class="ann-photo" src="'+a.photo_url+'" loading="lazy"/>':'<div class="ann-pp">'+em+'</div>')+'<div class="ann-body"><div class="ann-produit">'+em+' '+a.produit+'</div><div class="ann-region">📍 '+a.ville+'</div><div class="ann-footer"><div><span class="ann-prix">'+a.prix+'</span><span class="ann-unite"> د.م/'+a.unite+'</span></div><div><div class="ann-qty">'+a.quantite+' '+a.unite+'</div>'+note+'</div></div></div></div>';
   }).join('');
 }
 
@@ -494,17 +517,17 @@ function openA(i){
   var own=CU&&a.vendeur_id===CU.id;
   var unom=(a.u&&a.u.nom)?a.u.nom:'بياع';
   var ureg=(a.u&&a.u.region)?a.u.region:'';
+  var unote=(a.u&&a.u.note_moyenne)?'⭐ '+a.u.note_moyenne:'بدون تقييم';
   window._ca=a;
   var img=a.photo_url?'<img src="'+a.photo_url+'" style="width:100%;height:240px;object-fit:cover"/>':'<div style="height:240px;background:linear-gradient(135deg,var(--vertp),#d4edda);display:flex;align-items:center;justify-content:center;font-size:7rem">'+em+'</div>';
   var tags='<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px"><div style="background:#f5f7fa;border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">⚖️ '+a.quantite+' '+a.unite+'</div><div style="background:#f5f7fa;border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">'+(CL[a.categorie]||a.categorie)+'</div>'+(a.description?'<div style="background:#f5f7fa;border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">💬 '+a.description+'</div>':'')+'</div>';
-  var vcard='<div style="background:var(--vertp);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:16px"><div style="width:46px;height:46px;border-radius:50%;background:var(--vert);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">👨‍🌾</div><div><div style="font-weight:800;font-size:.9rem">'+unom+'</div><div style="font-size:.75rem;color:var(--gris)">📍 '+ureg+'</div></div></div>';
+  var vcard='<div style="background:var(--vertp);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:16px"><div style="width:46px;height:46px;border-radius:50%;background:var(--vert);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">👨‍🌾</div><div><div style="font-weight:800;font-size:.9rem">'+unom+'</div><div style="font-size:.75rem;color:var(--gris)">📍 '+ureg+'</div><div style="font-size:.75rem;color:var(--or);margin-top:2px">'+unote+'</div></div></div>';
   var btns=own?
     '<button class="cbtn o" onclick="openEdit(\''+a.id+'\',\'ann\')">✏️ تعديل الإعلان</button>'+
-    '<button class="cbtn g" onclick="openChat(\''+a.id+'\',\''+a.vendeur_id+'\',\''+unom+'\',\''+a.produit+'\')">💬 تواصل مع البياع</button>'+
-'<button class="cbtn o" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\',\'ann\')">⭐ قيم البياع</button>';
+    '<button class="cbtn g" onclick="markVendu(\''+a.id+'\')">✅ تم البيع</button>'+
     '<button class="cbtn r" onclick="delAnn(\''+a.id+'\')">🗑️ حذف الإعلان</button>':
     '<button class="cbtn g" onclick="openChat(\''+a.id+'\',\''+a.vendeur_id+'\',\''+unom+'\',\''+a.produit+'\')">💬 تواصل مع البياع</button>'+
-'<button class="cbtn o" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\',\'ann\')">⭐ قيم البياع</button>';
+    '<button class="cbtn star" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\')">⭐ قيم البياع</button>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header"><button class="det-back" onclick="closeDet()">←</button><div class="det-title">'+em+' '+a.produit+'</div></div>'+img+'<div style="padding:16px"><div style="display:flex;justify-content:space-between;margin-bottom:12px"><div><div style="font-size:1.3rem;font-weight:900">'+em+' '+a.produit+'</div><div style="font-size:.8rem;color:var(--gris);margin-top:3px">📍 '+a.ville+' · '+a.region+'</div></div><div style="text-align:left"><div style="font-family:Amiri,serif;font-size:1.5rem;font-weight:700;color:var(--vert)">'+a.prix+'</div><div style="font-size:.7rem;color:var(--gris)">د.م/'+a.unite+'</div></div></div>'+tags+vcard+btns+'</div>';
   document.body.appendChild(div);
@@ -531,6 +554,43 @@ function openDem(i){
 }
 
 function closeDet(){var d=document.getElementById('det');if(d)d.remove();}
+
+function ouvrirNotation(annId,userId){
+  _nAid=annId;_nUid=userId;_nStar=0;
+  for(var i=1;i<=5;i++){document.getElementById('star'+i).classList.remove('on');}
+  document.getElementById('nota-comment').value='';
+  document.getElementById('nota-bg').style.display='flex';
+}
+
+function selStar(n){
+  _nStar=n;
+  for(var i=1;i<=5;i++){
+    var s=document.getElementById('star'+i);
+    if(i<=n)s.classList.add('on');else s.classList.remove('on');
+  }
+}
+
+function closeNotation(){document.getElementById('nota-bg').style.display='none';}
+
+async function saveNotation(){
+  if(!_nStar){showToast('⚠️ اختار عدد النجوم');return;}
+  var comment=document.getElementById('nota-comment').value.trim();
+  var r=await sb.from('notations').insert([{annonce_id:_nAid,noteur_id:CU.id,note_id:_nUid,note:_nStar,commentaire:comment}]);
+  if(r.error){
+    if(r.error.code==='23505'){showToast('قيمت هذا البياع من قبل!');}
+    else{showToast('مشكلة: '+r.error.message);}
+    return;
+  }
+  var rn=await sb.from('notations').select('note').eq('note_id',_nUid);
+  if(!rn.error&&rn.data&&rn.data.length>0){
+    var total=rn.data.reduce(function(s,n){return s+n.note;},0);
+    var moy=Math.round((total/rn.data.length)*10)/10;
+    await sb.from('utilisateurs').update({note_moyenne:moy,nb_transactions:rn.data.length}).eq('id',_nUid);
+  }
+  closeNotation();
+  showToast('✅ شكرا على تقييمك!');
+  loadAnn(_fann);
+}
 
 function openEdit(id,type){
   _eid=id;_et=type;
@@ -563,9 +623,7 @@ async function saveEdit(){
   var r=await sb.from(table).update(upd).eq('id',_eid);
   btn.disabled=false;btn.textContent='✅ حفظ التعديلات';
   if(r.error){showToast('❌ '+r.error.message);return;}
-  closeModal();
-  closeDet();
-  showToast('✅ تم التعديل بنجاح!');
+  closeModal();closeDet();showToast('✅ تم التعديل بنجاح!');
   if(_htab==='demandes')loadDem(_fdem);else loadAnn(_fann);
   loadMA();
 }
@@ -573,67 +631,8 @@ async function saveEdit(){
 async function markVendu(id){
   if(!confirm('تأكيد: تم بيع هذا المنتج؟'))return;
   await sb.from('annonces').update({statut:'vendue'}).eq('id',id);
-  var ann=window._ca;
-  closeDet();
-  showToast('✅ تم تسجيل البيع!');
+  closeDet();showToast('✅ تم تسجيل البيع!');
   loadAnn(_fann);loadMA();
-  if(ann)ouvrirNotation(ann.id,ann.vendeur_id,'ann');
-}
-
-function ouvrirNotation(annId,autreId,type){
-
-function ouvrirNotation(annId,autreId,type){
-  var old=document.getElementById('modal-notation');if(old)old.remove();
-  var div=document.createElement('div');div.id='modal-notation';
-  div.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;display:flex;align-items:flex-end';
-  var inner=document.createElement('div');
-  inner.style.cssText='background:#fff;width:100%;border-radius:20px 20px 0 0;padding:22px 18px 40px';
-  inner.onclick=function(e){e.stopPropagation();};
-  inner.innerHTML='<div style="width:38px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px"></div>'
-    +'<div style="font-family:Amiri,serif;font-size:1.2rem;color:var(--vert);margin-bottom:8px">⭐ قيم هذه المعاملة</div>'
-    +'<div style="font-size:.85rem;color:var(--gris);margin-bottom:18px">اعطي تقييمك</div>'
-    +'<div style="display:flex;justify-content:center;gap:12px;margin-bottom:20px" id="stars-row">'
-    +'<span onclick="selStar(1)" style="font-size:2.5rem;cursor:pointer;opacity:.4">⭐</span>'
-    +'<span onclick="selStar(2)" style="font-size:2.5rem;cursor:pointer;opacity:.4">⭐</span>'
-    +'<span onclick="selStar(3)" style="font-size:2.5rem;cursor:pointer;opacity:.4">⭐</span>'
-    +'<span onclick="selStar(4)" style="font-size:2.5rem;cursor:pointer;opacity:.4">⭐</span>'
-    +'<span onclick="selStar(5)" style="font-size:2.5rem;cursor:pointer;opacity:.4">⭐</span>'
-    +'</div>'
-    +'<div style="margin-bottom:16px"><input type="text" class="form-input" id="nota-comment" placeholder="تعليق اختياري..."/></div>'
-    +'<button class="btn-primary" id="nota-save">✅ إرسال التقييم</button>'
-    +'<button style="width:100%;padding:12px;border:none;background:transparent;color:var(--gris);font-family:Tajawal,sans-serif;font-size:.9rem;cursor:pointer;margin-top:8px" onclick="closeNotation()">تخطي</button>';
-  div.appendChild(inner);
-  div.onclick=closeNotation;
-  document.body.appendChild(div);
-  window._notaSelected=0;
-  window._notaAnnId=annId;
-  window._notaAutreId=autreId;
-  document.getElementById('nota-save').onclick=function(){saveNotation();};
-}
-function selStar(n){
-  window._notaSelected=n;
-  var stars=document.querySelectorAll('#stars-row span');
-  stars.forEach(function(s,i){s.style.opacity=i<n?'1':'.4';});
-}
-
-function closeNotation(){var m=document.getElementById('modal-notation');if(m)m.remove();}
-
-async function saveNotation(){
-  var note=window._notaSelected;
-  if(!note){showToast('⚠️ اختار عدد النجوم');return;}
-  var comment=document.getElementById('nota-comment').value.trim();
-  var r=await sb.from('notations').insert([{annonce_id:window._notaAnnId,noteur_id:CU.id,note_id:window._notaAutreId,note:note,commentaire:comment}]);
-  if(r.error){showToast('❌ '+r.error.message);return;}
-  await majNote(window._notaAutreId);
-  closeNotation();
-  showToast('✅ شكرا على تقييمك!');
-}
-async function majNote(userId){
-  var r=await sb.from('notations').select('note').eq('note_id',userId);
-  if(r.error||!r.data||r.data.length===0)return;
-  var total=r.data.reduce(function(s,n){return s+n.note;},0);
-  var moy=Math.round((total/r.data.length)*10)/10;
-  await sb.from('utilisateurs').update({note_moyenne:moy,nb_transactions:r.data.length}).eq('id',userId);
 }
 
 async function delAnn(id){
@@ -658,8 +657,8 @@ async function loadMA(){
     list.innerHTML=r.data.map(function(a){
       var em=EM[a.produit]||'🌾';
       var st=a.statut==='active'?'<span class="ma-statut st-active">فعال</span>':'<span class="ma-statut st-vendue">مباعة</span>';
-      var aJson=JSON.stringify(a).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-      var btns=(a.statut==='active'?'<button class="btn-sm" style="background:var(--vertp);color:var(--vert2)" onclick="window._ca=JSON.parse(\''+aJson+'\');openEdit(\''+a.id+'\',\'ann\')">✏️ تعديل</button><button class="btn-sm" style="background:#fff3e0;color:var(--or)" onclick="markVendu(\''+a.id+'\')">✅ تم البيع</button>':'')+'<button class="btn-sm" style="background:#fdecea;color:var(--rouge)" onclick="delAnn(\''+a.id+'\')">🗑️ حذف</button>';
+      var aJ=JSON.stringify(a).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      var btns=(a.statut==='active'?'<button class="btn-sm" style="background:var(--vertp);color:var(--vert2)" onclick="window._ca=JSON.parse(\''+aJ+'\');openEdit(\''+a.id+'\',\'ann\')">✏️ تعديل</button><button class="btn-sm" style="background:#fff3e0;color:var(--or)" onclick="markVendu(\''+a.id+'\')">✅ تم البيع</button>':'')+'<button class="btn-sm" style="background:#fdecea;color:var(--rouge)" onclick="delAnn(\''+a.id+'\')">🗑️ حذف</button>';
       return '<div class="ma-card"><div class="ma-header"><div class="ma-produit">'+em+' '+a.produit+'</div>'+st+'</div><div class="ma-info">📍 '+a.ville+' · '+a.prix+' د.م/'+a.unite+' · '+a.quantite+' '+a.unite+'</div><div class="ma-btns">'+btns+'</div></div>';
     }).join('');
   }else{
@@ -667,8 +666,8 @@ async function loadMA(){
     if(r2.error||!r2.data||r2.data.length===0){list.innerHTML='<div style="text-align:center;padding:40px"><div style="font-size:3rem">🛒</div><div style="font-weight:800;margin-top:14px">ما عندكش طلبات بعد</div></div>';return;}
     list.innerHTML=r2.data.map(function(d){
       var em=EM[d.produit]||'🛒';
-      var dJson=JSON.stringify(d).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-      var btns='<button class="btn-sm" style="background:var(--bleup);color:var(--bleu)" onclick="window._cd=JSON.parse(\''+dJson+'\');openEdit(\''+d.id+'\',\'dem\')">✏️ تعديل</button><button class="btn-sm" style="background:#fdecea;color:var(--rouge)" onclick="delDem(\''+d.id+'\')">🗑️ حذف</button>';
+      var dJ=JSON.stringify(d).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      var btns='<button class="btn-sm" style="background:var(--bleup);color:var(--bleu)" onclick="window._cd=JSON.parse(\''+dJ+'\');openEdit(\''+d.id+'\',\'dem\')">✏️ تعديل</button><button class="btn-sm" style="background:#fdecea;color:var(--rouge)" onclick="delDem(\''+d.id+'\')">🗑️ حذف</button>';
       return '<div class="ma-card"><div class="ma-header"><div class="ma-produit">'+em+' '+d.produit+'</div><span class="ma-statut st-dem">طلب</span></div><div class="ma-info">📍 '+d.ville+' · '+d.prix_max+' د.م/'+d.unite+' · '+d.quantite+' '+d.unite+'</div><div class="ma-btns">'+btns+'</div></div>';
     }).join('');
   }
@@ -748,17 +747,6 @@ function resetPub(){
   document.getElementById('p-btn').className='btn-primary btn-gold';
   document.getElementById('p-prix-lbl').textContent='السعر (د.م)';
   if(_htab==='demandes')setPT('buy');
-if(_fann&&_htab==='offres'){
-  var mapcat={legumes:'legumes',fruits:'fruits',agricole:'agricole',animal:'animal'};
-  if(mapcat[_fann]){
-    var catbtn=document.querySelector('.cat-btn.cat-'+_fann);
-    if(catbtn)selCat(_fann,catbtn);
-  }
-}
-if(_fdem&&_htab==='demandes'){
-  var catbtn2=document.querySelector('.cat-btn.cat-'+_fdem);
-  if(catbtn2)selCat(_fdem,catbtn2);
-}
 }
 
 function setPT(t){
@@ -830,7 +818,7 @@ async function pub(){
     btn.disabled=false;btn.textContent='🛒 نشر طلب الشراء';
     if(rb.error){showToast('❌ '+rb.error.message);return;}
     showToast('✅ طلب الشراء نُشر!');
-    goTo('home');setTimeout(function(){switchTab('demandes');},100);return;
+    goTo('home');setTimeout(function(){switchTab('demandes');loadDem(_fdem);},100);return;
   }
   var photoUrl=null;
   var pi=document.getElementById('photo-inp');
@@ -842,15 +830,18 @@ async function pub(){
   var rs=await sb.from('annonces').insert([{vendeur_id:CU.id,produit:SP,categorie:SC,quantite:parseFloat(qte),unite:document.getElementById('p-unite').value,prix:parseFloat(prix),ville:ville,region:CU.region,description:document.getElementById('p-desc').value,photo_url:photoUrl}]);
   btn.disabled=false;btn.textContent='📢 نشر الإعلان الآن';
   if(rs.error){showToast('❌ '+rs.error.message);return;}
-  showToast('✅ الإعلان نُشر!');goTo('home');setTimeout(function(){loadAnn(_fann);},100);
+  showToast('✅ الإعلان نُشر!');
+  goTo('home');setTimeout(function(){loadAnn(_fann);},100);
 }
 
 async function loadProfil(){
   if(!CU)return;
+  var r=await sb.from('utilisateurs').select('*').eq('id',CU.id).single();
+  if(!r.error&&r.data)CU=r.data;
   document.getElementById('p-nom').textContent=CU.nom;
   document.getElementById('p-reg').textContent='📍 '+CU.region;
-  var r=await sb.from('annonces').select('id').eq('vendeur_id',CU.id);
-  document.getElementById('p-anns').textContent=r.data?r.data.length:0;
+  var ra=await sb.from('annonces').select('id').eq('vendeur_id',CU.id);
+  document.getElementById('p-anns').textContent=ra.data?ra.data.length:0;
   document.getElementById('p-note').textContent=CU.note_moyenne?CU.note_moyenne+' ⭐':'—';
   document.getElementById('p-trans').textContent=CU.nb_transactions||0;
 }
