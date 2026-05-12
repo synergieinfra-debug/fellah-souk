@@ -65,6 +65,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .annonces-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px}
 .ann-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--sh);cursor:pointer;transition:all .2s;border:1px solid var(--border)}
 .ann-card:active{transform:scale(.97)}
+.ann-card.premium{border-color:var(--or);box-shadow:0 2px 12px rgba(200,149,42,.2)}
 .ann-photo{width:100%;height:120px;object-fit:cover}
 .ann-pp{width:100%;height:120px;background:linear-gradient(135deg,var(--vertp),#d4edda);display:flex;align-items:center;justify-content:center;font-size:2.5rem}
 .ann-pp.bleu{background:linear-gradient(135deg,var(--bleup),#bbdefb)}
@@ -77,6 +78,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .ann-unite{font-size:.65rem;color:var(--gris)}
 .ann-qty{font-size:.7rem;background:var(--vertp);color:var(--vert2);padding:2px 7px;border-radius:10px;font-weight:700}
 .ann-qty.bleu{background:var(--bleup);color:var(--bleu)}
+.badge-premium{display:inline-block;background:linear-gradient(135deg,var(--or),var(--orc));color:#1a1a2e;font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:8px;margin-right:4px}
 .fab{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateX(-155px);width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--or),var(--orc));border:none;box-shadow:0 4px 20px rgba(200,149,42,.5);display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;z-index:200;color:#1a1a2e;font-weight:900}
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid var(--border);display:flex;padding:8px 0 18px;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.06)}
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px;position:relative}
@@ -170,7 +172,21 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .nota-box{background:#fff;width:100%;border-radius:20px 20px 0 0;padding:22px 18px 40px}
 .star-btn{font-size:2.5rem;cursor:pointer;opacity:.3;border:none;background:transparent;padding:4px;transition:opacity .2s}
 .star-btn.on{opacity:1}
-</style><div id="splash"><div class="sp-icon">🌾</div><div class="sp-title">سوق الفلاح</div><div class="sp-sub">كل المنتجات الفلاحية في يدك</div><div class="sp-bar"><div class="sp-fill"></div></div></div>
+.abo-header{background:linear-gradient(135deg,var(--or),var(--orc));padding:30px 16px;text-align:center}
+.abo-plan{background:#fff;border-radius:16px;margin:16px;padding:18px;box-shadow:var(--sh);border:2px solid var(--border)}
+.abo-plan.premium{border-color:var(--or)}
+.abo-plan-title{font-family:'Amiri',serif;font-size:1.3rem;font-weight:700;margin-bottom:4px}
+.abo-plan-price{font-size:2rem;font-weight:900;color:var(--vert);font-family:'Amiri',serif}
+.abo-feature{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:.85rem;border-bottom:1px solid var(--border)}
+.abo-feature:last-child{border-bottom:none}
+.abo-steps{background:#fff;border-radius:16px;margin:0 16px 16px;padding:18px;box-shadow:var(--sh)}
+.abo-step{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.abo-step:last-child{border-bottom:none}
+.abo-step-num{width:28px;height:28px;border-radius:50%;background:var(--vert);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;flex-shrink:0}
+.abo-step-text{font-size:.85rem;line-height:1.5}
+</style>
+</head>
+<body><div id="splash"><div class="sp-icon">🌾</div><div class="sp-title">سوق الفلاح</div><div class="sp-sub">كل المنتجات الفلاحية في يدك</div><div class="sp-bar"><div class="sp-fill"></div></div></div>
 <div class="toast" id="toast"></div>
 
 <div id="modal-bg" class="modal-bg" style="display:none" onclick="closeModal()">
@@ -358,7 +374,13 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div>
 
 <div class="screen" id="screen-profil">
-<div class="profil-header"><div class="profil-avatar">👨‍🌾</div><div class="profil-nom" id="p-nom">—</div><div class="profil-region" id="p-reg">—</div>
+<div class="profil-header">
+<div class="profil-avatar">👨‍🌾</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:4px">
+<div class="profil-nom" id="p-nom">—</div>
+<div id="p-premium-badge" style="display:none"><span class="badge-premium">موثوق ✅</span></div>
+</div>
+<div class="profil-region" id="p-reg">—</div>
 <div class="profil-stats">
 <div class="profil-stat"><div class="profil-stat-v" id="p-anns">0</div><div class="profil-stat-l">إعلانات</div></div>
 <div class="profil-stat"><div class="profil-stat-v" id="p-note">—</div><div class="profil-stat-l">التقييم</div></div>
@@ -366,9 +388,58 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div></div>
 <div class="profil-menu">
 <div class="profil-item" onclick="goTo('mes-ann')"><div class="profil-item-left"><span>📋</span><span class="profil-item-label">إعلاناتي وطلباتي</span></div><span>›</span></div>
+<div class="profil-item" onclick="goTo('abonnement')"><div class="profil-item-left"><span>⭐</span><span class="profil-item-label">الاشتراك المميز</span></div><span>›</span></div>
 <div class="profil-item" onclick="showToast('قريبا!')"><div class="profil-item-left"><span>⚙️</span><span class="profil-item-label">الإعدادات</span></div><span>›</span></div>
 <div class="profil-item" onclick="logout()"><div class="profil-item-left"><span>🚪</span><span class="profil-item-label" style="color:var(--rouge)">خروج</span></div><span>›</span></div>
 </div></div>
+
+<div class="screen" id="screen-abonnement">
+<div class="pub-header"><button class="pub-back" onclick="goTo('profil')">←</button><div class="pub-title">الاشتراك المميز</div></div>
+<div class="abo-header">
+<div style="font-size:3rem;margin-bottom:8px">⭐</div>
+<div style="font-family:'Amiri',serif;font-size:1.5rem;color:#1a1a2e;font-weight:700">كن بياع موثوق</div>
+<div style="font-size:.85rem;color:rgba(0,0,0,.6);margin-top:4px">وصل لأكثر مشترين وبيع أسرع</div>
+</div>
+<div class="abo-plan">
+<div class="abo-plan-title">🆓 مجاني — دائماً</div>
+<div style="font-size:.82rem;color:var(--gris);margin-bottom:12px">الأساسيات مجانية</div>
+<div class="abo-feature"><span>✅</span><span>رؤية جميع الإعلانات</span></div>
+<div class="abo-feature"><span>✅</span><span>3 إعلانات فعالة</span></div>
+<div class="abo-feature"><span>✅</span><span>التواصل مع البائعين</span></div>
+<div class="abo-feature"><span>❌</span><span style="color:var(--gris)">badge موثوق</span></div>
+<div class="abo-feature"><span>❌</span><span style="color:var(--gris)">إعلانات بلا حدود</span></div>
+</div>
+<div class="abo-plan premium">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+<div class="abo-plan-title">⭐ بريميوم</div>
+<span class="badge-premium">موثوق ✅</span>
+</div>
+<div style="margin-bottom:12px"><span class="abo-plan-price">29</span><span style="font-size:.85rem;color:var(--gris)"> درهم/شهر</span></div>
+<div class="abo-feature"><span>✅</span><span>إعلانات بلا حدود</span></div>
+<div class="abo-feature"><span>✅</span><span>badge موثوق ✅ على إعلاناتك</span></div>
+<div class="abo-feature"><span>✅</span><span>ظهور في المقدمة</span></div>
+<div class="abo-feature"><span>✅</span><span>تقييم أفضل للمشترين</span></div>
+<div style="margin-top:14px" id="abo-status-wrap">
+<div id="abo-active-msg" style="display:none;background:var(--vertp);border-radius:10px;padding:12px;text-align:center;font-weight:700;color:var(--vert2);font-size:.88rem">✅ اشتراكك فعال حتى <span id="abo-fin"></span></div>
+<button id="abo-btn" class="btn-primary btn-gold" onclick="showAboForm()" style="margin-top:0">💳 اشترك الآن — 29 درهم</button>
+</div>
+</div>
+<div class="abo-steps">
+<div style="font-family:'Amiri',serif;font-size:1.1rem;color:var(--vert);margin-bottom:12px">كيفاش تشترك عبر CashPlus</div>
+<div class="abo-step"><div class="abo-step-num">1</div><div class="abo-step-text">روح لأقرب نقطة CashPlus ديالك</div></div>
+<div class="abo-step"><div class="abo-step-num">2</div><div class="abo-step-text">حول <strong>29 درهم</strong> على الرقم: <strong id="abo-tel-admin" style="color:var(--vert)">0600000000</strong></div></div>
+<div class="abo-step"><div class="abo-step-num">3</div><div class="abo-step-text">CashPlus غادي يبعثلك SMS فيه كود المعاملة</div></div>
+<div class="abo-step"><div class="abo-step-num">4</div><div class="abo-step-text">دخل الكود هنا وحسابك يتفعل فالحين</div></div>
+</div>
+<div id="abo-form" style="display:none;margin:0 16px 16px">
+<div style="background:#fff;border-radius:16px;padding:18px;box-shadow:var(--sh)">
+<div style="font-family:'Amiri',serif;font-size:1.1rem;color:var(--vert);margin-bottom:14px">أدخل كود CashPlus</div>
+<div class="form-group"><label class="form-label">كود المعاملة</label><input type="text" class="form-input" id="abo-code" placeholder="مثلا: TXN123456789" style="text-align:left;direction:ltr"/></div>
+<div class="form-group"><label class="form-label">رقم هاتف CashPlus ديالك</label><input type="tel" class="form-input" id="abo-tel" placeholder="06XXXXXXXX"/></div>
+<button class="btn-primary btn-gold" onclick="activerAbonnement()">✅ تفعيل الاشتراك</button>
+<button style="width:100%;padding:12px;border:none;background:transparent;color:var(--gris);font-family:'Tajawal',sans-serif;font-size:.9rem;cursor:pointer" onclick="hideAboForm()">إلغاء</button>
+</div></div>
+</div>
 
 <div class="screen" id="screen-mes-ann">
 <div class="pub-header"><button class="pub-back" onclick="goTo('profil')">←</button><div class="pub-title">إعلاناتي وطلباتي</div></div>
@@ -384,14 +455,13 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="nav-item" id="ni-publish" onclick="goTo('publish')"><div class="nav-icon">➕</div><div class="nav-label">نشر</div></div>
 <div class="nav-item" id="ni-messages" onclick="goTo('messages')"><div class="nav-icon">💬</div><div class="nav-label">رسائل</div></div>
 <div class="nav-item" id="ni-profil" onclick="goTo('profil')"><div class="nav-icon">👤</div><div class="nav-label">حسابي</div></div>
-</div>
-</head>
-<body><script>
+</div><script>
 var sb=supabase.createClient('https://ryzhqtcukeypsqqbxrqp.supabase.co','sb_publishable__s1wfkhIKodWAGThY8r-pw_Tg6NioE1');
 var CU=null,SP='',SC='',PT='sell',_a=[],_d=[],_eid=null,_et=null,_htab='offres',_matab='ann',_fann='',_fdem='';
 var EM={'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','البصلة':'🧅','البطاطا':'🥔','الجزر':'🥕','الثوم':'🧄','الكوسة':'🥬','الباذنجان':'🍆','الملفوف':'🥦','الخس':'🥗','الفاصوليا':'🫘','الحمص':'🟡','العدس':'🟤','الفول':'🫘','الذرة':'🌽','الفلفل الحار':'🌶️','الكرفس':'🌿','الشمندر':'🔴','اللفت':'🟣','البرتقال':'🍊','الليمون':'🍋','البطيخ':'🍉','التفاح':'🍎','العنب':'🍇','التين':'🫐','الكليمنتين':'🍊','الرمان':'🍎','المشماش':'🍑','الكرز':'🍒','الخوخ':'🍑','الفراولة':'🍓','الموز':'🍌','الأفوكا':'🥑','التمر':'🌴','الزيتون':'🫒','الدلاح':'🍈','حليب':'🥛','دجاج':'🐓','بيض':'🥚','أغنام':'🐑','بقر':'🐄','ماعز':'🐐','سمك':'🐟','عسل':'🍯'};
 var CL={'legumes':'🥕 خضر','fruits':'🍊 فواكه','agricole':'🌾 فلاحية','animal':'🐄 حيوانية'};
 var _nAid=null,_nUid=null,_nStar=0;
+var ADMIN_TEL='0661996001';
 
 window.onload=function(){
   setTimeout(function(){
@@ -415,6 +485,7 @@ function goTo(id){
   if(id==='publish')resetPub();
   if(id==='messages')loadMsgs();
   if(id==='mes-ann')loadMA();
+  if(id==='abonnement')loadAbo();
 }
 
 function showApp(){document.getElementById('bnav').style.display='flex';goTo('home');if(CU)document.getElementById('home-name').textContent=CU.nom+' 👋';}
@@ -477,7 +548,7 @@ function switchTab(tab){
 async function loadAnn(filter){
   var g=document.getElementById('grid');
   g.innerHTML='<div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
-  var q=sb.from('annonces').select('*,u:utilisateurs(nom,region,note_moyenne)').eq('statut','active').order('created_at',{ascending:false}).limit(30);
+  var q=sb.from('annonces').select('*,u:utilisateurs(nom,region,note_moyenne,premium)').eq('statut','active').order('created_at',{ascending:false}).limit(30);
   if(filter==='legumes')q=q.eq('categorie','legumes');
   else if(filter==='fruits')q=q.eq('categorie','fruits');
   else if(filter==='agricole')q=q.eq('categorie','agricole');
@@ -488,8 +559,10 @@ async function loadAnn(filter){
   _a=r.data;
   g.innerHTML=r.data.map(function(a,i){
     var em=EM[a.produit]||'🌾';
+    var isPrem=a.u&&a.u.premium;
     var note=a.u&&a.u.note_moyenne?'<div style="font-size:.65rem;color:var(--or)">'+a.u.note_moyenne+' ⭐</div>':'';
-    return '<div class="ann-card" onclick="openA('+i+')">'+(a.photo_url?'<img class="ann-photo" src="'+a.photo_url+'" loading="lazy"/>':'<div class="ann-pp">'+em+'</div>')+'<div class="ann-body"><div class="ann-produit">'+em+' '+a.produit+'</div><div class="ann-region">📍 '+a.ville+'</div><div class="ann-footer"><div><span class="ann-prix">'+a.prix+'</span><span class="ann-unite"> د.م/'+a.unite+'</span></div><div><div class="ann-qty">'+a.quantite+' '+a.unite+'</div>'+note+'</div></div></div></div>';
+    var badge=isPrem?'<div style="margin-bottom:4px"><span class="badge-premium">موثوق ✅</span></div>':'';
+    return '<div class="ann-card'+(isPrem?' premium':'')+'" onclick="openA('+i+')">'+(a.photo_url?'<img class="ann-photo" src="'+a.photo_url+'" loading="lazy"/>':'<div class="ann-pp">'+em+'</div>')+'<div class="ann-body">'+badge+'<div class="ann-produit">'+em+' '+a.produit+'</div><div class="ann-region">📍 '+a.ville+'</div><div class="ann-footer"><div><span class="ann-prix">'+a.prix+'</span><span class="ann-unite"> د.م/'+a.unite+'</span></div><div><div class="ann-qty">'+a.quantite+' '+a.unite+'</div>'+note+'</div></div></div></div>';
   }).join('');
 }
 
@@ -518,10 +591,11 @@ function openA(i){
   var unom=(a.u&&a.u.nom)?a.u.nom:'بياع';
   var ureg=(a.u&&a.u.region)?a.u.region:'';
   var unote=(a.u&&a.u.note_moyenne)?'⭐ '+a.u.note_moyenne:'بدون تقييم';
+  var isPrem=a.u&&a.u.premium;
   window._ca=a;
   var img=a.photo_url?'<img src="'+a.photo_url+'" style="width:100%;height:240px;object-fit:cover"/>':'<div style="height:240px;background:linear-gradient(135deg,var(--vertp),#d4edda);display:flex;align-items:center;justify-content:center;font-size:7rem">'+em+'</div>';
   var tags='<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px"><div style="background:#f5f7fa;border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">⚖️ '+a.quantite+' '+a.unite+'</div><div style="background:#f5f7fa;border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">'+(CL[a.categorie]||a.categorie)+'</div>'+(a.description?'<div style="background:#f5f7fa;border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">💬 '+a.description+'</div>':'')+'</div>';
-  var vcard='<div style="background:var(--vertp);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:16px"><div style="width:46px;height:46px;border-radius:50%;background:var(--vert);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">👨‍🌾</div><div><div style="font-weight:800;font-size:.9rem">'+unom+'</div><div style="font-size:.75rem;color:var(--gris)">📍 '+ureg+'</div><div style="font-size:.75rem;color:var(--or);margin-top:2px">'+unote+'</div></div></div>';
+  var vcard='<div style="background:var(--vertp);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:16px"><div style="width:46px;height:46px;border-radius:50%;background:var(--vert);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">👨‍🌾</div><div><div style="font-weight:800;font-size:.9rem">'+unom+(isPrem?' <span class="badge-premium">موثوق ✅</span>':'')+'</div><div style="font-size:.75rem;color:var(--gris)">📍 '+ureg+'</div><div style="font-size:.75rem;color:var(--or);margin-top:2px">'+unote+'</div></div></div>';
   var btns=own?
     '<button class="cbtn o" onclick="openEdit(\''+a.id+'\',\'ann\')">✏️ تعديل الإعلان</button>'+
     '<button class="cbtn g" onclick="markVendu(\''+a.id+'\')">✅ تم البيع</button>'+
@@ -587,9 +661,7 @@ async function saveNotation(){
     var moy=Math.round((total/rn.data.length)*10)/10;
     await sb.from('utilisateurs').update({note_moyenne:moy,nb_transactions:rn.data.length}).eq('id',_nUid);
   }
-  closeNotation();
-  showToast('✅ شكرا على تقييمك!');
-  loadAnn(_fann);
+  closeNotation();showToast('✅ شكرا على تقييمك!');loadAnn(_fann);
 }
 
 function openEdit(id,type){
@@ -631,8 +703,7 @@ async function saveEdit(){
 async function markVendu(id){
   if(!confirm('تأكيد: تم بيع هذا المنتج؟'))return;
   await sb.from('annonces').update({statut:'vendue'}).eq('id',id);
-  closeDet();showToast('✅ تم تسجيل البيع!');
-  loadAnn(_fann);loadMA();
+  closeDet();showToast('✅ تم تسجيل البيع!');loadAnn(_fann);loadMA();
 }
 
 async function delAnn(id){
@@ -645,6 +716,56 @@ async function delDem(id){
   if(!confirm('تأكيد: حذف هذا الطلب؟'))return;
   await sb.from('demandes').delete().eq('id',id);
   closeDet();showToast('🗑️ تم الحذف');loadDem(_fdem);loadMA();
+}
+
+async function loadAbo(){
+  if(!CU)return;
+  document.getElementById('abo-tel-admin').textContent=ADMIN_TEL;
+  var r=await sb.from('abonnements').select('*').eq('user_id',CU.id).eq('statut','active').order('created_at',{ascending:false}).limit(1);
+  var aboBtn=document.getElementById('abo-btn');
+  var aboMsg=document.getElementById('abo-active-msg');
+  if(!r.error&&r.data&&r.data.length>0){
+    var abo=r.data[0];
+    var fin=new Date(abo.date_fin);
+    var today=new Date();
+    if(fin>today){
+      aboMsg.style.display='block';
+      document.getElementById('abo-fin').textContent=fin.toLocaleDateString('ar-MA');
+      aboBtn.style.display='none';
+      return;
+    }
+  }
+  aboMsg.style.display='none';
+  aboBtn.style.display='block';
+}
+
+function showAboForm(){
+  document.getElementById('abo-form').style.display='block';
+  document.getElementById('abo-btn').style.display='none';
+}
+
+function hideAboForm(){
+  document.getElementById('abo-form').style.display='none';
+  document.getElementById('abo-btn').style.display='block';
+}
+
+async function activerAbonnement(){
+  var code=document.getElementById('abo-code').value.trim();
+  var tel=document.getElementById('abo-tel').value.trim();
+  if(!code||!tel){showToast('⚠️ كمل جميع المعلومات');return;}
+  if(code.length<6){showToast('⚠️ الكود غير صحيح');return;}
+  var btn=event.target;btn.disabled=true;btn.textContent='...';
+  var ex=await sb.from('abonnements').select('id').eq('code_transaction',code).maybeSingle();
+  if(ex.data){btn.disabled=false;btn.textContent='✅ تفعيل الاشتراك';showToast('❌ هذا الكود استُعمل من قبل');return;}
+  var fin=new Date();fin.setDate(fin.getDate()+30);
+  var r=await sb.from('abonnements').insert([{user_id:CU.id,code_transaction:code,montant:29,date_fin:fin.toISOString(),statut:'active'}]);
+  if(r.error){btn.disabled=false;btn.textContent='✅ تفعيل الاشتراك';showToast('❌ '+r.error.message);return;}
+  await sb.from('utilisateurs').update({premium:true,premium_fin:fin.toISOString()}).eq('id',CU.id);
+  var ru=await sb.from('utilisateurs').select('*').eq('id',CU.id).single();
+  if(!ru.error&&ru.data){CU=ru.data;localStorage.setItem('fellah_user',JSON.stringify(CU));}
+  btn.disabled=false;btn.textContent='✅ تفعيل الاشتراك';
+  hideAboForm();showToast('🎉 مبروك! اشتراكك فعال لمدة 30 يوم');
+  loadAbo();loadProfil();
 }
 
 async function loadMA(){
@@ -837,14 +958,17 @@ async function pub(){
 async function loadProfil(){
   if(!CU)return;
   var r=await sb.from('utilisateurs').select('*').eq('id',CU.id).single();
-  if(!r.error&&r.data)CU=r.data;
+  if(!r.error&&r.data){CU=r.data;localStorage.setItem('fellah_user',JSON.stringify(CU));}
   document.getElementById('p-nom').textContent=CU.nom;
   document.getElementById('p-reg').textContent='📍 '+CU.region;
   var ra=await sb.from('annonces').select('id').eq('vendeur_id',CU.id);
   document.getElementById('p-anns').textContent=ra.data?ra.data.length:0;
   document.getElementById('p-note').textContent=CU.note_moyenne?CU.note_moyenne+' ⭐':'—';
   document.getElementById('p-trans').textContent=CU.nb_transactions||0;
+  var badge=document.getElementById('p-premium-badge');
+  if(CU.premium){badge.style.display='inline';}else{badge.style.display='none';}
 }
 </script>
 </body>
 </html>
+
