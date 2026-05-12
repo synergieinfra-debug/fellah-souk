@@ -534,9 +534,8 @@ function openDem(i){
   window._curD=d;
 }
 
-function closeDet(reload){
+function closeDet(){
   var d=document.getElementById('det');if(d)d.remove();
-  if(reload){if(_htab==='demandes')loadDem();else loadAnn();}
 }
 
 function openEdit(id,type){
@@ -556,6 +555,7 @@ function openEdit(id,type){
 function closeModal(){document.getElementById('modal-bg').style.display='none';}
 
 async function saveEdit(){
+async function saveEdit(){
   var prod=document.getElementById('e-prod').value.trim();
   var qte=document.getElementById('e-qte').value;
   var unite=document.getElementById('e-unite').value;
@@ -570,8 +570,11 @@ async function saveEdit(){
   var r=await sb.from(table).update(upd).eq('id',_eid);
   btn.disabled=false;btn.textContent='✅ حفظ التعديلات';
   if(r.error){showToast('❌ '+r.error.message);return;}
-  closeModal();closeDet(true);showToast('✅ تم التعديل بنجاح!');
-loadMA();
+  closeModal();
+  closeDet();
+  showToast('✅ تم التعديل بنجاح!');
+  loadMA();
+  if(_htab==='demandes')loadDem();else loadAnn();
 }
 
 async function markVendu(id){
