@@ -438,14 +438,19 @@ async function register(){
 function logout(){CU=null;localStorage.removeItem('fellah_user');document.getElementById('bnav').style.display='none';document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});document.getElementById('screen-auth').classList.add('active');}
 
 function switchTab(tab){
-  _htab=tab;
+  _htab=tab;_fann='';_fdem='';
   document.getElementById('tab-offres').classList.toggle('active',tab==='offres');
   document.getElementById('tab-demandes').classList.toggle('active',tab==='demandes');
   document.getElementById('fo').style.display=tab==='offres'?'block':'none';
   document.getElementById('fd').style.display=tab==='demandes'?'block':'none';
   document.getElementById('sec-lbl').textContent=tab==='offres'?'إعلانات اليوم':'طلبات الشراء';
+  document.querySelectorAll('#fo .filter-chip').forEach(function(c){c.classList.remove('active');});
+  document.querySelectorAll('#fd .filter-chip').forEach(function(c){c.classList.remove('active');});
+  document.querySelector('#fo .filter-chip').classList.add('active');
+  document.querySelector('#fd .filter-chip').classList.add('active');
   if(tab==='offres')loadAnn();else loadDem();
 }
+
 
 async function loadAnn(filter){
   var g=document.getElementById('grid');
