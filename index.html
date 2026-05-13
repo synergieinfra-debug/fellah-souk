@@ -930,7 +930,14 @@ function prevPhoto(e){
   r.readAsDataURL(f);
 }
 
-async function pub(){
+async function pub(){if(PT==='sell'&&!CU.premium){
+  var rc=await sb.from('annonces').select('id').eq('vendeur_id',CU.id).eq('statut','active');
+  if(!rc.error&&rc.data&&rc.data.length>=3){
+    showToast('⚠️ وصلت للحد الأقصى — اشترك للنشر بلا حدود',4000);
+    setTimeout(function(){goTo('abonnement');},1500);
+    return;
+  }
+}
   if(!SP){showToast('⚠️ اكتب اسم المنتج');return;}
   if(!SC){showToast('⚠️ اختار نوع المنتج');return;}
   var qte=document.getElementById('p-qte').value;
