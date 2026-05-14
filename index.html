@@ -453,7 +453,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="bnav" id="bnav" style="display:none">
 <div class="nav-item active" id="ni-home" onclick="goTo('home')"><div class="nav-icon">🏠</div><div class="nav-label">الرئيسية</div></div>
 <div class="nav-item" id="ni-publish" onclick="goTo('publish')"><div class="nav-icon">➕</div><div class="nav-label">نشر</div></div>
-<div class="nav-item" id="ni-messages" onclick="goTo('messages')"><div class="nav-icon">💬</div><div class="nav-label">رسائل</div></div>
+
 <div class="nav-item" id="ni-profil" onclick="goTo('profil')"><div class="nav-icon">👤</div><div class="nav-label">حسابي</div></div>
 </div><script>
 var sb=supabase.createClient('https://ryzhqtcukeypsqqbxrqp.supabase.co','sb_publishable__s1wfkhIKodWAGThY8r-pw_Tg6NioE1');
@@ -462,7 +462,7 @@ var EM={'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','�
 var CL={'legumes':'🥕 خضر','fruits':'🍊 فواكه','agricole':'🌾 فلاحية','animal':'🐄 حيوانية'};
 var _nAid=null,_nUid=null,_nStar=0;
 var ADMIN_TEL='0661996001';
-
+<div class="nav-item" id="ni-messages" onclick="goTo('messages')"><div class="nav-icon">💬</div><div class="nav-label">رسائل</div><div id="msg-badge" style="display:none;position:absolute;top:2px;right:18px;background:var(--rouge);color:#fff;border-radius:10px;font-size:.55rem;font-weight:800;padding:1px 5px;min-width:16px;text-align:center">0</div></div>
 window.onload=function(){
   setTimeout(function(){
     var s=document.getElementById('splash');
