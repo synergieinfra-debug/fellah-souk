@@ -541,7 +541,7 @@ async function register(){
   var region=document.getElementById('reg-region').value;
   var type=document.getElementById('reg-type').value;
   if(!nom||!tel||!region){showErr('كمل جميع المعلومات');return;}
-  if(tel.length<9){showErr('رقم الهاتف غير صحيح');return;}
+  if(tel.length<8||!/^\+?[\d\s\-]{8,15}$/.test(tel)){showErr('رقم الهاتف غير صحيح');return;}
   var btn=event.target;btn.disabled=true;btn.textContent='...';
   var ex=await sb.from('utilisateurs').select('id').eq('telephone',tel).maybeSingle();
   if(ex.data){btn.disabled=false;btn.textContent='✅ إنشاء الحساب';showErr('هاد الرقم مسجل — استعمل دخول');return;}
