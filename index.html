@@ -645,7 +645,7 @@ function openDem(i){
   var unom=(d.u&&d.u.nom)?d.u.nom:'مشتري';
   var ureg=(d.u&&d.u.region)?d.u.region:'';
   window._cd=d;
-  var img='<div style="height:200px;background:linear-gradient(135deg,var(--bleup),#bbdefb);display:flex;align-items:center;justify-content:center;font-size:6rem">'+em+'</div>';
+  var img='<div style="heighpu160px;background:linear-gradient(135deg,var(--bleup),#bbdefb);display:flex;align-items:center;justify-content:center;font-size:6rem">'+em+'</div>';
   var tags='<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px"><div style="background:var(--bleup);border:1px solid #bbdefb;border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">⚖️ '+d.quantite+' '+d.unite+'</div><div style="background:var(--bleup);border:1px solid #bbdefb;border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">'+(CL[d.categorie]||d.categorie)+'</div>'+(d.description?'<div style="background:var(--bleup);border:1px solid #bbdefb;border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600">💬 '+d.description+'</div>':'')+'</div>';
   var vcard='<div style="background:var(--bleup);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:16px"><div style="width:46px;height:46px;border-radius:50%;background:var(--bleu);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">🛒</div><div><div style="font-weight:800;font-size:.9rem">'+unom+'</div><div style="font-size:.75rem;color:var(--gris)">📍 '+ureg+'</div></div></div>';
   var btns=own?
