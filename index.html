@@ -488,7 +488,13 @@ function goTo(id){
   if(id==='abonnement')loadAbo();
 }
 
-function showApp(){document.getElementById('bnav').style.display='flex';goTo('home');if(CU)document.getElementById('home-name').textContent=CU.nom+' 👋';}
+function showApp(){
+  document.getElementById('bnav').style.display='flex';
+  goTo('home');
+  if(CU)document.getElementById('home-name').textContent=CU.nom+' 👋';
+  checkUnread();
+  setInterval(checkUnread,30000);
+}
 
 function switchAuth(t){
   document.querySelectorAll('.auth-tab-btn').forEach(function(b){b.classList.remove('active');});
@@ -839,7 +845,17 @@ async function sendMsg(aid,uid){
   loadChat(aid,uid);
 }
 
-async function loadMsgs(){
+async function loadMsgs(){async function checkUnread(){
+  if(!CU)return;
+  var r=await sb.from('messages').select('id').eq('destinataire_id',CU.id).eq('lu',false);
+  var badge=document.getElementById('msg-badge');
+  if(!r.error&&r.data&&r.data.length>0){
+    badge.textContent=r.data.length;
+    badge.style.display='block';
+  }else{
+    badge.style.display='none';
+  }
+}
   var list=document.getElementById('msg-list');
   list.innerHTML='<div class="loading"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
   var r=await sb.from('messages').select('*,exp:utilisateurs!messages_expediteur_id_fkey(nom),dest:utilisateurs!messages_destinataire_id_fkey(nom)').or('expediteur_id.eq.'+CU.id+',destinataire_id.eq.'+CU.id).order('created_at',{ascending:false});
