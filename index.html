@@ -861,7 +861,8 @@ async function loadMsgs(){async function checkUnread(){
   var r=await sb.from('messages').select('*,exp:utilisateurs!messages_expediteur_id_fkey(nom),dest:utilisateurs!messages_destinataire_id_fkey(nom)').or('expediteur_id.eq.'+CU.id+',destinataire_id.eq.'+CU.id).order('created_at',{ascending:false});
   if(r.error||!r.data||r.data.length===0){list.innerHTML='<div style="text-align:center;padding:50px 20px"><div style="font-size:3.5rem;margin-bottom:14px">💬</div><div style="font-size:1.1rem;font-weight:800">ما عندكش رسائل بعد</div></div>';return;}
   var seen=new Set();
-  var uniq=r.data.filter(function(m){var k=m.annonce_id+'_'+(m.expediteur_id===CU.id?m.destinataire_id:m.expediteur_id);if(seen.has(k))return false;seen.add(k);return true;});
+  var uniq=r.data.filter(function(m){var k=m.annonce_id+'_'+(m.expediteur_id===CU.id?m.destinataire_id:m.expediteur_id);if(seen.has(k))return false;seen.add(k);return true;});await sb.from('messages').update({lu:true}).eq('destinataire_id',CU.id).eq('lu',false);
+checkUnread();
   list.innerHTML=uniq.map(function(m){
     var isE=m.expediteur_id===CU.id;
     var autre=isE?(m.dest&&m.dest.nom?m.dest.nom:'?'):(m.exp&&m.exp.nom?m.exp.nom:'?');
