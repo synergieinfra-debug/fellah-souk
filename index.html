@@ -845,7 +845,7 @@ async function sendMsg(aid,uid){
   loadChat(aid,uid);
 }
 
-async function loadMsgs(){async function checkUnread(){
+async function checkUnread(){
   if(!CU)return;
   var r=await sb.from('messages').select('id').eq('destinataire_id',CU.id).eq('lu',false);
   var badge=document.getElementById('msg-badge');
@@ -856,6 +856,7 @@ async function loadMsgs(){async function checkUnread(){
     badge.style.display='none';
   }
 }
+async function loadMsgs(){
   var list=document.getElementById('msg-list');
   list.innerHTML='<div class="loading"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
   var r=await sb.from('messages').select('*,exp:utilisateurs!messages_expediteur_id_fkey(nom),dest:utilisateurs!messages_destinataire_id_fkey(nom)').or('expediteur_id.eq.'+CU.id+',destinataire_id.eq.'+CU.id).order('created_at',{ascending:false});
