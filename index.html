@@ -430,7 +430,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="abo-plan-title">⭐ بريميوم</div>
 <span class="badge-premium">موثوق ✅</span>
 </div>
-<div style="margin-bottom:12px"><span class="abo-plan-price"g49</span><span style="font-size:.85rem;color:var(--gris)"> درهم/شهر</span></div>
+<div style="margin-bottom:12px"><span class="abo-plan-price">49</span><span style="font-size:.85rem;color:var(--gris)"> درهم/شهر</span></div>
 <div class="abo-feature"><span>✅</span><span>إعلانات بلا حدود</span></div>
 <div class="abo-feature"><span>✅</span><span>التواصل مع البائعين والمشترين</span></div>
 <div class="abo-feature"><span>✅</span><span>badge موثوق ✅ على إعلاناتك</span></div>
@@ -510,6 +510,7 @@ function confirmOui(){
   document.getElementById('confirm-overlay').classList.remove('show');
   logout();
 }
+
 function confirmNon(){
   document.getElementById('confirm-overlay').classList.remove('show');
   goTo('home');
@@ -670,7 +671,7 @@ function openA(i){
     '<button class="cbtn r" onclick="delAnn(\''+a.id+'\')">🗑️ حذف الإعلان</button>':
     (CU&&CU.premium?
       '<button class="cbtn g" onclick="openChat(\''+a.id+'\',\''+a.vendeur_id+'\',\''+unom+'\',\''+a.produit+'\')">💬 تواصل مع البياع</button>':
-      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع البائعين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك —g49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>')+
+      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع البائعين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>')+
     '<button class="cbtn star" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\')">⭐ قيم البياع</button>')+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header"><div class="det-title">'+em+' '+a.produit+'</div></div>'+img+info+tags+vcard+btns;
