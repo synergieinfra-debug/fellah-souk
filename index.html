@@ -1042,7 +1042,18 @@ async function loadProfil(){
   document.getElementById('p-note').textContent=CU.note_moyenne?CU.note_moyenne+' ⭐':'—';
   document.getElementById('p-trans').textContent=CU.nb_transactions||0;
   var badge=document.getElementById('p-premium-badge');
-  if(CU.premium){badge.style.display='inline';}else{badge.style.display='none';}
+  if(CU.premium){badge.style.display='inline';}else{badge.style.display='none';}var adminBtn=document.getElementById('admin-btn');
+if(adminBtn){
+  if(CU.telephone==='0661996001'){
+    adminBtn.style.display='flex';
+    sb.from('config').select('valeur').eq('cle','mode_gratuit').single().then(function(r){
+      var actif=!r.error&&r.data&&r.data.valeur==='true';
+      adminBtn.innerHTML='<span>🎛️</span><span class="profil-item-label">'+(actif?'✅ الوضع المجاني مفعل — إيقاف':'❌ الوضع المجاني موقف — تفعيل')+'</span>';
+    });
+  }else{
+    adminBtn.style.display='none';
+  }
+}
 }
 </script>
 </body>
