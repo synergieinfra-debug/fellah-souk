@@ -514,6 +514,7 @@ function goTo(id){
   if(id==='messages')loadMsgs();
   if(id==='mes-ann')loadMA();
   if(id==='abonnement')loadAbo();
+  history.pushState(null,'',location.href);
 }
 
 function showApp(){
