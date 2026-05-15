@@ -509,9 +509,7 @@ window.onload=function(){
 
 function confirmOui(){
   document.getElementById('confirm-overlay').classList.remove('show');
-  document.getElementById('confirm-overlay').innerHTML='<div class="confirm-box"><div style="font-size:3rem;margin-bottom:12px">🌾</div><div class="confirm-box-title">شكرا لاستخدامك سوق الفلاح</div><div class="confirm-box-msg">يمكنك الآن إغلاق التطبيق يدويا</div></div>';
-  document.getElementById('confirm-overlay').classList.add('show');
-  setTimeout(function(){document.getElementById('confirm-overlay').classList.remove('show');},3000);
+  logout();
 }
 function confirmNon(){
   document.getElementById('confirm-overlay').classList.remove('show');
