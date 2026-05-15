@@ -498,8 +498,7 @@ window.onload=function(){
     if(id==='screen-publish'||id==='screen-messages'||id==='screen-profil'){goTo('home');return;}
     if(id==='screen-mes-ann'||id==='screen-abonnement'){goTo('profil');return;}
     if(id==='screen-home'||id===''||!id){
-      var ov2=document.getElementById('confirm-overlay');
-      if(ov2){ov2.classList.add('show');}
+      document.getElementById('confirm-overlay').classList.add('show');
       history.pushState(null,'',location.href);
       return;
     }
