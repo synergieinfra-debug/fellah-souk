@@ -821,7 +821,7 @@ async function activerAbonnement(){
   var ex=await sb.from('abonnements').select('id').eq('code_transaction',code).maybeSingle();
   if(ex.data){btn.disabled=false;btn.textContent='✅ تفعيل الاشتراك';showToast('❌ هذا الكود استُعمل من قبل');return;}
   var fin=new Date();fin.setDate(fin.getDate()+30);
-  var r=await sb.from('abonnements').insert([{user_id:CU.id,code_transaction:code,montant:29,date_fin:fin.toISOString(),statut:'active'}]);
+  var r=await sb.from('abonnements').insert([{user_id:CU.id,code_transaction:code,montant:49,date_fin:fin.toISOString(),statut:'active'}]);
   if(r.error){btn.disabled=false;btn.textContent='✅ تفعيل الاشتراك';showToast('❌ '+r.error.message);return;}
   await sb.from('utilisateurs').update({premium:true,premium_fin:fin.toISOString()}).eq('id',CU.id);
   var ru=await sb.from('utilisateurs').select('*').eq('id',CU.id).single();
