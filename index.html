@@ -506,15 +506,10 @@ window.onload=function(){
   });
 };
 
-function confirmOui(){
-  document.getElementById('confirm-overlay').classList.remove('show');
-  logout();
-}
+function confirmOui(){document.getElementById('confirm-overlay').classList.remove('show');logout();}
+function confirmNon(){document.getElementById('confirm-overlay').classList.remove('show');goTo('home');}
 
-function confirmNon(){
-  document.getElementById('confirm-overlay').classList.remove('show');
-  goTo('home');
-}
+function isPremium(){return _gratuit||(CU&&CU.premium);}
 
 function showToast(m,d){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},d||3000);}
 
@@ -525,6 +520,12 @@ function checkUnread(){
     if(!badge)return;
     if(!r.error&&r.count>0){badge.textContent=r.count;badge.style.display='block';}
     else{badge.style.display='none';}
+  });
+}
+
+function loadConfig(){
+  sb.from('config').select('valeur').eq('cle','mode_gratuit').single().then(function(r){
+    _gratuit=(!r.error&&r.data&&r.data.valeur==='true');
   });
 }
 
@@ -545,15 +546,12 @@ function goTo(id){
 
 function showApp(){
   document.getElementById('bnav').style.display='flex';
+  loadConfig();
   goTo('home');
   if(CU)document.getElementById('home-name').textContent=CU.nom+' 👋';
   checkUnread();
   if(_interval)clearInterval(_interval);
   _interval=setInterval(checkUnread,30000);
-  sb.from('config').select('valeur').eq('cle','mode_gratuit').single().then(function(r){
-    if(!r.error&&r.data&&r.data.valeur==='true'){_gratuit=true;}
-    else{_gratuit=false;}
-  });
 }
 
 function switchAuth(t){
@@ -673,7 +671,7 @@ function openA(i){
     '<button class="cbtn o" onclick="openEdit(\''+a.id+'\',\'ann\')">✏️ تعديل الإعلان</button>'+
     '<button class="cbtn g" onclick="markVendu(\''+a.id+'\')">✅ تم البيع</button>'+
     '<button class="cbtn r" onclick="delAnn(\''+a.id+'\')">🗑️ حذف الإعلان</button>':
-    (_gratuit||(CU&&CU.premium))?
+    (isPremium()?
       '<button class="cbtn g" onclick="openChat(\''+a.id+'\',\''+a.vendeur_id+'\',\''+unom+'\',\''+a.produit+'\')">💬 تواصل مع البياع</button>':
       '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع البائعين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>')+
     '<button class="cbtn star" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\')">⭐ قيم البياع</button>')+'</div>';
@@ -698,7 +696,7 @@ function openDem(i){
   var btns='<div style="padding:10px 16px 20px">'+(own?
     '<button class="cbtn o" onclick="openEdit(\''+d.id+'\',\'dem\')">✏️ تعديل الطلب</button>'+
     '<button class="cbtn r" onclick="delDem(\''+d.id+'\')">🗑️ حذف الطلب</button>':
-    (_gratuit||(CU&&CU.premium))?
+    (isPremium()?
       '<button class="cbtn b" onclick="openChat(\''+d.id+'\',\''+d.acheteur_id+'\',\''+unom+'\',\''+d.produit+'\')">💬 أنا عندي هذا المنتج</button>':
       '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع المشترين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>'))+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
@@ -998,7 +996,7 @@ function prevPhoto(e){
 }
 
 async function pub(){
-  if(PT==='sell'&&!CU.premium){
+  if(PT==='sell'&&!isPremium()){
     var rc=await sb.from('annonces').select('id').eq('vendeur_id',CU.id).eq('statut','active');
     if(!rc.error&&rc.data&&rc.data.length>=3){
       showToast('⚠️ وصلت للحد الأقصى — اشترك للنشر بلا حدود',4000);
