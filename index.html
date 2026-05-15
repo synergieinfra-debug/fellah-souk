@@ -673,7 +673,7 @@ function openA(i){
     '<button class="cbtn o" onclick="openEdit(\''+a.id+'\',\'ann\')">✏️ تعديل الإعلان</button>'+
     '<button class="cbtn g" onclick="markVendu(\''+a.id+'\')">✅ تم البيع</button>'+
     '<button class="cbtn r" onclick="delAnn(\''+a.id+'\')">🗑️ حذف الإعلان</button>':
-    (CU&&CU.premium?
+    (_gratuit||CU&&CU.premium)?
       '<button class="cbtn g" onclick="openChat(\''+a.id+'\',\''+a.vendeur_id+'\',\''+unom+'\',\''+a.produit+'\')">💬 تواصل مع البياع</button>':
       '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع البائعين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>')+
     '<button class="cbtn star" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\')">⭐ قيم البياع</button>')+'</div>';
@@ -698,7 +698,7 @@ function openDem(i){
   var btns='<div style="padding:10px 16px 20px">'+(own?
     '<button class="cbtn o" onclick="openEdit(\''+d.id+'\',\'dem\')">✏️ تعديل الطلب</button>'+
     '<button class="cbtn r" onclick="delDem(\''+d.id+'\')">🗑️ حذف الطلب</button>':
-    (CU&&CU.premium?
+    (_gratuit||CU&&CU.premium)?
       '<button class="cbtn b" onclick="openChat(\''+d.id+'\',\''+d.acheteur_id+'\',\''+unom+'\',\''+d.produit+'\')">💬 أنا عندي هذا المنتج</button>':
       '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع المشترين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>'))+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
