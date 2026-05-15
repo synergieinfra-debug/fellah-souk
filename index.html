@@ -476,7 +476,7 @@ var sb=supabase.createClient('https://ryzhqtcukeypsqqbxrqp.supabase.co','sb_publ
 var CU=null,SP='',SC='',PT='sell',_a=[],_d=[],_eid=null,_et=null,_htab='offres',_matab='ann',_fann='',_fdem='';
 var EM={'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','البصلة':'🧅','البطاطا':'🥔','الجزر':'🥕','الثوم':'🧄','الكوسة':'🥬','الباذنجان':'🍆','الملفوف':'🥦','الخس':'🥗','الفاصوليا':'🫘','الحمص':'🟡','العدس':'🟤','الفول':'🫘','الذرة':'🌽','الفلفل الحار':'🌶️','الكرفس':'🌿','الشمندر':'🔴','اللفت':'🟣','البرتقال':'🍊','الليمون':'🍋','البطيخ':'🍉','التفاح':'🍎','العنب':'🍇','التين':'🫐','الكليمنتين':'🍊','الرمان':'🍎','المشماش':'🍑','الكرز':'🍒','الخوخ':'🍑','الفراولة':'🍓','الموز':'🍌','الأفوكا':'🥑','التمر':'🌴','الزيتون':'🫒','الدلاح':'🍈','حليب':'🥛','دجاج':'🐓','بيض':'🥚','أغنام':'🐑','بقر':'🐄','ماعز':'🐐','سمك':'🐟','عسل':'🍯'};
 var CL={'legumes':'🥕 خضر','fruits':'🍊 فواكه','agricole':'🌾 فلاحية','animal':'🐄 حيوانية'};
-var _nAid=null,_nUid=null,_nStar=0,_interval=null;
+var _nAid=null,_nUid=null,_nStar=0,_interval=null,_gratuit=false;
 
 window.onload=function(){
   setTimeout(function(){
@@ -550,6 +550,10 @@ function showApp(){
   checkUnread();
   if(_interval)clearInterval(_interval);
   _interval=setInterval(checkUnread,30000);
+  sb.from('config').select('valeur').eq('cle','mode_gratuit').single().then(function(r){
+    if(!r.error&&r.data&&r.data.valeur==='true'){_gratuit=true;}
+    else{_gratuit=false;}
+  });
 }
 
 function switchAuth(t){
