@@ -477,7 +477,8 @@ window.onload=function(){
     var active=document.querySelector('.screen.active');
     if(!active){history.pushState(null,'',location.href);return;}
     var id=active.id;
-    if(id==='screen-publish'||id==='screen-messages'||id==='screen-profil'){goTo('home');history.pushState(null,'',location.href);return;}
+    if(id==='screen-publish'||id==='screen-profil'){goTo('home');history.pushState(null,'',location.href);return;}
+if(id==='screen-messages'){goTo('home');history.pushState(null,'',location.href);return;}
     if(id==='screen-mes-ann'||id==='screen-abonnement'){goTo('profil');history.pushState(null,'',location.href);return;}
     if(id==='screen-home'){
       var ok=confirm('هل تريد الخروج من سوق الفلاح؟');
