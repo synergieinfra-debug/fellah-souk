@@ -481,8 +481,8 @@ window.onload=function(){
     if(id==='screen-mes-ann'||id==='screen-abonnement'){goTo('profil');history.pushState(null,'',location.href);return;}
     if(id==='screen-home'){
       var ok=confirm('هل تريد الخروج من سوق الفلاح؟');
-      if(ok){window.close();}
-      history.pushState(null,'',location.href);
+      if(ok){history.go(-history.length);}
+      else{history.pushState(null,'',location.href);}
       return;
     }
     history.pushState(null,'',location.href);
