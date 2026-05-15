@@ -1030,7 +1030,15 @@ async function pub(){
   showToast('✅ الإعلان نُشر!');
   goTo('home');setTimeout(function(){loadAnn(_fann);},100);
 }
-
+async function toggleGratuit(){
+  var r=await sb.from('config').select('valeur').eq('cle','mode_gratuit').single();
+  var actif=!r.error&&r.data&&r.data.valeur==='true';
+  var newVal=actif?'false':'true';
+  await sb.from('config').update({valeur:newVal}).eq('cle','mode_gratuit');
+  _gratuit=newVal==='true';
+  showToast(newVal==='true'?'✅ الوضع المجاني مفعل للجميع':'❌ الوضع المجاني موقف');
+  loadProfil();
+}
 async function loadProfil(){
   if(!CU)return;
   var r=await sb.from('utilisateurs').select('*').eq('id',CU.id).single();
