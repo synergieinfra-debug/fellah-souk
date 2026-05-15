@@ -140,7 +140,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .msg-time{font-size:.65rem;color:var(--gris);flex-shrink:0}
 .chat-screen{position:fixed;inset:0;background:#f5f7fa;z-index:400;overflow:hidden;max-width:430px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column}
 .chat-header{background:linear-gradient(135deg,var(--vert),var(--vert2));padding:14px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0}
-.chat-back{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:1.1rem;cursor:pointer}
 .chat-info{flex:1}
 .chat-name{color:#fff;font-weight:800;font-size:.95rem}
 .chat-sub{color:rgba(255,255,255,.7);font-size:.75rem;margin-top:2px}
@@ -182,16 +181,29 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .abo-step{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
 .abo-step:last-child{border-bottom:none}
 .abo-step-num{width:28px;height:28px;border-radius:50%;background:var(--vert);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;flex-shrink:0}
-.abo-step-text{font-size:.85rem;line-height:1.5}.confirm-bg{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:center;justify-content:center}
-.confirm-box{background:#fff;border-radius:20px;padding:28px 22px;width:85%;max-width:320px;text-align:center;box-shadow:var(--shd)}
-.confirm-title{font-family:'Amiri',serif;font-size:1.2rem;color:var(--vert);margin-bottom:8px}
-.confirm-msg{font-size:.88rem;color:var(--gris);margin-bottom:22px}
-.confirm-btns{display:flex;gap:10px}
-.confirm-btns button{flex:1;padding:12px;border:none;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer}
+.abo-step-text{font-size:.85rem;line-height:1.5}
+.confirm-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.6);z-index:99999;display:none;align-items:center;justify-content:center}
+.confirm-overlay.show{display:flex}
+.confirm-box{background:#fff;border-radius:20px;padding:28px 22px;width:80%;max-width:300px;text-align:center;box-shadow:var(--shd)}
+.confirm-box-title{font-family:'Amiri',serif;font-size:1.2rem;color:var(--vert);margin-bottom:8px}
+.confirm-box-msg{font-size:.88rem;color:var(--gris);margin-bottom:22px;line-height:1.5}
+.confirm-box-btns{display:flex;gap:10px}
+.confirm-box-btns button{flex:1;padding:12px;border:none;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer}
 </style>
 </head>
 <body><div id="splash"><div class="sp-icon">🌾</div><div class="sp-title">سوق الفلاح</div><div class="sp-sub">كل المنتجات الفلاحية في يدك</div><div class="sp-bar"><div class="sp-fill"></div></div></div>
 <div class="toast" id="toast"></div>
+
+<div id="confirm-overlay" class="confirm-overlay">
+<div class="confirm-box">
+<div class="confirm-box-title">🌾 سوق الفلاح</div>
+<div class="confirm-box-msg">هل تريد الخروج من التطبيق؟</div>
+<div class="confirm-box-btns">
+<button style="background:var(--rouge);color:#fff" onclick="confirmOui()">نعم، خروج</button>
+<button style="background:var(--vertp);color:var(--vert)" onclick="confirmNon()">لا، رجوع</button>
+</div>
+</div>
+</div>
 
 <div id="modal-bg" class="modal-bg" style="display:none" onclick="closeModal()">
 <div class="modal" onclick="event.stopPropagation()">
@@ -458,25 +470,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="nav-item active" id="ni-home" onclick="goTo('home')"><div class="nav-icon">🏠</div><div class="nav-label">الرئيسية</div></div>
 <div class="nav-item" id="ni-publish" onclick="goTo('publish')"><div class="nav-icon">➕</div><div class="nav-label">نشر</div></div>
 <div class="nav-item" id="ni-messages" onclick="goTo('messages')" style="position:relative"><div class="nav-icon">💬</div><div class="nav-label">رسائل</div><div id="msg-badge" class="msg-badge"></div></div>
-<div class="nav-item" id="ni-profil" onclick="goTo('profil')"><div class="nav-icon">👤</div><div class="nav-label">حسابي</div></div><div id="confirm-bg" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center">
-<div style="background:#fff;border-radius:20px;padding:28px 22px;width:85%;max-width:320px;text-align:center;box-shadow:var(--shd);margin:auto;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
-<div style="font-family:'Amiri',serif;font-size:1.2rem;color:var(--vert);margin-bottom:8px">🌾 سوق الفلاح</div>
-<div style="font-size:.88rem;color:var(--gris);margin-bottom:22px">هل تريد الخروج من التطبيق؟</div>
-<div style="display:flex;gap:10px">
-<button style="flex:1;padding:12px;border:none;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;background:var(--rouge);color:#fff" onclick="confirmOui()">نعم، خروج</button>
-<button style="flex:1;padding:12px;border:none;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;background:var(--vertp);color:var(--vert)" onclick="confirmNon()">لا، رجوع</button>
-</div>
-</div>
-</div> class="confirm-bg" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;background:rgba(0,0,0,.6);align-items:center;justify-content:center">
-<div class="confirm-box">
-<div class="confirm-title">🌾 سوق الفلاح</div>
-<div class="confirm-msg">هل تريد الخروج من التطبيق؟</div>
-<div class="confirm-btns">
-<button style="background:var(--rouge);color:#fff" onclick="confirmOui()">نعم، خروج</button>
-<button style="background:var(--vertp);color:var(--vert)" onclick="confirmNon()">لا، رجوع</button>
-</div>
-</div>
-</div>
+<div class="nav-item" id="ni-profil" onclick="goTo('profil')"><div class="nav-icon">👤</div><div class="nav-label">حسابي</div></div>
 </div><script>
 var sb=supabase.createClient('https://ryzhqtcukeypsqqbxrqp.supabase.co','sb_publishable__s1wfkhIKodWAGThY8r-pw_Tg6NioE1');
 var CU=null,SP='',SC='',PT='sell',_a=[],_d=[],_eid=null,_et=null,_htab='offres',_matab='ann',_fann='',_fdem='';
@@ -493,24 +487,34 @@ window.onload=function(){
   },1500);
   history.pushState(null,'',location.href);
   window.addEventListener('popstate',function(){
+    var ov=document.getElementById('confirm-overlay');
+    if(ov&&ov.classList.contains('show')){ov.classList.remove('show');history.pushState(null,'',location.href);return;}
     if(document.getElementById('chat')){closeChat();history.pushState(null,'',location.href);return;}
     if(document.getElementById('det')){closeDet();history.pushState(null,'',location.href);return;}
     if(document.getElementById('modal-bg')&&document.getElementById('modal-bg').style.display!=='none'){closeModal();history.pushState(null,'',location.href);return;}
     if(document.getElementById('nota-bg')&&document.getElementById('nota-bg').style.display!=='none'){closeNotation();history.pushState(null,'',location.href);return;}
     var active=document.querySelector('.screen.active');
-    if(!active){history.pushState(null,'',location.href);return;}
-    var id=active.id;
-    if(id==='screen-publish'||id==='screen-profil'){goTo('home');history.pushState(null,'',location.href);return;}
-if(id==='screen-messages'){goTo('home');history.pushState(null,'',location.href);return;}
-    if(id==='screen-mes-ann'||id==='screen-abonnement'){goTo('profil');history.pushState(null,'',location.href);return;}
-    if(id==='screen-home'||!id){
-      document.getElementById('confirm-bg').style.display='flex';
+    var id=active?active.id:'';
+    if(id==='screen-publish'||id==='screen-messages'||id==='screen-profil'){goTo('home');return;}
+    if(id==='screen-mes-ann'||id==='screen-abonnement'){goTo('profil');return;}
+    if(id==='screen-home'||id===''||!id){
+      var ov2=document.getElementById('confirm-overlay');
+      if(ov2){ov2.classList.add('show');}
       history.pushState(null,'',location.href);
       return;
     }
     history.pushState(null,'',location.href);
   });
 };
+
+function confirmOui(){
+  document.getElementById('confirm-overlay').classList.remove('show');
+  history.go(-history.length);
+}
+function confirmNon(){
+  document.getElementById('confirm-overlay').classList.remove('show');
+  goTo('home');
+}
 
 function showToast(m,d){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},d||3000);}
 
@@ -1024,14 +1028,7 @@ async function pub(){
   showToast('✅ الإعلان نُشر!');
   goTo('home');setTimeout(function(){loadAnn(_fann);},100);
 }
-function confirmOui(){
-  document.getElementById('confirm-bg').style.display='none';
-  history.go(-history.length);
-}
-function confirmNon(){
-  document.getElementById('confirm-bg').style.display='none';
-  goTo('home');
-}
+
 async function loadProfil(){
   if(!CU)return;
   var r=await sb.from('utilisateurs').select('*').eq('id',CU.id).single();
