@@ -453,7 +453,16 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="nav-item active" id="ni-home" onclick="goTo('home')"><div class="nav-icon">🏠</div><div class="nav-label">الرئيسية</div></div>
 <div class="nav-item" id="ni-publish" onclick="goTo('publish')"><div class="nav-icon">➕</div><div class="nav-label">نشر</div></div>
 <div class="nav-item" id="ni-messages" onclick="goTo('messages')" style="position:relative"><div class="nav-icon">💬</div><div class="nav-label">رسائل</div><div id="msg-badge" class="msg-badge"></div></div>
-<div class="nav-item" id="ni-profil" onclick="goTo('profil')"><div class="nav-icon">👤</div><div class="nav-label">حسابي</div></div>
+<div class="nav-item" id="ni-profil" onclick="goTo('profil')"><div class="nav-icon">👤</div><div class="nav-label">حسابي</div></div><div id="confirm-bg" class="confirm-bg" style="display:none">
+<div class="confirm-box">
+<div class="confirm-title">🌾 سوق الفلاح</div>
+<div class="confirm-msg">هل تريد الخروج من التطبيق؟</div>
+<div class="confirm-btns">
+<button style="background:var(--rouge);color:#fff" onclick="confirmOui()">نعم، خروج</button>
+<button style="background:var(--vertp);color:var(--vert)" onclick="confirmNon()">لا، رجوع</button>
+</div>
+</div>
+</div>
 </div><script>
 var sb=supabase.createClient('https://ryzhqtcukeypsqqbxrqp.supabase.co','sb_publishable__s1wfkhIKodWAGThY8r-pw_Tg6NioE1');
 var CU=null,SP='',SC='',PT='sell',_a=[],_d=[],_eid=null,_et=null,_htab='offres',_matab='ann',_fann='',_fdem='';
