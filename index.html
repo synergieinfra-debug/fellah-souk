@@ -1276,8 +1276,11 @@ function selMatA(el){
 
 function selMatAN(){
   var n=document.getElementById('mat-a-nom').value.trim();_spmat=n;
-  if(n){document.getElementById('mat-step2').style.display='block';document.getElementById('mat-sel-disp').textContent='🚜 '+n;}
-  else document.getElementById('mat-step2').style.display='none';
+  if(n){
+    document.getElementById('mat-step2').style.display='block';
+    document.getElementById('mat-sel-disp').textContent='🚜 '+n;
+    setTimeout(function(){document.getElementById('mat-step2').scrollIntoView({behavior:'smooth',block:'start'});},100);
+  }else{document.getElementById('mat-step2').style.display='none';}
 }
 
 function prevPhoto(e){
