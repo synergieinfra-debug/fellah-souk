@@ -92,7 +92,11 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .nav-icon{font-size:1.25rem}
 .nav-label{font-size:.6rem;font-weight:700;color:var(--gris);font-family:'Tajawal',sans-serif}
 .nav-item.active .nav-label{color:var(--vert)}
-.nav-item.active::before{content:'';position:absolute;top:-8px;width:28px;height:2px;background:var(--vert);border-radius:0 0 2px 2px}
+.nav-item.active .nav-icon{filter:drop-shadow(0 0 4px var(--vert))}
+.nav-item.active::before{content:'';position:absolute;top:-8px;width:28px;height:3px;background:var(--vert);border-radius:0 0 3px 3px}
+#ni-materiel.active .nav-label{color:var(--marron)}
+#ni-materiel.active .nav-icon{filter:drop-shadow(0 0 4px var(--marron))}
+#ni-materiel.active::before{background:var(--marron)}
 .msg-badge{position:absolute;top:2px;right:14px;background:var(--rouge);color:#fff;border-radius:10px;font-size:.55rem;font-weight:800;padding:1px 5px;min-width:16px;text-align:center;display:none}
 .pub-header{background:linear-gradient(135deg,var(--vert),var(--vert2));padding:16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
 .pub-header.marron{background:linear-gradient(135deg,var(--marron),#8d6e63)}
