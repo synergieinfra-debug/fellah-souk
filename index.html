@@ -1363,7 +1363,10 @@ async function toggleGratuit(){
   await sb.from('config').update({valeur:newVal}).eq('cle','mode_gratuit');
   _gratuit=newVal==='true';
   showToast(newVal==='true'?'✅ الوضع المجاني مفعل للجميع':'❌ الوضع المجاني موقف');
-  loadProfil();
+  var adminBtn=document.getElementById('admin-btn');
+  if(adminBtn){
+    adminBtn.innerHTML='<div class="profil-item-left"><span>🎛️</span><span class="profil-item-label">'+(_gratuit?'✅ الوضع المجاني مفعل — إيقاف':'❌ الوضع المجاني موقف — تفعيل')+'</span></div><span>›</span>';
+  }
 }
 function showPubMenu(){
   document.getElementById('pub-menu').style.display='block';
