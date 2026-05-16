@@ -8,7 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{--vert:#1a4a2e;--vert2:#2d6e47;--vert3:#4caf72;--vertp:#e8f5ed;--or:#c8952a;--orc:#e8b84b;--gris:#8a9ab0;--border:#e2e8f0;--rouge:#c0392b;--bleu:#1565c0;--bleup:#e3f2fd;--sh:0 2px 12px rgba(0,0,0,.08);--shd:0 8px 32px rgba(0,0,0,.15)}
+:root{--vert:#1a4a2e;--vert2:#2d6e47;--vert3:#4caf72;--vertp:#e8f5ed;--or:#c8952a;--orc:#e8b84b;--gris:#8a9ab0;--border:#e2e8f0;--rouge:#c0392b;--bleu:#1565c0;--bleup:#e3f2fd;--marron:#6d4c41;--marronp:#efebe9;--sh:0 2px 12px rgba(0,0,0,.08);--shd:0 8px 32px rgba(0,0,0,.15)}
 body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width:430px;margin:0 auto;min-height:100vh;overflow-x:hidden;direction:rtl}
 #splash{position:fixed;inset:0;background:linear-gradient(160deg,var(--vert),#0a2018);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9000;transition:opacity .8s}
 #splash.out{opacity:0;pointer-events:none}
@@ -36,6 +36,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .btn-primary:disabled{opacity:.6;cursor:not-allowed}
 .btn-gold{background:linear-gradient(135deg,var(--or),var(--orc));color:#1a1a2e}
 .btn-bleu{background:linear-gradient(135deg,var(--bleu),#1976d2);color:#fff}
+.btn-marron{background:linear-gradient(135deg,var(--marron),#8d6e63);color:#fff}
 .btn-sm{padding:8px 14px;border:none;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer}
 .auth-error{background:#fdecea;border:1px solid #f5c6c6;border-radius:8px;padding:10px 14px;font-size:.83rem;color:var(--rouge);margin-bottom:12px;text-align:right;display:none}
 .auth-error.show{display:block}
@@ -61,24 +62,30 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .filters{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%}
 .filter-chip{padding:6px 4px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-family:'Tajawal',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;color:#555}
 .filter-chip.active{background:var(--vert);border-color:var(--vert);color:#fff}
+.filter-chip.active-marron{background:var(--marron);border-color:var(--marron);color:#fff}
 .section-title{padding:8px 16px 6px;font-size:.72rem;font-weight:800;color:var(--gris);text-transform:uppercase;letter-spacing:.1em}
 .annonces-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px}
 .ann-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--sh);cursor:pointer;transition:all .2s;border:1px solid var(--border)}
 .ann-card:active{transform:scale(.97)}
 .ann-card.premium{border-color:var(--or);box-shadow:0 2px 12px rgba(200,149,42,.2)}
+.ann-card.kra{border-color:var(--marron);box-shadow:0 2px 12px rgba(109,76,65,.2)}
 .ann-photo{width:100%;height:120px;object-fit:cover}
 .ann-pp{width:100%;height:120px;background:linear-gradient(135deg,var(--vertp),#d4edda);display:flex;align-items:center;justify-content:center;font-size:2.5rem}
 .ann-pp.bleu{background:linear-gradient(135deg,var(--bleup),#bbdefb)}
+.ann-pp.marron{background:linear-gradient(135deg,var(--marronp),#d7ccc8)}
 .ann-body{padding:10px}
 .ann-produit{font-weight:800;font-size:.88rem;color:#1a1a2e;margin-bottom:3px}
 .ann-region{font-size:.7rem;color:var(--gris);margin-bottom:6px}
 .ann-footer{display:flex;align-items:center;justify-content:space-between}
 .ann-prix{font-size:1rem;font-weight:900;color:var(--vert);font-family:'Amiri',serif}
 .ann-prix.bleu{color:var(--bleu)}
+.ann-prix.marron{color:var(--marron)}
 .ann-unite{font-size:.65rem;color:var(--gris)}
 .ann-qty{font-size:.7rem;background:var(--vertp);color:var(--vert2);padding:2px 7px;border-radius:10px;font-weight:700}
 .ann-qty.bleu{background:var(--bleup);color:var(--bleu)}
+.ann-qty.marron{background:var(--marronp);color:var(--marron)}
 .badge-premium{display:inline-block;background:linear-gradient(135deg,var(--or),var(--orc));color:#1a1a2e;font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:8px;margin-right:4px}
+.badge-kra{display:inline-block;background:linear-gradient(135deg,var(--marron),#8d6e63);color:#fff;font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:8px;margin-right:4px}
 .fab{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateX(-155px);width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--or),var(--orc));border:none;box-shadow:0 4px 20px rgba(200,149,42,.5);display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;z-index:200;color:#1a1a2e;font-weight:900}
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid var(--border);display:flex;padding:8px 0 18px;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.06)}
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px;position:relative}
@@ -88,15 +95,19 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .nav-item.active::before{content:'';position:absolute;top:-8px;width:28px;height:2px;background:var(--vert);border-radius:0 0 2px 2px}
 .msg-badge{position:absolute;top:2px;right:14px;background:var(--rouge);color:#fff;border-radius:10px;font-size:.55rem;font-weight:800;padding:1px 5px;min-width:16px;text-align:center;display:none}
 .pub-header{background:linear-gradient(135deg,var(--vert),var(--vert2));padding:16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
+.pub-header.marron{background:linear-gradient(135deg,var(--marron),#8d6e63)}
 .pub-title{font-family:'Amiri',serif;font-size:1.3rem;color:var(--orc)}
 .pub-body{padding:16px}
 .photo-zone{border:2px dashed var(--border);border-radius:14px;padding:24px;text-align:center;cursor:pointer;background:#fafafa;margin-bottom:16px}
 .photo-zone input{display:none}
 #photo-prev{width:100%;height:120px;object-fit:cover;border-radius:10px;display:none}
+#photo-prev-mat{width:100%;height:120px;object-fit:cover;border-radius:10px;display:none}
 .pub-type-tabs{display:flex;background:#f5f7fa;border-radius:10px;padding:3px;margin-bottom:20px}
 .pub-type-btn{flex:1;padding:10px;border:none;background:transparent;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;color:var(--gris);transition:all .2s}
 .pub-type-btn.active-sell{background:var(--vert);color:#fff}
 .pub-type-btn.active-buy{background:var(--bleu);color:#fff}
+.pub-type-btn.active-kra{background:var(--marron);color:#fff}
+.pub-type-btn.active-kra-dem{background:#795548;color:#fff}
 .cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .cat-btn{padding:14px 10px;border:2px solid var(--border);border-radius:14px;background:#fff;font-family:'Tajawal',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;color:#555}
 .cat-btn span{display:block;font-size:1.8rem;margin-bottom:5px}
@@ -105,9 +116,11 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .cat-fruits.active{background:#e65100;border-color:#e65100}
 .cat-agricole.active{background:#6a1b9a;border-color:#6a1b9a}
 .cat-animal.active{background:#880e4f;border-color:#880e4f}
+.cat-mat.active{background:var(--marron);border-color:var(--marron)}
 .produits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px}
 .produit-btn{padding:10px 6px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:'Tajawal',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;color:#555}
 .produit-btn.active{background:var(--vert);border-color:var(--vert);color:#fff}
+.produit-btn.active-marron{background:var(--marron);border-color:var(--marron);color:#fff}
 .produit-btn span{display:block;font-size:1.2rem;margin-bottom:3px}
 .input-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .profil-header{background:linear-gradient(135deg,var(--vert),var(--vert2));padding:30px 16px;text-align:center}
@@ -129,6 +142,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .st-active{background:var(--vertp);color:var(--vert2)}
 .st-vendue{background:#fdecea;color:var(--rouge)}
 .st-dem{background:var(--bleup);color:var(--bleu)}
+.st-kra{background:var(--marronp);color:var(--marron)}
 .ma-info{font-size:.8rem;color:var(--gris);margin-bottom:10px}
 .ma-btns{display:flex;gap:8px;flex-wrap:wrap}
 .msg-list{display:flex;flex-direction:column}
@@ -155,6 +169,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .det{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:100vh;background:#fff;z-index:300;overflow-y:auto;box-shadow:0 0 40px rgba(0,0,0,.3)}
 .det-header{background:linear-gradient(135deg,var(--vert),var(--vert2));padding:16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
 .det-header.bleu{background:linear-gradient(135deg,var(--bleu),#1976d2)}
+.det-header.marron{background:linear-gradient(135deg,var(--marron),#8d6e63)}
 .det-title{font-family:'Amiri',serif;font-size:1.2rem;color:var(--orc);flex:1}
 .cbtn{width:100%;padding:13px;border:none;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;margin-bottom:8px}
 .cbtn.g{background:linear-gradient(135deg,var(--vert),var(--vert2));color:#fff}
@@ -162,6 +177,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .cbtn.o{background:linear-gradient(135deg,var(--or),var(--orc));color:#1a1a2e}
 .cbtn.r{background:linear-gradient(135deg,var(--rouge),#e53935);color:#fff}
 .cbtn.star{background:linear-gradient(135deg,#f39c12,#f1c40f);color:#1a1a2e}
+.cbtn.m{background:linear-gradient(135deg,var(--marron),#8d6e63);color:#fff}
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:flex-end}
 .modal{background:#fff;width:100%;border-radius:20px 20px 0 0;padding:22px 18px 40px;max-height:85vh;overflow-y:auto}
 .modal-handle{width:38px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px}
@@ -189,6 +205,8 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .confirm-box-msg{font-size:.88rem;color:var(--gris);margin-bottom:22px;line-height:1.5}
 .confirm-box-btns{display:flex;gap:10px}
 .confirm-box-btns button{flex:1;padding:12px;border:none;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer}
+.mat-header{background:linear-gradient(135deg,var(--marron),#8d6e63);padding:20px 16px 16px;position:relative;overflow:hidden}
+.mat-header::after{content:'🚜';position:absolute;left:10px;bottom:-8px;font-size:5rem;opacity:.1}
 </style>
 </head>
 <body><div id="splash"><div class="sp-icon">🌾</div><div class="sp-title">سوق الفلاح</div><div class="sp-sub">كل المنتجات الفلاحية في يدك</div><div class="sp-bar"><div class="sp-fill"></div></div></div>
@@ -209,10 +227,10 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="modal" onclick="event.stopPropagation()">
 <div class="modal-handle"></div>
 <div class="modal-title" id="modal-title">تعديل</div>
-<div class="form-group"><label class="form-label">اسم المنتج</label><input type="text" class="form-input" id="e-prod"/></div>
+<div class="form-group"><label class="form-label">اسم المنتج / المعدة</label><input type="text" class="form-input" id="e-prod"/></div>
 <div class="input-row">
-<div class="form-group"><label class="form-label">الكمية</label><input type="number" class="form-input" id="e-qte"/></div>
-<div class="form-group"><label class="form-label">الوحدة</label><select class="form-select" id="e-unite"><option value="kg">كغ</option><option value="qintar">قنطار</option><option value="caisse">كرطونة</option><option value="lot">لوط</option><option value="litre">لتر</option><option value="unite">وحدة</option></select></div>
+<div class="form-group"><label class="form-label">الكمية / العدد</label><input type="number" class="form-input" id="e-qte"/></div>
+<div class="form-group"><label class="form-label">الوحدة</label><select class="form-select" id="e-unite"><option value="kg">كغ</option><option value="qintar">قنطار</option><option value="caisse">كرطونة</option><option value="lot">لوط</option><option value="litre">لتر</option><option value="unite">وحدة</option><option value="jour">يوم</option><option value="semaine">أسبوع</option><option value="mois">شهر</option></select></div>
 </div>
 <div class="form-group"><label class="form-label" id="e-prix-lbl">السعر (د.م)</label><input type="number" class="form-input" id="e-prix"/></div>
 <div class="form-group"><label class="form-label">وصف</label><input type="text" class="form-input" id="e-desc"/></div>
@@ -285,6 +303,30 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <button class="fab" onclick="goTo('publish')">＋</button>
 </div>
 
+<div class="screen" id="screen-materiel">
+<div class="mat-header">
+<div class="home-greeting" style="color:rgba(255,255,255,.7)">سوق الآليات</div>
+<div class="home-name">🚜 آليات ومعدات فلاحية</div>
+<div class="home-tabs" style="margin-top:8px">
+<button class="home-tab active" id="tab-mat-offres" onclick="switchMatTab('offres')">📢 عروض البيع والكراء</button>
+<button class="home-tab" id="tab-mat-dem" onclick="switchMatTab('demandes')">🛒 طلبات</button>
+</div></div>
+<div class="filters-wrap" id="fm-offres"><div class="filters">
+<div class="filter-chip active" onclick="fMat(this,'')">الكل</div>
+<div class="filter-chip" onclick="fMat(this,'bai3')">💰 بيع</div>
+<div class="filter-chip" onclick="fMat(this,'kra')">🔑 كراء</div>
+<div class="filter-chip" onclick="fMat(this,'region')">📍 منطقتي</div>
+</div></div>
+<div class="filters-wrap" id="fm-dem" style="display:none"><div class="filters">
+<div class="filter-chip active" onclick="fMatDem(this,'')">الكل</div>
+<div class="filter-chip" onclick="fMatDem(this,'bai3')">💰 شراء</div>
+<div class="filter-chip" onclick="fMatDem(this,'kra')">🔑 كراء</div>
+</div></div>
+<div class="section-title" id="mat-lbl">عروض الآليات</div>
+<div class="annonces-grid" id="mat-grid"><div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
+<button class="fab" style="background:linear-gradient(135deg,var(--marron),#8d6e63);box-shadow:0 4px 20px rgba(109,76,65,.5)" onclick="goTo('publish-mat')">＋</button>
+</div>
+
 <div class="screen" id="screen-publish">
 <div class="pub-header"><div class="pub-title">نشر إعلان</div></div>
 <div class="pub-body">
@@ -318,7 +360,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <button class="produit-btn" onclick="selP(this,'الكوسة')"><span>🥬</span>الكوسة</button>
 <button class="produit-btn" onclick="selP(this,'الباذنجان')"><span>🍆</span>الباذنجان</button>
 <button class="produit-btn" onclick="selP(this,'الملفوف')"><span>🥦</span>الملفوف</button>
-<button class="produit-btn" onclick="selP(this,'الفاصوليا')"><span>🫘</span>الفاصوليا</button>
+<button class="produit-btn" onclick="selP(this,'اللوبية')"><span>🫘</span>اللوبية</button>
 <button class="produit-btn" onclick="selP(this,'الحمص')"><span>🟡</span>الحمص</button>
 <button class="produit-btn" onclick="selP(this,'العدس')"><span>🟤</span>العدس</button>
 <button class="produit-btn" onclick="selP(this,'الفول')"><span>🫘</span>الفول</button>
@@ -332,7 +374,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div></div>
 <div id="pf" style="display:none"><div class="produits-grid">
 <button class="produit-btn" onclick="selP(this,'البرتقال')"><span>🍊</span>البرتقال</button>
-<button class="produit-btn" onclick="selP(this,'الليمون')"><span>🍋</span>الليمون</button>
+<button class="produit-btn" onclick="selP(this,'الحامض')"><span>🍋</span>الحامض</button>
 <button class="produit-btn" onclick="selP(this,'البطيخ')"><span>🍉</span>البطيخ</button>
 <button class="produit-btn" onclick="selP(this,'التفاح')"><span>🍎</span>التفاح</button>
 <button class="produit-btn" onclick="selP(this,'العنب')"><span>🍇</span>العنب</button>
@@ -340,9 +382,9 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <button class="produit-btn" onclick="selP(this,'الكليمنتين')"><span>🍊</span>الكليمنتين</button>
 <button class="produit-btn" onclick="selP(this,'الرمان')"><span>🍎</span>الرمان</button>
 <button class="produit-btn" onclick="selP(this,'المشماش')"><span>🍑</span>المشماش</button>
-<button class="produit-btn" onclick="selP(this,'الكرز')"><span>🍒</span>الكرز</button>
+<button class="produit-btn" onclick="selP(this,'حب الملوك')"><span>🍒</span>حب الملوك</button>
 <button class="produit-btn" onclick="selP(this,'الخوخ')"><span>🍑</span>الخوخ</button>
-<button class="produit-btn" onclick="selP(this,'الفراولة')"><span>🍓</span>الفراولة</button>
+<button class="produit-btn" onclick="selP(this,'الفريز')"><span>🍓</span>الفريز</button>
 <button class="produit-btn" onclick="selP(this,'الموز')"><span>🍌</span>الموز</button>
 <button class="produit-btn" onclick="selP(this,'الأفوكا')"><span>🥑</span>الأفوكا</button>
 <button class="produit-btn" onclick="selP(this,'التمر')"><span>🌴</span>التمر</button>
@@ -384,6 +426,56 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <button class="btn-primary btn-gold" id="p-btn" onclick="pub()">📢 نشر الإعلان الآن</button>
 </div></div></div>
 
+<div class="screen" id="screen-publish-mat">
+<div class="pub-header marron"><div class="pub-title">نشر آلية أو معدة</div></div>
+<div class="pub-body">
+<div class="pub-type-tabs">
+<button class="pub-type-btn active-kra" id="pt-mat-kra" onclick="setPTMat('kra')">🔑 عرض كراء</button>
+<button class="pub-type-btn" id="pt-mat-sell" onclick="setPTMat('bai3')">💰 عرض بيع</button>
+<button class="pub-type-btn" id="pt-mat-dem-kra" onclick="setPTMat('dem-kra')">🔑 طلب كراء</button>
+<button class="pub-type-btn" id="pt-mat-dem-bai3" onclick="setPTMat('dem-bai3')">💰 طلب شراء</button>
+</div>
+<div class="photo-zone" onclick="document.getElementById('photo-inp-mat').click()">
+<input type="file" id="photo-inp-mat" accept="image/*" onchange="prevPhotoMat(event)"/>
+<img id="photo-prev-mat"/>
+<div id="photo-txt-mat"><div style="font-size:2.5rem;margin-bottom:8px">📸</div><div style="font-size:.85rem;color:var(--gris)"><strong style="color:var(--marron);display:block;margin-bottom:3px">صور المعدة ديالك</strong>صورة واضحة تجلب الزبائن</div></div>
+</div>
+<div class="form-group"><label class="form-label">نوع المعدة</label></div>
+<div class="produits-grid" id="mat-list">
+<button class="produit-btn" onclick="selMat(this,'جرار')"><span>🚜</span>جرار</button>
+<button class="produit-btn" onclick="selMat(this,'حفارة')"><span>🏗️</span>حفارة</button>
+<button class="produit-btn" onclick="selMat(this,'لودار')"><span>🚛</span>لودار</button>
+<button class="produit-btn" onclick="selMat(this,'بولدوزار')"><span>🚧</span>بولدوزار</button>
+<button class="produit-btn" onclick="selMat(this,'الحراثة')"><span>⚙️</span>الحراثة</button>
+<button class="produit-btn" onclick="selMat(this,'الفريزة')"><span>⚙️</span>الفريزة</button>
+<button class="produit-btn" onclick="selMat(this,'المسوية')"><span>⚙️</span>المسوية</button>
+<button class="produit-btn" onclick="selMat(this,'الديسك')"><span>⚙️</span>الديسك</button>
+<button class="produit-btn" onclick="selMat(this,'الطرومبة')"><span>💧</span>الطرومبة</button>
+<button class="produit-btn" onclick="selMat(this,'معدات التنقيط')"><span>💧</span>التنقيط</button>
+<button class="produit-btn" onclick="selMat(this,'الخرطوم')"><span>💧</span>الخرطوم</button>
+<button class="produit-btn" onclick="selMat(this,'الحصادة')"><span>🌾</span>الحصادة</button>
+<button class="produit-btn" onclick="selMat(this,'الدراسة')"><span>🌾</span>الدراسة</button>
+<button class="produit-btn" onclick="selMat(this,'آلة جني الزيتون')"><span>🫒</span>جني الزيتون</button>
+<button class="produit-btn" onclick="selMat(this,'الريموركي')"><span>🚚</span>الريموركي</button>
+<button class="produit-btn" onclick="selMat(this,'الصهريج')"><span>🚰</span>الصهريج</button>
+<button class="produit-btn" onclick="selMat(this,'الراشة')"><span>🌿</span>الراشة</button>
+<button class="produit-btn" onclick="selMat(this,'آلة التسميد')"><span>🌱</span>التسميد</button>
+<button class="produit-btn" style="background:var(--marronp);border-color:var(--marron)" onclick="selMatA(this)"><span>✏️</span>آخر</button>
+</div>
+<div id="mat-az" style="display:none;margin-top:10px">
+<input type="text" class="form-input" id="mat-a-nom" placeholder="اكتب اسم المعدة..." oninput="selMatAN()"/>
+</div>
+<div id="mat-step2" style="display:none;margin-top:16px">
+<div id="mat-sel-disp" style="background:var(--marronp);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-weight:700;color:var(--marron);font-size:.9rem"></div>
+<div class="input-row">
+<div class="form-group"><label class="form-label" id="mat-prix-lbl">السعر (د.م/يوم)</label><input type="number" class="form-input" id="mat-prix" placeholder="500"/></div>
+<div class="form-group"><label class="form-label">المدينة</label><input type="text" class="form-input" id="mat-ville" placeholder="الدار البيضاء"/></div>
+</div>
+<div class="form-group"><label class="form-label">وصف / حالة المعدة</label><input type="text" class="form-input" id="mat-desc" placeholder="حالة جيدة، سنة الصنع..."/></div>
+<button class="btn-primary btn-marron" id="mat-btn" onclick="pubMat()">🚜 نشر الإعلان</button>
+</div>
+</div></div>
+
 <div class="screen" id="screen-messages">
 <div style="background:linear-gradient(135deg,var(--vert),var(--vert2));padding:16px"><div style="font-family:'Amiri',serif;font-size:1.3rem;color:var(--orc)">💬 الرسائل</div></div>
 <div class="msg-list" id="msg-list"><div class="loading"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
@@ -404,7 +496,8 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div></div>
 <div class="profil-menu">
 <div class="profil-item" onclick="goTo('mes-ann')"><div class="profil-item-left"><span>📋</span><span class="profil-item-label">إعلاناتي وطلباتي</span></div><span>›</span></div>
-<div class="profil-item" onclick="goTo('abonnement')"><div class="profil-item-left"><span>⭐</span><span class="profil-item-label">الاشتراك المميز</span></div><span>›</span></div><div class="profil-item" id="admin-btn" style="display:none;background:#fff8e7;border-color:var(--or)" onclick="toggleGratuit()"><div class="profil-item-left"></div></div>
+<div class="profil-item" onclick="goTo('abonnement')"><div class="profil-item-left"><span>⭐</span><span class="profil-item-label">الاشتراك المميز</span></div><span>›</span></div>
+<div class="profil-item" id="admin-btn" style="display:none;background:#fff8e7;border-color:var(--or)" onclick="toggleGratuit()"><div class="profil-item-left"></div></div>
 <div class="profil-item" onclick="showToast('قريبا!')"><div class="profil-item-left"><span>⚙️</span><span class="profil-item-label">الإعدادات</span></div><span>›</span></div>
 <div class="profil-item" onclick="logout()"><div class="profil-item-left"><span>🚪</span><span class="profil-item-label" style="color:var(--rouge)">خروج</span></div><span>›</span></div>
 </div></div>
@@ -462,20 +555,23 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div style="display:flex;background:#f5f7fa;padding:12px 12px 0;gap:4px">
 <button id="ma-t1" onclick="switchMA('ann')" style="flex:1;padding:10px;border:none;background:var(--vert);color:#fff;border-radius:10px 10px 0 0;font-family:Tajawal,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">📢 إعلاناتي</button>
 <button id="ma-t2" onclick="switchMA('dem')" style="flex:1;padding:10px;border:none;background:#e2e8f0;color:#555;border-radius:10px 10px 0 0;font-family:Tajawal,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;margin-right:4px">🛒 طلباتي</button>
+<button id="ma-t3" onclick="switchMA('mat')" style="flex:1;padding:10px;border:none;background:#e2e8f0;color:#555;border-radius:10px 10px 0 0;font-family:Tajawal,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;margin-right:4px">🚜 آلياتي</button>
 </div>
 <div id="ma-list" style="padding:12px"><div class="loading"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
 </div>
 
 <div class="bnav" id="bnav" style="display:none">
 <div class="nav-item active" id="ni-home" onclick="goTo('home')"><div class="nav-icon">🏠</div><div class="nav-label">الرئيسية</div></div>
+<div class="nav-item" id="ni-materiel" onclick="goTo('materiel')"><div class="nav-icon">🚜</div><div class="nav-label">آليات</div></div>
 <div class="nav-item" id="ni-publish" onclick="goTo('publish')"><div class="nav-icon">➕</div><div class="nav-label">نشر</div></div>
 <div class="nav-item" id="ni-messages" onclick="goTo('messages')" style="position:relative"><div class="nav-icon">💬</div><div class="nav-label">رسائل</div><div id="msg-badge" class="msg-badge"></div></div>
 <div class="nav-item" id="ni-profil" onclick="goTo('profil')"><div class="nav-icon">👤</div><div class="nav-label">حسابي</div></div>
 </div><script>
 var sb=supabase.createClient('https://ryzhqtcukeypsqqbxrqp.supabase.co','sb_publishable__s1wfkhIKodWAGThY8r-pw_Tg6NioE1');
-var CU=null,SP='',SC='',PT='sell',_a=[],_d=[],_eid=null,_et=null,_htab='offres',_matab='ann',_fann='',_fdem='';
-var EM={'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','البصلة':'🧅','البطاطا':'🥔','الجزر':'🥕','الثوم':'🧄','الكوسة':'🥬','الباذنجان':'🍆','الملفوف':'🥦','الخس':'🥗','الفاصوليا':'🫘','الحمص':'🟡','العدس':'🟤','الفول':'🫘','الذرة':'🌽','الفلفل الحار':'🌶️','الكرفس':'🌿','الشمندر':'🔴','اللفت':'🟣','البرتقال':'🍊','الليمون':'🍋','البطيخ':'🍉','التفاح':'🍎','العنب':'🍇','التين':'🫐','الكليمنتين':'🍊','الرمان':'🍎','المشماش':'🍑','الكرز':'🍒','الخوخ':'🍑','الفراولة':'🍓','الموز':'🍌','الأفوكا':'🥑','التمر':'🌴','الزيتون':'🫒','الدلاح':'🍈','حليب':'🥛','دجاج':'🐓','بيض':'🥚','أغنام':'🐑','بقر':'🐄','ماعز':'🐐','سمك':'🐟','عسل':'🍯'};
-var CL={'legumes':'🥕 خضر','fruits':'🍊 فواكه','agricole':'🌾 فلاحية','animal':'🐄 حيوانية'};
+var CU=null,SP='',SC='',PT='sell',_a=[],_d=[],_mat=[],_matd=[],_eid=null,_et=null,_htab='offres',_matab='ann',_fann='',_fdem='',_fmat='',_fmatd='',_mattab='offres';
+var PTM='kra',_spmat='';
+var EM={'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','البصلة':'🧅','البطاطا':'🥔','الجزر':'🥕','الثوم':'🧄','الكوسة':'🥬','الباذنجان':'🍆','الملفوف':'🥦','الخس':'🥗','اللوبية':'🫘','الحمص':'🟡','العدس':'🟤','الفول':'🫘','الذرة':'🌽','الفلفل الحار':'🌶️','الكرفس':'🌿','الشمندر':'🔴','اللفت':'🟣','البرتقال':'🍊','الحامض':'🍋','البطيخ':'🍉','التفاح':'🍎','العنب':'🍇','التين':'🫐','الكليمنتين':'🍊','الرمان':'🍎','المشماش':'🍑','حب الملوك':'🍒','الخوخ':'🍑','الفريز':'🍓','الموز':'🍌','الأفوكا':'🥑','التمر':'🌴','الزيتون':'🫒','الدلاح':'🍈','حليب':'🥛','دجاج':'🐓','بيض':'🥚','أغنام':'🐑','بقر':'🐄','ماعز':'🐐','سمك':'🐟','عسل':'🍯','جرار':'🚜','حفارة':'🏗️','لودار':'🚛','بولدوزار':'🚧','الحراثة':'⚙️','الفريزة':'⚙️','المسوية':'⚙️','الديسك':'⚙️','الطرومبة':'💧','معدات التنقيط':'💧','الخرطوم':'💧','الحصادة':'🌾','الدراسة':'🌾','آلة جني الزيتون':'🫒','الريموركي':'🚚','الصهريج':'🚰','الراشة':'🌿','آلة التسميد':'🌱'};
+var CL={'legumes':'🥕 خضر','fruits':'🍊 فواكه','agricole':'🌾 فلاحية','animal':'🐄 حيوانية','materiel':'🚜 آليات'};
 var _nAid=null,_nUid=null,_nStar=0,_interval=null,_gratuit=false;
 
 window.onload=function(){
@@ -495,12 +591,11 @@ window.onload=function(){
     if(document.getElementById('nota-bg')&&document.getElementById('nota-bg').style.display!=='none'){closeNotation();history.pushState(null,'',location.href);return;}
     var active=document.querySelector('.screen.active');
     var id=active?active.id:'';
-    if(id==='screen-publish'||id==='screen-messages'||id==='screen-profil'){goTo('home');return;}
+    if(id==='screen-publish'||id==='screen-messages'||id==='screen-profil'||id==='screen-materiel'||id==='screen-publish-mat'){goTo('home');return;}
     if(id==='screen-mes-ann'||id==='screen-abonnement'){goTo('profil');return;}
     if(id==='screen-home'||id===''||!id){
       document.getElementById('confirm-overlay').classList.add('show');
-      history.pushState(null,'',location.href);
-      return;
+      history.pushState(null,'',location.href);return;
     }
     history.pushState(null,'',location.href);
   });
@@ -508,7 +603,6 @@ window.onload=function(){
 
 function confirmOui(){document.getElementById('confirm-overlay').classList.remove('show');logout();}
 function confirmNon(){document.getElementById('confirm-overlay').classList.remove('show');goTo('home');}
-
 function isPremium(){return _gratuit||(CU&&CU.premium);}
 
 function showToast(m,d){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},d||3000);}
@@ -536,8 +630,10 @@ function goTo(id){
   var ni=document.getElementById('ni-'+id);if(ni)ni.classList.add('active');
   window.scrollTo(0,0);
   if(id==='home'){if(_htab==='demandes')loadDem(_fdem);else loadAnn(_fann);}
+  if(id==='materiel'){loadMat(_fmat);}
   if(id==='profil')loadProfil();
   if(id==='publish')resetPub();
+  if(id==='publish-mat')resetPubMat();
   if(id==='messages')loadMsgs();
   if(id==='mes-ann')loadMA();
   if(id==='abonnement')loadAbo();
@@ -615,6 +711,20 @@ function switchTab(tab){
   if(tab==='offres')loadAnn();else loadDem();
 }
 
+function switchMatTab(tab){
+  _mattab=tab;_fmat='';_fmatd='';
+  document.getElementById('tab-mat-offres').classList.toggle('active',tab==='offres');
+  document.getElementById('tab-mat-dem').classList.toggle('active',tab==='demandes');
+  document.getElementById('fm-offres').style.display=tab==='offres'?'block':'none';
+  document.getElementById('fm-dem').style.display=tab==='demandes'?'block':'none';
+  document.getElementById('mat-lbl').textContent=tab==='offres'?'عروض الآليات':'طلبات الآليات';
+  document.querySelectorAll('#fm-offres .filter-chip').forEach(function(c){c.classList.remove('active');});
+  document.querySelectorAll('#fm-dem .filter-chip').forEach(function(c){c.classList.remove('active');});
+  document.querySelector('#fm-offres .filter-chip').classList.add('active');
+  document.querySelector('#fm-dem .filter-chip').classList.add('active');
+  if(tab==='offres')loadMat();else loadMatDem();
+}
+
 async function loadAnn(filter){
   var g=document.getElementById('grid');
   g.innerHTML='<div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
@@ -650,8 +760,44 @@ async function loadDem(filter){
   }).join('');
 }
 
+async function loadMat(filter){
+  var g=document.getElementById('mat-grid');
+  g.innerHTML='<div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
+  var q=sb.from('materiel').select('*,u:utilisateurs(nom,region,note_moyenne,premium)').eq('statut','active').order('created_at',{ascending:false}).limit(30);
+  if(filter==='bai3')q=q.eq('type_op','bai3');
+  else if(filter==='kra')q=q.eq('type_op','kra');
+  else if(filter==='region'&&CU)q=q.eq('region',CU.region);
+  var r=await q;
+  if(r.error||!r.data||r.data.length===0){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:50px 20px"><div style="font-size:3.5rem;margin-bottom:14px">🚜</div><div style="font-size:1.1rem;font-weight:800">ما كاين عروض بعد</div></div>';return;}
+  _mat=r.data;
+  g.innerHTML=r.data.map(function(m,i){
+    var em=EM[m.nom_materiel]||'🚜';
+    var isKra=m.type_op==='kra';
+    var badge=isKra?'<div style="margin-bottom:4px"><span class="badge-kra">كراء 🔑</span></div>':'<div style="margin-bottom:4px"><span class="badge-premium">بيع 💰</span></div>';
+    return '<div class="ann-card'+(isKra?' kra':'')+'" onclick="openMat('+i+')">'+(m.photo_url?'<img class="ann-photo" src="'+m.photo_url+'" loading="lazy"/>':'<div class="ann-pp marron">'+em+'</div>')+'<div class="ann-body">'+badge+'<div class="ann-produit">'+em+' '+m.nom_materiel+'</div><div class="ann-region">📍 '+m.ville+'</div><div class="ann-footer"><div><span class="ann-prix marron">'+m.prix+'</span><span class="ann-unite"> د.م'+(isKra?'/يوم':'')+'</span></div><div class="ann-qty marron">'+(isKra?'كراء':'بيع')+'</div></div></div></div>';
+  }).join('');
+}
+
+async function loadMatDem(filter){
+  var g=document.getElementById('mat-grid');
+  g.innerHTML='<div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
+  var q=sb.from('materiel_dem').select('*,u:utilisateurs(nom,region)').eq('statut','active').order('created_at',{ascending:false}).limit(30);
+  if(filter==='bai3')q=q.eq('type_op','bai3');
+  else if(filter==='kra')q=q.eq('type_op','kra');
+  var r=await q;
+  if(r.error||!r.data||r.data.length===0){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:50px 20px"><div style="font-size:3.5rem;margin-bottom:14px">🚜</div><div style="font-size:1.1rem;font-weight:800">ما كاين طلبات بعد</div></div>';return;}
+  _matd=r.data;
+  g.innerHTML=r.data.map(function(m,i){
+    var em=EM[m.nom_materiel]||'🚜';
+    var isKra=m.type_op==='kra';
+    return '<div class="ann-card kra" onclick="openMatDem('+i+')"><div class="ann-pp marron">'+em+'</div><div class="ann-body"><div style="margin-bottom:4px"><span class="badge-kra">'+(isKra?'طلب كراء 🔑':'طلب شراء 💰')+'</span></div><div class="ann-produit">'+em+' '+m.nom_materiel+'</div><div class="ann-region">📍 '+m.ville+'</div><div class="ann-footer"><div><span class="ann-prix marron">'+m.prix_max+'</span><span class="ann-unite"> أقصى</span></div><div class="ann-qty marron">'+(isKra?'كراء':'شراء')+'</div></div></div></div>';
+  }).join('');
+}
+
 function fAnn(el,t){document.querySelectorAll('#fo .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fann=t;loadAnn(t);}
 function fDem(el,t){document.querySelectorAll('#fd .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fdem=t;loadDem(t);}
+function fMat(el,t){document.querySelectorAll('#fm-offres .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fmat=t;loadMat(t);}
+function fMatDem(el,t){document.querySelectorAll('#fm-dem .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fmatd=t;loadMatDem(t);}
 
 function openA(i){
   var a=_a[i];if(!a)return;
@@ -705,6 +851,54 @@ function openDem(i){
   history.pushState(null,'',location.href);
 }
 
+function openMat(i){
+  var m=_mat[i];if(!m)return;
+  var em=EM[m.nom_materiel]||'🚜';
+  var old=document.getElementById('det');if(old)old.remove();
+  var own=CU&&m.vendeur_id===CU.id;
+  var unom=(m.u&&m.u.nom)?m.u.nom:'صاحب المعدة';
+  var ureg=(m.u&&m.u.region)?m.u.region:'';
+  var isKra=m.type_op==='kra';
+  window._cmat=m;
+  var img=m.photo_url?'<img src="'+m.photo_url+'" style="width:100%;height:160px;object-fit:cover"/>':'<div style="height:160px;background:linear-gradient(135deg,var(--marronp),#d7ccc8);display:flex;align-items:center;justify-content:center;font-size:5rem">'+em+'</div>';
+  var info='<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fff;border-bottom:1px solid var(--border)"><div><div style="background:var(--marronp);border-radius:8px;padding:3px 8px;font-size:.72rem;color:var(--marron);font-weight:700;display:inline-block;margin-bottom:4px">'+(isKra?'🔑 عرض كراء':'💰 عرض بيع')+'</div><div style="font-size:1.1rem;font-weight:900">'+em+' '+m.nom_materiel+'</div><div style="font-size:.75rem;color:var(--gris);margin-top:2px">📍 '+m.ville+' · '+m.region+'</div></div><div style="text-align:left"><div style="font-family:Amiri,serif;font-size:1.4rem;font-weight:700;color:var(--marron)">'+m.prix+'</div><div style="font-size:.65rem;color:var(--gris)">د.م'+(isKra?'/يوم':'')+'</div></div></div>';
+  var desc=m.description?'<div style="padding:10px 16px;border-bottom:1px solid var(--border);font-size:.85rem;color:#555">💬 '+m.description+'</div>':'';
+  var vcard='<div style="margin:10px 16px;background:var(--marronp);border-radius:12px;padding:10px;display:flex;align-items:center;gap:10px"><div style="width:38px;height:38px;border-radius:50%;background:var(--marron);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">🚜</div><div><div style="font-weight:800;font-size:.85rem">'+unom+'</div><div style="font-size:.7rem;color:var(--gris)">📍 '+ureg+'</div></div></div>';
+  var btns='<div style="padding:10px 16px 20px">'+(own?
+    '<button class="cbtn o" onclick="openEditMat(\''+m.id+'\')">✏️ تعديل</button>'+
+    '<button class="cbtn r" onclick="delMat(\''+m.id+'\')">🗑️ حذف</button>':
+    (isPremium()?
+      '<button class="cbtn m" onclick="openChat(\''+m.id+'\',\''+m.vendeur_id+'\',\''+unom+'\',\''+m.nom_materiel+'\')">💬 تواصل مع صاحب المعدة</button>':
+      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>'))+'</div>';
+  var div=document.createElement('div');div.id='det';div.className='det';
+  div.innerHTML='<div class="det-header marron"><div class="det-title">'+em+' '+m.nom_materiel+'</div></div>'+img+info+desc+vcard+btns;
+  document.body.appendChild(div);
+  history.pushState(null,'',location.href);
+}
+
+function openMatDem(i){
+  var m=_matd[i];if(!m)return;
+  var em=EM[m.nom_materiel]||'🚜';
+  var old=document.getElementById('det');if(old)old.remove();
+  var own=CU&&m.acheteur_id===CU.id;
+  var unom=(m.u&&m.u.nom)?m.u.nom:'طالب';
+  var ureg=(m.u&&m.u.region)?m.u.region:'';
+  var isKra=m.type_op==='kra';
+  window._cmatd=m;
+  var img='<div style="height:140px;background:linear-gradient(135deg,var(--marronp),#d7ccc8);display:flex;align-items:center;justify-content:center;font-size:4.5rem">'+em+'</div>';
+  var info='<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fff;border-bottom:1px solid var(--border)"><div><div style="background:var(--marronp);border-radius:8px;padding:3px 8px;font-size:.72rem;color:var(--marron);font-weight:700;display:inline-block;margin-bottom:4px">'+(isKra?'🔑 طلب كراء':'💰 طلب شراء')+'</div><div style="font-size:1.1rem;font-weight:900">'+em+' '+m.nom_materiel+'</div><div style="font-size:.75rem;color:var(--gris);margin-top:2px">📍 '+m.ville+' · '+m.region+'</div></div><div style="text-align:left"><div style="font-family:Amiri,serif;font-size:1.4rem;font-weight:700;color:var(--marron)">'+m.prix_max+'</div><div style="font-size:.65rem;color:var(--gris)">أقصى</div></div></div>';
+  var vcard='<div style="margin:10px 16px;background:var(--marronp);border-radius:12px;padding:10px;display:flex;align-items:center;gap:10px"><div style="width:38px;height:38px;border-radius:50%;background:var(--marron);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">🚜</div><div><div style="font-weight:800;font-size:.85rem">'+unom+'</div><div style="font-size:.7rem;color:var(--gris)">📍 '+ureg+'</div></div></div>';
+  var btns='<div style="padding:10px 16px 20px">'+(own?
+    '<button class="cbtn r" onclick="delMatDem(\''+m.id+'\')">🗑️ حذف الطلب</button>':
+    (isPremium()?
+      '<button class="cbtn m" onclick="openChat(\''+m.id+'\',\''+m.acheteur_id+'\',\''+unom+'\',\''+m.nom_materiel+'\')">💬 عندي هاد المعدة</button>':
+      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>'))+'</div>';
+  var div=document.createElement('div');div.id='det';div.className='det';
+  div.innerHTML='<div class="det-header marron"><div class="det-title">'+em+' '+m.nom_materiel+'</div></div>'+img+info+vcard+btns;
+  document.body.appendChild(div);
+  history.pushState(null,'',location.href);
+}
+
 function closeDet(){var d=document.getElementById('det');if(d)d.remove();}
 
 function ouvrirNotation(annId,userId){
@@ -713,26 +907,14 @@ function ouvrirNotation(annId,userId){
   document.getElementById('nota-comment').value='';
   document.getElementById('nota-bg').style.display='flex';
 }
-
-function selStar(n){
-  _nStar=n;
-  for(var i=1;i<=5;i++){
-    var s=document.getElementById('star'+i);
-    if(i<=n)s.classList.add('on');else s.classList.remove('on');
-  }
-}
-
+function selStar(n){_nStar=n;for(var i=1;i<=5;i++){var s=document.getElementById('star'+i);if(i<=n)s.classList.add('on');else s.classList.remove('on');}}
 function closeNotation(){document.getElementById('nota-bg').style.display='none';}
 
 async function saveNotation(){
   if(!_nStar){showToast('⚠️ اختار عدد النجوم');return;}
   var comment=document.getElementById('nota-comment').value.trim();
   var r=await sb.from('notations').insert([{annonce_id:_nAid,noteur_id:CU.id,note_id:_nUid,note:_nStar,commentaire:comment}]);
-  if(r.error){
-    if(r.error.code==='23505'){showToast('قيمت هذا البياع من قبل!');}
-    else{showToast('مشكلة: '+r.error.message);}
-    return;
-  }
+  if(r.error){if(r.error.code==='23505'){showToast('قيمت هذا البياع من قبل!');}else{showToast('مشكلة: '+r.error.message);}return;}
   var rn=await sb.from('notations').select('note').eq('note_id',_nUid);
   if(!rn.error&&rn.data&&rn.data.length>0){
     var total=rn.data.reduce(function(s,n){return s+n.note;},0);
@@ -756,6 +938,19 @@ function openEdit(id,type){
   document.getElementById('modal-bg').style.display='flex';
 }
 
+function openEditMat(id){
+  _eid=id;_et='mat';
+  var data=window._cmat;if(!data)return;
+  document.getElementById('modal-title').textContent='تعديل المعدة';
+  document.getElementById('e-prod').value=data.nom_materiel||'';
+  document.getElementById('e-qte').value=1;
+  document.getElementById('e-unite').value=data.type_op==='kra'?'jour':'unite';
+  document.getElementById('e-prix').value=data.prix||'';
+  document.getElementById('e-desc').value=data.description||'';
+  document.getElementById('e-prix-lbl').textContent=data.type_op==='kra'?'السعر (د.م/يوم)':'السعر (د.م)';
+  document.getElementById('modal-bg').style.display='flex';
+}
+
 function closeModal(){document.getElementById('modal-bg').style.display='none';}
 
 async function saveEdit(){
@@ -764,17 +959,23 @@ async function saveEdit(){
   var unite=document.getElementById('e-unite').value;
   var prix=document.getElementById('e-prix').value;
   var desc=document.getElementById('e-desc').value;
-  if(!prod||!qte||!prix){showToast('⚠️ كمل جميع المعلومات');return;}
+  if(!prod||!prix){showToast('⚠️ كمل جميع المعلومات');return;}
   var btn=document.getElementById('e-save');btn.disabled=true;btn.textContent='...';
-  var table=_et==='ann'?'annonces':'demandes';
-  var pf=_et==='ann'?'prix':'prix_max';
-  var upd={produit:prod,quantite:parseFloat(qte),unite:unite,description:desc};
-  upd[pf]=parseFloat(prix);
-  var r=await sb.from(table).update(upd).eq('id',_eid);
+  var r;
+  if(_et==='mat'){
+    r=await sb.from('materiel').update({nom_materiel:prod,prix:parseFloat(prix),description:desc}).eq('id',_eid);
+  }else{
+    var table=_et==='ann'?'annonces':'demandes';
+    var pf=_et==='ann'?'prix':'prix_max';
+    var upd={produit:prod,quantite:parseFloat(qte||1),unite:unite,description:desc};
+    upd[pf]=parseFloat(prix);
+    r=await sb.from(table).update(upd).eq('id',_eid);
+  }
   btn.disabled=false;btn.textContent='✅ حفظ التعديلات';
   if(r.error){showToast('❌ '+r.error.message);return;}
   closeModal();closeDet();showToast('✅ تم التعديل بنجاح!');
-  if(_htab==='demandes')loadDem(_fdem);else loadAnn(_fann);
+  if(_et==='mat'){loadMat(_fmat);}
+  else if(_htab==='demandes')loadDem(_fdem);else loadAnn(_fann);
   loadMA();
 }
 
@@ -796,6 +997,18 @@ async function delDem(id){
   closeDet();showToast('🗑️ تم الحذف');loadDem(_fdem);loadMA();
 }
 
+async function delMat(id){
+  if(!confirm('تأكيد: حذف هذا الإعلان؟'))return;
+  await sb.from('materiel').delete().eq('id',id);
+  closeDet();showToast('🗑️ تم الحذف');loadMat(_fmat);loadMA();
+}
+
+async function delMatDem(id){
+  if(!confirm('تأكيد: حذف هذا الطلب؟'))return;
+  await sb.from('materiel_dem').delete().eq('id',id);
+  closeDet();showToast('🗑️ تم الحذف');loadMatDem(_fmatd);loadMA();
+}
+
 async function loadAbo(){
   if(!CU)return;
   var r=await sb.from('abonnements').select('*').eq('user_id',CU.id).eq('statut','active').order('created_at',{ascending:false}).limit(1);
@@ -803,11 +1016,7 @@ async function loadAbo(){
   var aboMsg=document.getElementById('abo-active-msg');
   if(!r.error&&r.data&&r.data.length>0){
     var fin=new Date(r.data[0].date_fin);
-    if(fin>new Date()){
-      aboMsg.style.display='block';
-      document.getElementById('abo-fin').textContent=fin.toLocaleDateString('ar-MA');
-      aboBtn.style.display='none';return;
-    }
+    if(fin>new Date()){aboMsg.style.display='block';document.getElementById('abo-fin').textContent=fin.toLocaleDateString('ar-MA');aboBtn.style.display='none';return;}
   }
   aboMsg.style.display='none';aboBtn.style.display='block';
 }
@@ -846,16 +1055,32 @@ async function loadMA(){
       var st=a.statut==='active'?'<span class="ma-statut st-active">فعال</span>':'<span class="ma-statut st-vendue">مباعة</span>';
       var aJ=JSON.stringify(a).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       var btns=(a.statut==='active'?'<button class="btn-sm" style="background:var(--vertp);color:var(--vert2)" onclick="window._ca=JSON.parse(\''+aJ+'\');openEdit(\''+a.id+'\',\'ann\')">✏️ تعديل</button><button class="btn-sm" style="background:#fff3e0;color:var(--or)" onclick="markVendu(\''+a.id+'\')">✅ تم البيع</button>':'')+'<button class="btn-sm" style="background:#fdecea;color:var(--rouge)" onclick="delAnn(\''+a.id+'\')">🗑️ حذف</button>';
-      return '<div class="ma-card"><div class="ma-header"><div class="ma-produit">'+em+' '+a.produit+'</div>'+st+'</div><div class="ma-info">📍 '+a.ville+' · '+a.prix+' د.م/'+a.unite+' · '+a.quantite+' '+a.unite+'</div><div class="ma-btns">'+btns+'</div></div>';
+      return '<div class="ma-card"><div class="ma-header"><div class="ma-produit">'+em+' '+a.produit+'</div>'+st+'</div><div class="ma-info">📍 '+a.ville+' · '+a.prix+' د.م/'+a.unite+'</div><div class="ma-btns">'+btns+'</div></div>';
     }).join('');
-  }else{
+  }else if(_matab==='dem'){
     var r2=await sb.from('demandes').select('*').eq('acheteur_id',CU.id).order('created_at',{ascending:false});
     if(r2.error||!r2.data||r2.data.length===0){list.innerHTML='<div style="text-align:center;padding:40px"><div style="font-size:3rem">🛒</div><div style="font-weight:800;margin-top:14px">ما عندكش طلبات بعد</div></div>';return;}
     list.innerHTML=r2.data.map(function(d){
       var em=EM[d.produit]||'🛒';
       var dJ=JSON.stringify(d).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       var btns='<button class="btn-sm" style="background:var(--bleup);color:var(--bleu)" onclick="window._cd=JSON.parse(\''+dJ+'\');openEdit(\''+d.id+'\',\'dem\')">✏️ تعديل</button><button class="btn-sm" style="background:#fdecea;color:var(--rouge)" onclick="delDem(\''+d.id+'\')">🗑️ حذف</button>';
-      return '<div class="ma-card"><div class="ma-header"><div class="ma-produit">'+em+' '+d.produit+'</div><span class="ma-statut st-dem">طلب</span></div><div class="ma-info">📍 '+d.ville+' · '+d.prix_max+' د.م/'+d.unite+' · '+d.quantite+' '+d.unite+'</div><div class="ma-btns">'+btns+'</div></div>';
+      return '<div class="ma-card"><div class="ma-header"><div class="ma-produit">'+em+' '+d.produit+'</div><span class="ma-statut st-dem">طلب</span></div><div class="ma-info">📍 '+d.ville+' · '+d.prix_max+' د.م/'+d.unite+'</div><div class="ma-btns">'+btns+'</div></div>';
+    }).join('');
+  }else{
+    var r3=await sb.from('materiel').select('*').eq('vendeur_id',CU.id).order('created_at',{ascending:false});
+    var r4=await sb.from('materiel_dem').select('*').eq('acheteur_id',CU.id).order('created_at',{ascending:false});
+    var all=[];
+    if(!r3.error&&r3.data)r3.data.forEach(function(m){all.push({...m,_src:'mat'});});
+    if(!r4.error&&r4.data)r4.data.forEach(function(m){all.push({...m,_src:'matd'});});
+    if(all.length===0){list.innerHTML='<div style="text-align:center;padding:40px"><div style="font-size:3rem">🚜</div><div style="font-weight:800;margin-top:14px">ما عندكش إعلانات آليات بعد</div></div>';return;}
+    list.innerHTML=all.map(function(m){
+      var em=EM[m.nom_materiel]||'🚜';
+      var isKra=m.type_op==='kra';
+      var st=m._src==='mat'?(m.statut==='active'?'<span class="ma-statut st-active">فعال</span>':'<span class="ma-statut st-vendue">منتهي</span>'):'<span class="ma-statut st-kra">طلب</span>';
+      var btns=m._src==='mat'?
+        '<button class="btn-sm" style="background:var(--marronp);color:var(--marron)" onclick="window._cmat='+JSON.stringify(m).replace(/'/g,"\\'")+';openEditMat(\''+m.id+'\')">✏️ تعديل</button><button class="btn-sm" style="background:#fdecea;color:var(--rouge)" onclick="delMat(\''+m.id+'\')">🗑️ حذف</button>':
+        '<button class="btn-sm" style="background:#fdecea;color:var(--rouge)" onclick="delMatDem(\''+m.id+'\')">🗑️ حذف</button>';
+      return '<div class="ma-card"><div class="ma-header"><div class="ma-produit">'+em+' '+m.nom_materiel+'</div>'+st+'</div><div class="ma-info">📍 '+m.ville+' · '+m.prix+(m._src==='matd'?m.prix_max:'')+'  د.م · '+(isKra?'كراء':'بيع')+'</div><div class="ma-btns">'+btns+'</div></div>';
     }).join('');
   }
 }
@@ -866,6 +1091,8 @@ function switchMA(tab){
   document.getElementById('ma-t1').style.color=tab==='ann'?'#fff':'#555';
   document.getElementById('ma-t2').style.background=tab==='dem'?'var(--bleu)':'#e2e8f0';
   document.getElementById('ma-t2').style.color=tab==='dem'?'#fff':'#555';
+  document.getElementById('ma-t3').style.background=tab==='mat'?'var(--marron)':'#e2e8f0';
+  document.getElementById('ma-t3').style.color=tab==='mat'?'#fff':'#555';
   loadMA();
 }
 
@@ -930,13 +1157,23 @@ function resetPub(){
   ['p-qte','p-prix','p-ville','p-desc','ag-nom','a-nom'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('photo-prev').style.display='none';
   document.getElementById('photo-txt').style.display='block';
-  document.getElementById('sell-photo').style.display='block';
   document.getElementById('pt-sell').className='pub-type-btn active-sell';
   document.getElementById('pt-buy').className='pub-type-btn';
   document.getElementById('p-btn').textContent='📢 نشر الإعلان الآن';
   document.getElementById('p-btn').className='btn-primary btn-gold';
   document.getElementById('p-prix-lbl').textContent='السعر (د.م)';
   if(_htab==='demandes')setPT('buy');
+}
+
+function resetPubMat(){
+  _spmat='';PTM='kra';
+  document.getElementById('mat-step2').style.display='none';
+  document.getElementById('mat-az').style.display='none';
+  document.querySelectorAll('#mat-list .produit-btn').forEach(function(b){b.classList.remove('active');b.classList.remove('active-marron');});
+  ['mat-prix','mat-ville','mat-desc','mat-a-nom'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('photo-prev-mat').style.display='none';
+  document.getElementById('photo-txt-mat').style.display='block';
+  setPTMat('kra');
 }
 
 function setPT(t){
@@ -947,6 +1184,16 @@ function setPT(t){
   document.getElementById('p-btn').textContent=t==='sell'?'📢 نشر الإعلان الآن':'🛒 نشر طلب الشراء';
   document.getElementById('p-btn').className='btn-primary '+(t==='sell'?'btn-gold':'btn-bleu');
   document.getElementById('p-prix-lbl').textContent=t==='sell'?'السعر (د.م)':'السعر الأقصى (د.م)';
+}
+
+function setPTMat(t){
+  PTM=t;
+  ['pt-mat-kra','pt-mat-sell','pt-mat-dem-kra','pt-mat-dem-bai3'].forEach(function(id){document.getElementById(id).className='pub-type-btn';});
+  var clsMap={'kra':'active-kra','bai3':'active-sell','dem-kra':'active-kra-dem','dem-bai3':'active-buy'};
+  document.getElementById('pt-mat-'+(t==='bai3'?'sell':t==='dem-kra'?'dem-kra':'dem-bai3'==='dem-bai3'&&t==='dem-bai3'?'dem-bai3':'kra')).className='pub-type-btn '+(clsMap[t]||'active-kra');
+  var lbl={'kra':'السعر (د.م/يوم)','bai3':'سعر البيع (د.م)','dem-kra':'السعر الأقصى/يوم','dem-bai3':'السعر الأقصى'};
+  document.getElementById('mat-prix-lbl').textContent=lbl[t]||'السعر';
+  document.getElementById('mat-btn').textContent=t==='kra'?'🔑 نشر عرض الكراء':t==='bai3'?'💰 نشر عرض البيع':t==='dem-kra'?'🔑 نشر طلب الكراء':'💰 نشر طلب الشراء';
 }
 
 function selCat(cat,el){
@@ -988,6 +1235,28 @@ function selL(){
   else document.getElementById('step3').style.display='none';
 }
 
+function selMat(el,nom){
+  document.querySelectorAll('#mat-list .produit-btn').forEach(function(b){b.classList.remove('active');b.classList.remove('active-marron');});
+  el.classList.add('active-marron');_spmat=nom;
+  document.getElementById('mat-az').style.display='none';
+  document.getElementById('mat-step2').style.display='block';
+  document.getElementById('mat-sel-disp').textContent=(EM[nom]||'🚜')+' '+nom;
+}
+
+function selMatA(el){
+  document.querySelectorAll('#mat-list .produit-btn').forEach(function(b){b.classList.remove('active');b.classList.remove('active-marron');});
+  el.classList.add('active-marron');_spmat='';
+  document.getElementById('mat-az').style.display='block';
+  document.getElementById('mat-step2').style.display='none';
+  document.getElementById('mat-a-nom').focus();
+}
+
+function selMatAN(){
+  var n=document.getElementById('mat-a-nom').value.trim();_spmat=n;
+  if(n){document.getElementById('mat-step2').style.display='block';document.getElementById('mat-sel-disp').textContent='🚜 '+n;}
+  else document.getElementById('mat-step2').style.display='none';
+}
+
 function prevPhoto(e){
   var f=e.target.files[0];if(!f)return;
   var r=new FileReader();
@@ -995,13 +1264,17 @@ function prevPhoto(e){
   r.readAsDataURL(f);
 }
 
+function prevPhotoMat(e){
+  var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(ev){document.getElementById('photo-prev-mat').src=ev.target.result;document.getElementById('photo-prev-mat').style.display='block';document.getElementById('photo-txt-mat').style.display='none';};
+  r.readAsDataURL(f);
+}
+
 async function pub(){
   if(PT==='sell'&&!isPremium()){
     var rc=await sb.from('annonces').select('id').eq('vendeur_id',CU.id).eq('statut','active');
-    if(!rc.error&&rc.data&&rc.data.length>=3){
-      showToast('⚠️ وصلت للحد الأقصى — اشترك للنشر بلا حدود',4000);
-      setTimeout(function(){goTo('abonnement');},1500);return;
-    }
+    if(!rc.error&&rc.data&&rc.data.length>=3){showToast('⚠️ وصلت للحد الأقصى — اشترك للنشر بلا حدود',4000);setTimeout(function(){goTo('abonnement');},1500);return;}
   }
   if(!SP){showToast('⚠️ اكتب اسم المنتج');return;}
   if(!SC){showToast('⚠️ اختار نوع المنتج');return;}
@@ -1014,8 +1287,7 @@ async function pub(){
     var rb=await sb.from('demandes').insert([{acheteur_id:CU.id,produit:SP,categorie:SC,quantite:parseFloat(qte),unite:document.getElementById('p-unite').value,prix_max:parseFloat(prix),ville:ville,region:CU.region,description:document.getElementById('p-desc').value}]);
     btn.disabled=false;btn.textContent='🛒 نشر طلب الشراء';
     if(rb.error){showToast('❌ '+rb.error.message);return;}
-    showToast('✅ طلب الشراء نُشر!');
-    goTo('home');setTimeout(function(){switchTab('demandes');loadDem(_fdem);},100);return;
+    showToast('✅ طلب الشراء نُشر!');goTo('home');setTimeout(function(){switchTab('demandes');loadDem(_fdem);},100);return;
   }
   var photoUrl=null;
   var pi=document.getElementById('photo-inp');
@@ -1027,9 +1299,37 @@ async function pub(){
   var rs=await sb.from('annonces').insert([{vendeur_id:CU.id,produit:SP,categorie:SC,quantite:parseFloat(qte),unite:document.getElementById('p-unite').value,prix:parseFloat(prix),ville:ville,region:CU.region,description:document.getElementById('p-desc').value,photo_url:photoUrl}]);
   btn.disabled=false;btn.textContent='📢 نشر الإعلان الآن';
   if(rs.error){showToast('❌ '+rs.error.message);return;}
-  showToast('✅ الإعلان نُشر!');
-  goTo('home');setTimeout(function(){loadAnn(_fann);},100);
+  showToast('✅ الإعلان نُشر!');goTo('home');setTimeout(function(){loadAnn(_fann);},100);
 }
+
+async function pubMat(){
+  if(!_spmat){showToast('⚠️ اختار نوع المعدة');return;}
+  var prix=document.getElementById('mat-prix').value;
+  var ville=document.getElementById('mat-ville').value.trim();
+  if(!prix||!ville){showToast('⚠️ كمل جميع المعلومات');return;}
+  var btn=document.getElementById('mat-btn');btn.disabled=true;btn.textContent='...';
+  var photoUrl=null;
+  var pi=document.getElementById('photo-inp-mat');
+  if(pi.files[0]){
+    var fn=CU.id+'_mat_'+Date.now()+'.jpg';
+    var up=await sb.storage.from('photos-annonces').upload(fn,pi.files[0],{cacheControl:'3600',upsert:false});
+    if(!up.error&&up.data){var pu=sb.storage.from('photos-annonces').getPublicUrl(fn);photoUrl=pu.data&&pu.data.publicUrl?pu.data.publicUrl:null;}
+  }
+  var isDem=PTM==='dem-kra'||PTM==='dem-bai3';
+  var typeOp=PTM==='kra'||PTM==='dem-kra'?'kra':'bai3';
+  if(isDem){
+    var r=await sb.from('materiel_dem').insert([{acheteur_id:CU.id,nom_materiel:_spmat,type_op:typeOp,prix_max:parseFloat(prix),ville:ville,region:CU.region,description:document.getElementById('mat-desc').value}]);
+    btn.disabled=false;btn.textContent=PTM==='dem-kra'?'🔑 نشر طلب الكراء':'💰 نشر طلب الشراء';
+    if(r.error){showToast('❌ '+r.error.message);return;}
+    showToast('✅ الطلب نُشر!');goTo('materiel');setTimeout(function(){switchMatTab('demandes');},100);
+  }else{
+    var r2=await sb.from('materiel').insert([{vendeur_id:CU.id,nom_materiel:_spmat,type_op:typeOp,prix:parseFloat(prix),ville:ville,region:CU.region,description:document.getElementById('mat-desc').value,photo_url:photoUrl}]);
+    btn.disabled=false;btn.textContent=PTM==='kra'?'🔑 نشر عرض الكراء':'💰 نشر عرض البيع';
+    if(r2.error){showToast('❌ '+r2.error.message);return;}
+    showToast('✅ الإعلان نُشر!');goTo('materiel');setTimeout(function(){switchMatTab('offres');loadMat(_fmat);},100);
+  }
+}
+
 async function toggleGratuit(){
   var r=await sb.from('config').select('valeur').eq('cle','mode_gratuit').single();
   var actif=!r.error&&r.data&&r.data.valeur==='true';
@@ -1039,6 +1339,7 @@ async function toggleGratuit(){
   showToast(newVal==='true'?'✅ الوضع المجاني مفعل للجميع':'❌ الوضع المجاني موقف');
   loadProfil();
 }
+
 async function loadProfil(){
   if(!CU)return;
   var r=await sb.from('utilisateurs').select('*').eq('id',CU.id).single();
@@ -1050,18 +1351,17 @@ async function loadProfil(){
   document.getElementById('p-note').textContent=CU.note_moyenne?CU.note_moyenne+' ⭐':'—';
   document.getElementById('p-trans').textContent=CU.nb_transactions||0;
   var badge=document.getElementById('p-premium-badge');
-  if(CU.premium){badge.style.display='inline';}else{badge.style.display='none';}var adminBtn=document.getElementById('admin-btn');
-if(adminBtn){
-  if(CU.telephone==='0661996001'){
-    adminBtn.style.display='flex';
-    sb.from('config').select('valeur').eq('cle','mode_gratuit').single().then(function(r){
-      var actif=!r.error&&r.data&&r.data.valeur==='true';
-      adminBtn.innerHTML='<span>🎛️</span><span class="profil-item-label">'+(actif?'✅ الوضع المجاني مفعل — إيقاف':'❌ الوضع المجاني موقف — تفعيل')+'</span>';
-    });
-  }else{
-    adminBtn.style.display='none';
+  if(CU.premium){badge.style.display='inline';}else{badge.style.display='none';}
+  var adminBtn=document.getElementById('admin-btn');
+  if(adminBtn){
+    if(CU.telephone==='0661996001'){
+      adminBtn.style.display='flex';
+      sb.from('config').select('valeur').eq('cle','mode_gratuit').single().then(function(rc){
+        var actif=!rc.error&&rc.data&&rc.data.valeur==='true';
+        adminBtn.innerHTML='<div class="profil-item-left"><span>🎛️</span><span class="profil-item-label">'+(actif?'✅ الوضع المجاني مفعل — إيقاف':'❌ الوضع المجاني موقف — تفعيل')+'</span></div><span>›</span>';
+      });
+    }else{adminBtn.style.display='none';}
   }
-}
 }
 </script>
 </body>
