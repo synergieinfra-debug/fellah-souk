@@ -6,6 +6,7 @@
 <title>سوق الفلاح</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{--vert:#1a4a2e;--vert2:#2d6e47;--vert3:#4caf72;--vertp:#e8f5ed;--or:#c8952a;--orc:#e8b84b;--gris:#8a9ab0;--border:#e2e8f0;--rouge:#c0392b;--bleu:#1565c0;--bleup:#e3f2fd;--marron:#6d4c41;--marronp:#efebe9;--sh:0 2px 12px rgba(0,0,0,.08);--shd:0 8px 32px rgba(0,0,0,.15)}
@@ -97,6 +98,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .msg-badge{position:absolute;top:2px;right:14px;background:var(--rouge);color:#fff;border-radius:10px;font-size:.55rem;font-weight:800;padding:1px 5px;min-width:16px;text-align:center;display:none}
 .pub-header{background:linear-gradient(135deg,var(--vert),var(--vert2));padding:16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
 .pub-header.marron{background:linear-gradient(135deg,var(--marron),#8d6e63)}
+.pub-header.admin{background:linear-gradient(135deg,#1a237e,#283593)}
 .pub-title{font-family:'Amiri',serif;font-size:1.3rem;color:var(--orc)}
 .pub-body{padding:16px}
 .photo-zone{border:2px dashed var(--border);border-radius:14px;padding:24px;text-align:center;cursor:pointer;background:#fafafa;margin-bottom:16px}
@@ -207,6 +209,23 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .confirm-box-btns button{flex:1;padding:12px;border:none;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer}
 .mat-header{background:linear-gradient(135deg,var(--marron),#8d6e63);padding:20px 16px 16px;position:relative;overflow:hidden}
 .mat-header::after{content:'🚜';position:absolute;left:10px;bottom:-8px;font-size:5rem;opacity:.1}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
+.stat-card{background:#fff;border-radius:14px;padding:16px;box-shadow:var(--sh);border:1px solid var(--border);text-align:center}
+.stat-card.green{border-color:var(--vert);background:var(--vertp)}
+.stat-card.gold{border-color:var(--or);background:#fff8e7}
+.stat-card.blue{border-color:var(--bleu);background:var(--bleup)}
+.stat-card.red{border-color:var(--rouge);background:#fdecea}
+.stat-card.marron{border-color:var(--marron);background:var(--marronp)}
+.stat-card.purple{border-color:#6a1b9a;background:#f3e5f5}
+.stat-val{font-family:'Amiri',serif;font-size:2rem;font-weight:900;margin-bottom:4px}
+.stat-lbl{font-size:.72rem;font-weight:700;color:var(--gris)}
+.chart-box{background:#fff;border-radius:14px;margin:0 12px 12px;padding:14px;box-shadow:var(--sh)}
+.chart-title{font-size:.82rem;font-weight:800;color:var(--gris);margin-bottom:10px;text-align:center}
+.users-list{padding:0 12px 12px}
+.user-row{background:#fff;border-radius:10px;padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--sh);border:1px solid var(--border)}
+.user-row-name{font-weight:700;font-size:.85rem}
+.user-row-tel{font-size:.72rem;color:var(--gris)}
+.user-row-badge{font-size:.65rem;font-weight:800;padding:2px 8px;border-radius:10px}
 </style>
 </head>
 <body><div id="splash"><div class="sp-icon">🌾</div><div class="sp-title">سوق الفلاح</div><div class="sp-sub">كل المنتجات الفلاحية في يدك</div><div class="sp-bar"><div class="sp-fill"></div></div></div>
@@ -316,7 +335,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="filter-chip" onclick="fDem(this,'animal')">🐄 حيوانية</div>
 </div></div>
 <div class="section-title" id="sec-lbl">إعلانات اليوم</div>
-<div class="annonces-grid" id="grid"><div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
+<div class="annonces-grid" id="grid"></div>
 <button class="fab" onclick="goTo('publish')">＋</button>
 </div>
 
@@ -340,7 +359,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="filter-chip" onclick="fMatDem(this,'kra')">🔑 كراء</div>
 </div></div>
 <div class="section-title" id="mat-lbl">عروض الآليات</div>
-<div class="annonces-grid" id="mat-grid"><div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
+<div class="annonces-grid" id="mat-grid"></div>
 <button class="fab" style="background:linear-gradient(135deg,var(--marron),#8d6e63);box-shadow:0 4px 20px rgba(109,76,65,.5)" onclick="goTo('publish-mat')">＋</button>
 </div>
 
@@ -495,7 +514,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 
 <div class="screen" id="screen-messages">
 <div style="background:linear-gradient(135deg,var(--vert),var(--vert2));padding:16px"><div style="font-family:'Amiri',serif;font-size:1.3rem;color:var(--orc)">💬 الرسائل</div></div>
-<div class="msg-list" id="msg-list"><div class="loading"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
+<div class="msg-list" id="msg-list"></div>
 </div>
 
 <div class="screen" id="screen-profil">
@@ -515,9 +534,44 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="profil-item" onclick="goTo('mes-ann')"><div class="profil-item-left"><span>📋</span><span class="profil-item-label">إعلاناتي وطلباتي</span></div><span>›</span></div>
 <div class="profil-item" onclick="goTo('abonnement')"><div class="profil-item-left"><span>⭐</span><span class="profil-item-label">الاشتراك المميز</span></div><span>›</span></div>
 <div class="profil-item" id="admin-btn" style="display:none;background:#fff8e7;border-color:var(--or)" onclick="toggleGratuit()"><div class="profil-item-left"></div></div>
+<div class="profil-item" id="dashboard-btn" style="display:none;background:#e8eaf6;border-color:#3f51b5" onclick="goTo('admin')"><div class="profil-item-left"><span>📊</span><span class="profil-item-label" style="color:#1a237e">لوحة التحكم</span></div><span>›</span></div>
 <div class="profil-item" onclick="showToast('قريبا!')"><div class="profil-item-left"><span>⚙️</span><span class="profil-item-label">الإعدادات</span></div><span>›</span></div>
 <div class="profil-item" onclick="logout()"><div class="profil-item-left"><span>🚪</span><span class="profil-item-label" style="color:var(--rouge)">خروج</span></div><span>›</span></div>
 </div></div>
+
+<div class="screen" id="screen-admin">
+<div class="pub-header admin">
+<button onclick="goTo('profil')" style="background:rgba(255,255,255,.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;flex-shrink:0">‹</button>
+<div class="pub-title">📊 لوحة التحكم</div>
+</div>
+<div style="padding:12px 12px 0">
+<div style="background:linear-gradient(135deg,#1a237e,#283593);border-radius:14px;padding:14px;color:#fff;text-align:center;margin-bottom:4px">
+<div style="font-size:.8rem;opacity:.7;margin-bottom:4px">💰 الدخل الشهري المتوقع</div>
+<div id="admin-revenu" style="font-family:'Amiri',serif;font-size:2.5rem;font-weight:900;color:var(--orc)">—</div>
+<div style="font-size:.75rem;opacity:.7">درهم/شهر</div>
+</div>
+</div>
+<div class="stat-grid">
+<div class="stat-card green"><div class="stat-val" style="color:var(--vert)" id="stat-users">—</div><div class="stat-lbl">👥 مجموع الحسابات</div></div>
+<div class="stat-card gold"><div class="stat-val" style="color:var(--or)" id="stat-premium">—</div><div class="stat-lbl">⭐ مشتركون Premium</div></div>
+<div class="stat-card blue"><div class="stat-val" style="color:var(--bleu)" id="stat-free">—</div><div class="stat-lbl">🆓 حسابات مجانية</div></div>
+<div class="stat-card red"><div class="stat-val" style="color:var(--rouge)" id="stat-anns">—</div><div class="stat-lbl">📢 إعلانات نشطة</div></div>
+<div class="stat-card marron"><div class="stat-val" style="color:var(--marron)" id="stat-mat">—</div><div class="stat-lbl">🚜 إعلانات آليات</div></div>
+<div class="stat-card purple"><div class="stat-val" style="color:#6a1b9a" id="stat-msgs">—</div><div class="stat-lbl">💬 رسائل مبادلة</div></div>
+</div>
+<div class="chart-box">
+<div class="chart-title">📊 Free مقابل Premium</div>
+<canvas id="chart-pie" height="200"></canvas>
+</div>
+<div class="chart-box">
+<div class="chart-title">🗺️ التوزيع حسب المنطقة</div>
+<canvas id="chart-regions" height="220"></canvas>
+</div>
+<div style="padding:0 12px;margin-bottom:8px">
+<div style="font-size:.8rem;font-weight:800;color:var(--gris);margin-bottom:8px">👥 آخر المسجلين</div>
+</div>
+<div class="users-list" id="admin-users"></div>
+</div>
 
 <div class="screen" id="screen-abonnement">
 <div class="pub-header"><div class="pub-title">الاشتراك المميز</div></div>
@@ -574,7 +628,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <button id="ma-t2" onclick="switchMA('dem')" style="flex:1;padding:10px;border:none;background:#e2e8f0;color:#555;border-radius:10px 10px 0 0;font-family:Tajawal,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;margin-right:4px">🛒 طلباتي</button>
 <button id="ma-t3" onclick="switchMA('mat')" style="flex:1;padding:10px;border:none;background:#e2e8f0;color:#555;border-radius:10px 10px 0 0;font-family:Tajawal,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;margin-right:4px">🚜 آلياتي</button>
 </div>
-<div id="ma-list" style="padding:12px"><div class="loading"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
+<div id="ma-list" style="padding:12px"></div>
 </div>
 
 <div class="bnav" id="bnav" style="display:none">
@@ -590,6 +644,7 @@ var PTM='kra',_spmat='';
 var EM={'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','البصلة':'🧅','البطاطا':'🥔','الجزر':'🥕','الثوم':'🧄','الكوسة':'🥬','الباذنجان':'🍆','الملفوف':'🥦','الخس':'🥗','اللوبية':'🫘','الحمص':'🟡','العدس':'🟤','الفول':'🫘','الذرة':'🌽','الفلفل الحار':'🌶️','الكرفس':'🌿','الشمندر':'🔴','اللفت':'🟣','البرتقال':'🍊','الحامض':'🍋','البطيخ':'🍉','التفاح':'🍎','العنب':'🍇','التين':'🫐','الكليمنتين':'🍊','الرمان':'🍎','المشماش':'🍑','حب الملوك':'🍒','الخوخ':'🍑','الفريز':'🍓','الموز':'🍌','الأفوكا':'🥑','التمر':'🌴','الزيتون':'🫒','الدلاح':'🍈','حليب':'🥛','دجاج':'🐓','بيض':'🥚','أغنام':'🐑','بقر':'🐄','ماعز':'🐐','سمك':'🐟','عسل':'🍯','جرار':'🚜','حفارة':'🏗️','لودار':'🚛','بولدوزار':'🚧','الحراثة':'⚙️','الفريزة':'⚙️','المسوية':'⚙️','الديسك':'⚙️','مضخة/بومبا':'💧','معدات التنقيط':'💧','الخرطوم':'💧','الحصادة':'🌾','الدراسة':'🌾','آلة جني الزيتون':'🫒','الريموركي':'🚚','الصهريج':'🚰','الراشة':'🌿','آلة التسميد':'🌱'};
 var CL={'legumes':'🥕 خضر','fruits':'🍊 فواكه','agricole':'🌾 فلاحية','animal':'🐄 حيوانية','materiel':'🚜 آليات'};
 var _nAid=null,_nUid=null,_nStar=0,_interval=null,_gratuit=false;
+var _chartPie=null,_chartReg=null;
 
 window.onload=function(){
   setTimeout(function(){
@@ -609,7 +664,7 @@ window.onload=function(){
     var active=document.querySelector('.screen.active');
     var id=active?active.id:'';
     if(id==='screen-publish'||id==='screen-messages'||id==='screen-profil'||id==='screen-materiel'||id==='screen-publish-mat'){goTo('home');return;}
-    if(id==='screen-mes-ann'||id==='screen-abonnement'){goTo('profil');return;}
+    if(id==='screen-mes-ann'||id==='screen-abonnement'||id==='screen-admin'){goTo('profil');return;}
     if(id==='screen-home'||id===''||!id){
       document.getElementById('confirm-overlay').classList.add('show');
       history.pushState(null,'',location.href);return;
@@ -654,6 +709,7 @@ function goTo(id){
   if(id==='messages')loadMsgs();
   if(id==='mes-ann')loadMA();
   if(id==='abonnement')loadAbo();
+  if(id==='admin')loadAdmin();
   history.pushState(null,'',location.href);
 }
 
@@ -820,6 +876,72 @@ async function loadMatDem(filter){
   }).join('');
 }
 
+async function loadAdmin(){
+  document.getElementById('stat-users').textContent='...';
+  var ru=await sb.from('utilisateurs').select('*',{count:'exact'});
+  var rp=await sb.from('utilisateurs').select('id',{count:'exact'}).eq('premium',true);
+  var ra=await sb.from('annonces').select('id',{count:'exact'}).eq('statut','active');
+  var rm=await sb.from('materiel').select('id',{count:'exact'}).eq('statut','active');
+  var rms=await sb.from('messages').select('id',{count:'exact'});
+  var total=ru.count||0;
+  var premium=rp.count||0;
+  var free=total-premium;
+  var revenu=premium*49;
+  document.getElementById('stat-users').textContent=total;
+  document.getElementById('stat-premium').textContent=premium;
+  document.getElementById('stat-free').textContent=free;
+  document.getElementById('stat-anns').textContent=ra.count||0;
+  document.getElementById('stat-mat').textContent=rm.count||0;
+  document.getElementById('stat-msgs').textContent=rms.count||0;
+  document.getElementById('admin-revenu').textContent=revenu.toLocaleString();
+
+  // Graphique Pie
+  if(_chartPie){_chartPie.destroy();}
+  var ctx1=document.getElementById('chart-pie').getContext('2d');
+  _chartPie=new Chart(ctx1,{
+    type:'doughnut',
+    data:{
+      labels:['🆓 مجاني','⭐ Premium'],
+      datasets:[{data:[free,premium],backgroundColor:['#e3f2fd','#c8952a'],borderColor:['#1565c0','#e8b84b'],borderWidth:2}]
+    },
+    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{family:'Tajawal',size:12}}}}}
+  });
+
+  // Graphique Régions
+  var regions={};
+  if(ru.data){ru.data.forEach(function(u){var r=u.region||'أخرى';regions[r]=(regions[r]||0)+1;});}
+  var regLabels=Object.keys(regions);
+  var regData=regLabels.map(function(k){return regions[k];});
+  var colors=['#1a4a2e','#2d6e47','#4caf72','#c8952a','#1565c0','#6d4c41','#c0392b','#6a1b9a','#e65100'];
+  if(_chartReg){_chartReg.destroy();}
+  var ctx2=document.getElementById('chart-regions').getContext('2d');
+  _chartReg=new Chart(ctx2,{
+    type:'bar',
+    data:{
+      labels:regLabels,
+      datasets:[{label:'عدد المستخدمين',data:regData,backgroundColor:colors.slice(0,regLabels.length),borderRadius:6}]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{x:{ticks:{font:{family:'Tajawal',size:9}}},y:{ticks:{stepSize:1}}}
+    }
+  });
+
+  // آخر المسجلين
+  var list=document.getElementById('admin-users');
+  if(ru.data&&ru.data.length>0){
+    var recent=ru.data.sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at);}).slice(0,10);
+    list.innerHTML=recent.map(function(u){
+      var isPrem=u.premium;
+      var d=new Date(u.created_at).toLocaleDateString('ar-MA');
+      return '<div class="user-row"><div><div class="user-row-name">'+u.nom+'</div><div class="user-row-tel">📍 '+u.region+' · '+d+'</div></div><span class="user-row-badge" style="background:'+(isPrem?'#fff8e7':'var(--bleup)')+'";color:'+(isPrem?'var(--or)':'var(--bleu)')+'">'+  (isPrem?'⭐ Premium':'🆓 مجاني')+'</span></div>';
+    }).join('');
+  }else{
+    list.innerHTML='<div style="text-align:center;padding:20px;color:var(--gris)">ما كاين مستخدمين بعد</div>';
+  }
+}
+
 function fAnn(el,t){document.querySelectorAll('#fo .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fann=t;loadAnn(t);}
 function fDem(el,t){document.querySelectorAll('#fd .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fdem=t;loadDem(t);}
 function fMat(el,t){document.querySelectorAll('#fm-offres .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fmat=t;loadMat(t);}
@@ -849,8 +971,7 @@ function openA(i){
     '<button class="cbtn star" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\')">⭐ قيم البياع</button>')+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header"><div class="det-title">'+em+' '+a.produit+'</div></div>'+img+info+tags+vcard+btns;
-  document.body.appendChild(div);
-  history.pushState(null,'',location.href);
+  document.body.appendChild(div);history.pushState(null,'',location.href);
 }
 
 function openDem(i){
@@ -873,8 +994,7 @@ function openDem(i){
       '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع المشترين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>'))+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header bleu"><div class="det-title">🛒 '+d.produit+'</div></div>'+img+info+tags+vcard+btns;
-  document.body.appendChild(div);
-  history.pushState(null,'',location.href);
+  document.body.appendChild(div);history.pushState(null,'',location.href);
 }
 
 function openMat(i){
@@ -898,8 +1018,7 @@ function openMat(i){
       '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>'))+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header marron"><div class="det-title">'+em+' '+m.nom_materiel+'</div></div>'+img+info+desc+vcard+btns;
-  document.body.appendChild(div);
-  history.pushState(null,'',location.href);
+  document.body.appendChild(div);history.pushState(null,'',location.href);
 }
 
 function openMatDem(i){
@@ -921,8 +1040,7 @@ function openMatDem(i){
       '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>'))+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header marron"><div class="det-title">'+em+' '+m.nom_materiel+'</div></div>'+img+info+vcard+btns;
-  document.body.appendChild(div);
-  history.pushState(null,'',location.href);
+  document.body.appendChild(div);history.pushState(null,'',location.href);
 }
 
 function closeDet(){var d=document.getElementById('det');if(d)d.remove();}
@@ -1010,30 +1128,10 @@ async function markVendu(id){
   await sb.from('annonces').update({statut:'vendue'}).eq('id',id);
   closeDet();showToast('✅ تم تسجيل البيع!');loadAnn(_fann);loadMA();
 }
-
-async function delAnn(id){
-  if(!confirm('تأكيد: حذف هذا الإعلان؟'))return;
-  await sb.from('annonces').delete().eq('id',id);
-  closeDet();showToast('🗑️ تم الحذف');loadAnn(_fann);loadMA();
-}
-
-async function delDem(id){
-  if(!confirm('تأكيد: حذف هذا الطلب؟'))return;
-  await sb.from('demandes').delete().eq('id',id);
-  closeDet();showToast('🗑️ تم الحذف');loadDem(_fdem);loadMA();
-}
-
-async function delMat(id){
-  if(!confirm('تأكيد: حذف هذا الإعلان؟'))return;
-  await sb.from('materiel').delete().eq('id',id);
-  closeDet();showToast('🗑️ تم الحذف');loadMat(_fmat);loadMA();
-}
-
-async function delMatDem(id){
-  if(!confirm('تأكيد: حذف هذا الطلب؟'))return;
-  await sb.from('materiel_dem').delete().eq('id',id);
-  closeDet();showToast('🗑️ تم الحذف');loadMatDem(_fmatd);loadMA();
-}
+async function delAnn(id){if(!confirm('تأكيد: حذف هذا الإعلان؟'))return;await sb.from('annonces').delete().eq('id',id);closeDet();showToast('🗑️ تم الحذف');loadAnn(_fann);loadMA();}
+async function delDem(id){if(!confirm('تأكيد: حذف هذا الطلب؟'))return;await sb.from('demandes').delete().eq('id',id);closeDet();showToast('🗑️ تم الحذف');loadDem(_fdem);loadMA();}
+async function delMat(id){if(!confirm('تأكيد: حذف هذا الإعلان؟'))return;await sb.from('materiel').delete().eq('id',id);closeDet();showToast('🗑️ تم الحذف');loadMat(_fmat);loadMA();}
+async function delMatDem(id){if(!confirm('تأكيد: حذف هذا الطلب؟'))return;await sb.from('materiel_dem').delete().eq('id',id);closeDet();showToast('🗑️ تم الحذف');loadMatDem(_fmatd);loadMA();}
 
 async function loadAbo(){
   if(!CU)return;
@@ -1134,14 +1232,7 @@ function openChat(aid,uid,nom,prod){
   loadChat(aid,uid);
   setTimeout(function(){
     var inp=document.getElementById('cinp');
-    if(inp){
-      inp.addEventListener('focus',function(){
-        setTimeout(function(){
-          var c=document.getElementById('cmsg');
-          if(c)c.scrollTop=c.scrollHeight;
-        },400);
-      });
-    }
+    if(inp){inp.addEventListener('focus',function(){setTimeout(function(){var c=document.getElementById('cmsg');if(c)c.scrollTop=c.scrollHeight;},400);});}
   },300);
 }
 
@@ -1164,8 +1255,7 @@ async function loadChat(aid,uid){
 async function sendMsg(aid,uid){
   var inp=document.getElementById('cinp');
   var txt=inp?inp.value.trim():'';if(!txt)return;
-  inp.value='';
-  inp.focus();
+  inp.value='';inp.focus();
   await sb.from('messages').insert([{annonce_id:aid,expediteur_id:CU.id,destinataire_id:uid,contenu:txt}]);
   loadChat(aid,uid);
 }
@@ -1298,26 +1388,12 @@ function selMatA(el){
 
 function selMatAN(){
   var n=document.getElementById('mat-a-nom').value.trim();_spmat=n;
-  if(n){
-    document.getElementById('mat-step2').style.display='block';
-    document.getElementById('mat-sel-disp').textContent='🚜 '+n;
-    setTimeout(function(){document.getElementById('mat-step2').scrollIntoView({behavior:'smooth',block:'start'});},100);
-  }else{document.getElementById('mat-step2').style.display='none';}
+  if(n){document.getElementById('mat-step2').style.display='block';document.getElementById('mat-sel-disp').textContent='🚜 '+n;setTimeout(function(){document.getElementById('mat-step2').scrollIntoView({behavior:'smooth',block:'start'});},100);}
+  else{document.getElementById('mat-step2').style.display='none';}
 }
 
-function prevPhoto(e){
-  var f=e.target.files[0];if(!f)return;
-  var r=new FileReader();
-  r.onload=function(ev){document.getElementById('photo-prev').src=ev.target.result;document.getElementById('photo-prev').style.display='block';document.getElementById('photo-txt').style.display='none';};
-  r.readAsDataURL(f);
-}
-
-function prevPhotoMat(e){
-  var f=e.target.files[0];if(!f)return;
-  var r=new FileReader();
-  r.onload=function(ev){document.getElementById('photo-prev-mat').src=ev.target.result;document.getElementById('photo-prev-mat').style.display='block';document.getElementById('photo-txt-mat').style.display='none';};
-  r.readAsDataURL(f);
-}
+function prevPhoto(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){document.getElementById('photo-prev').src=ev.target.result;document.getElementById('photo-prev').style.display='block';document.getElementById('photo-txt').style.display='none';};r.readAsDataURL(f);}
+function prevPhotoMat(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){document.getElementById('photo-prev-mat').src=ev.target.result;document.getElementById('photo-prev-mat').style.display='block';document.getElementById('photo-txt-mat').style.display='none';};r.readAsDataURL(f);}
 
 async function pub(){
   if(PT==='sell'&&!isPremium()){
@@ -1385,9 +1461,7 @@ async function toggleGratuit(){
   _gratuit=newVal==='true';
   showToast(newVal==='true'?'✅ الوضع المجاني مفعل للجميع':'❌ الوضع المجاني موقف');
   var adminBtn=document.getElementById('admin-btn');
-  if(adminBtn){
-    adminBtn.innerHTML='<div class="profil-item-left"><span>🎛️</span><span class="profil-item-label">'+(_gratuit?'✅ الوضع المجاني مفعل — إيقاف':'❌ الوضع المجاني موقف — تفعيل')+'</span></div><span>›</span>';
-  }
+  if(adminBtn){adminBtn.innerHTML='<div class="profil-item-left"><span>🎛️</span><span class="profil-item-label">'+(_gratuit?'✅ الوضع المجاني مفعل — إيقاف':'❌ الوضع المجاني موقف — تفعيل')+'</span></div><span>›</span>';}
 }
 
 async function loadProfil(){
@@ -1403,16 +1477,22 @@ async function loadProfil(){
   var badge=document.getElementById('p-premium-badge');
   if(CU.premium){badge.style.display='inline';}else{badge.style.display='none';}
   var adminBtn=document.getElementById('admin-btn');
-  if(adminBtn){
-    if(CU.telephone==='0661996001'){
+  var dashBtn=document.getElementById('dashboard-btn');
+  if(CU.telephone==='0661996001'){
+    if(adminBtn){
       adminBtn.style.display='flex';
       sb.from('config').select('valeur').eq('cle','mode_gratuit').single().then(function(rc){
         _gratuit=(!rc.error&&rc.data&&rc.data.valeur==='true');
         adminBtn.innerHTML='<div class="profil-item-left"><span>🎛️</span><span class="profil-item-label">'+(_gratuit?'✅ الوضع المجاني مفعل — إيقاف':'❌ الوضع المجاني موقف — تفعيل')+'</span></div><span>›</span>';
       });
-    }else{adminBtn.style.display='none';}
+    }
+    if(dashBtn)dashBtn.style.display='flex';
+  }else{
+    if(adminBtn)adminBtn.style.display='none';
+    if(dashBtn)dashBtn.style.display='none';
   }
 }
 </script>
 </body>
 </html>
+  
