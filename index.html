@@ -1358,8 +1358,8 @@ async function pubMat(){
 
 async function toggleGratuit(){
   var r=await sb.from('config').select('valeur').eq('cle','mode_gratuit').single();
-  var actif=!r.error&&r.data&&r.data.valeur==='true';
-  var newVal=actif?'false':'true';
+  var actif=_gratuit;
+var newVal=actif?'false':'true';
   await sb.from('config').update({valeur:newVal}).eq('cle','mode_gratuit');
   _gratuit=newVal==='true';
   showToast(newVal==='true'?'✅ الوضع المجاني مفعل للجميع':'❌ الوضع المجاني موقف');
