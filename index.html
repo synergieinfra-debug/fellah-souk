@@ -559,7 +559,17 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div>
 <div id="ma-list" style="padding:12px"><div class="loading"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
 </div>
-
+<div id="pub-menu" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);width:90%;max-width:380px;background:#fff;border-radius:16px;box-shadow:var(--shd);z-index:200;padding:12px">
+<div onclick="hidePubMenu();goTo('publish')" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;cursor:pointer;margin-bottom:8px;background:var(--vertp)">
+<span style="font-size:1.5rem">🌾</span>
+<div><div style="font-weight:800;font-size:.95rem;color:var(--vert)">نشر منتج فلاحي</div><div style="font-size:.75rem;color:var(--gris)">خضر، فواكه، حيوانات...</div></div>
+</div>
+<div onclick="hidePubMenu();goTo('publish-mat')" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;cursor:pointer;background:var(--marronp)">
+<span style="font-size:1.5rem">🚜</span>
+<div><div style="font-weight:800;font-size:.95rem;color:var(--marron)">نشر آلية أو معدة</div><div style="font-size:.75rem;color:var(--gris)">بيع أو كراء معدات فلاحية</div></div>
+</div>
+</div>
+<div id="pub-menu-bg" style="display:none;position:fixed;inset:0;z-index:199" onclick="hidePubMenu()"></div>
 <div class="bnav" id="bnav" style="display:none">
 <div class="nav-item active" id="ni-home" onclick="goTo('home')"><div class="nav-icon">🌾</div><div class="nav-label">منتجات</div></div>
 <div class="nav-item" id="ni-materiel" onclick="goTo('materiel')"><div class="nav-icon">🚜</div><div class="nav-label">آليات</div></div>
@@ -1340,7 +1350,14 @@ async function toggleGratuit(){
   showToast(newVal==='true'?'✅ الوضع المجاني مفعل للجميع':'❌ الوضع المجاني موقف');
   loadProfil();
 }
-
+function showPubMenu(){
+  document.getElementById('pub-menu').style.display='block';
+  document.getElementById('pub-menu-bg').style.display='block';
+}
+function hidePubMenu(){
+  document.getElementById('pub-menu').style.display='none';
+  document.getElementById('pub-menu-bg').style.display='none';
+}
 async function loadProfil(){
   if(!CU)return;
   var r=await sb.from('utilisateurs').select('*').eq('id',CU.id).single();
