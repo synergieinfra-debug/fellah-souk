@@ -843,7 +843,12 @@ function openA(i){
     '<button class="cbtn star" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\')">⭐ قيم البياع</button>')+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header"><div class="det-title">'+em+' '+a.produit+'</div></div>'+img+info+tags+vcard+btns;
-  document.body.appendChild(div);
+  document.body.appendChild(div);document.getElementById('cinp').addEventListener('focus',function(){
+  setTimeout(function(){
+    var c=document.getElementById('cmsg');
+    if(c)c.scrollTop=c.scrollHeight;
+  },300);
+});
   history.pushState(null,'',location.href);
 }
 
