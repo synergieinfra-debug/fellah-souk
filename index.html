@@ -1234,6 +1234,7 @@ function selP(el,nom){
   document.getElementById('az').style.display='none';
   document.getElementById('step3').style.display='block';
   document.getElementById('sel-disp').textContent=(EM[nom]||'🌾')+' '+nom;
+  setTimeout(function(){document.getElementById('step3').scrollIntoView({behavior:'smooth',block:'start'});},100);
 }
 
 function selA(el){
