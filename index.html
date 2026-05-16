@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content">
 <title>سوق الفلاح</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -53,8 +53,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .home-header::after{content:'🌾';position:absolute;left:10px;bottom:-8px;font-size:5rem;opacity:.1}
 .home-greeting{color:rgba(255,255,255,.7);font-size:.82rem;margin-bottom:2px}
 .home-name{color:#fff;font-size:1.3rem;font-weight:800;margin-bottom:12px}
-.search-bar{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:12px}
-.search-bar-text{color:rgba(255,255,255,.7);font-size:.88rem;flex:1;text-align:right}
 .home-tabs{display:flex;background:rgba(0,0,0,.2);border-radius:10px;padding:3px}
 .home-tab{flex:1;padding:8px;border:none;background:transparent;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;color:rgba(255,255,255,.6);transition:all .2s}
 .home-tab.active{background:#fff;color:var(--vert)}
@@ -62,7 +60,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .filters{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%}
 .filter-chip{padding:6px 4px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-family:'Tajawal',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;color:#555}
 .filter-chip.active{background:var(--vert);border-color:var(--vert);color:#fff}
-.filter-chip.active-marron{background:var(--marron);border-color:var(--marron);color:#fff}
 .section-title{padding:8px 16px 6px;font-size:.72rem;font-weight:800;color:var(--gris);text-transform:uppercase;letter-spacing:.1em}
 .annonces-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px}
 .ann-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--sh);cursor:pointer;transition:all .2s;border:1px solid var(--border)}
@@ -120,7 +117,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .cat-fruits.active{background:#e65100;border-color:#e65100}
 .cat-agricole.active{background:#6a1b9a;border-color:#6a1b9a}
 .cat-animal.active{background:#880e4f;border-color:#880e4f}
-.cat-mat.active{background:var(--marron);border-color:var(--marron)}
 .produits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px}
 .produit-btn{padding:10px 6px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:'Tajawal',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;color:#555}
 .produit-btn.active{background:var(--vert);border-color:var(--vert);color:#fff}
@@ -156,18 +152,18 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .msg-name{font-weight:800;font-size:.88rem;margin-bottom:2px}
 .msg-preview{font-size:.78rem;color:var(--gris);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .msg-time{font-size:.65rem;color:var(--gris);flex-shrink:0}
-.chat-screen{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:100%;min-height:100vh;background:#f5f7fa;z-index:400;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,.3)}
+.chat-screen{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:100vh;background:#f5f7fa;z-index:400;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,.3)}
 .chat-header{background:linear-gradient(135deg,var(--vert),var(--vert2));padding:14px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0}
 .chat-info{flex:1}
 .chat-name{color:#fff;font-weight:800;font-size:.95rem}
 .chat-sub{color:rgba(255,255,255,.7);font-size:.75rem;margin-top:2px}
-.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}
 .bubble{max-width:75%;padding:10px 14px;border-radius:18px;font-size:.88rem;line-height:1.4}
 .bubble.sent{background:var(--vert);color:#fff;align-self:flex-start;border-bottom-right-radius:4px}
 .bubble.recv{background:#fff;color:#1a1a2e;align-self:flex-end;border-bottom-left-radius:4px;box-shadow:var(--sh)}
 .bubble-time{font-size:.6rem;opacity:.7;margin-top:4px}
-.chat-bar{background:#fff;padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-shrink:0;position:sticky;bottom:0}
-.chat-inp{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:24px;font-family:'Tajawal',sans-serif;font-size:.92rem;outline:none;direction:rtl}
+.chat-bar{background:#fff;padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-shrink:0;position:sticky;bottom:0;z-index:10}
+.chat-inp{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:24px;font-family:'Tajawal',sans-serif;font-size:.92rem;outline:none;direction:rtl;background:#fff}
 .chat-inp:focus{border-color:var(--vert3)}
 .chat-send{width:42px;height:42px;border-radius:50%;background:var(--vert);border:none;color:#fff;font-size:1.1rem;cursor:pointer;flex-shrink:0}
 .det{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:100vh;background:#fff;z-index:300;overflow-y:auto;box-shadow:0 0 40px rgba(0,0,0,.3)}
@@ -227,6 +223,18 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div>
 </div>
 
+<div id="pub-menu-bg" style="display:none;position:fixed;inset:0;z-index:199" onclick="hidePubMenu()"></div>
+<div id="pub-menu" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);width:90%;max-width:380px;background:#fff;border-radius:16px;box-shadow:var(--shd);z-index:200;padding:12px">
+<div onclick="hidePubMenu();goTo('publish')" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;cursor:pointer;margin-bottom:8px;background:var(--vertp)">
+<span style="font-size:1.5rem">🌾</span>
+<div><div style="font-weight:800;font-size:.95rem;color:var(--vert)">نشر منتج فلاحي</div><div style="font-size:.75rem;color:var(--gris)">خضر، فواكه، حيوانات...</div></div>
+</div>
+<div onclick="hidePubMenu();goTo('publish-mat')" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;cursor:pointer;background:var(--marronp)">
+<span style="font-size:1.5rem">🚜</span>
+<div><div style="font-weight:800;font-size:.95rem;color:var(--marron)">نشر آلية أو معدة</div><div style="font-size:.75rem;color:var(--gris)">بيع أو كراء معدات فلاحية</div></div>
+</div>
+</div>
+
 <div id="modal-bg" class="modal-bg" style="display:none" onclick="closeModal()">
 <div class="modal" onclick="event.stopPropagation()">
 <div class="modal-handle"></div>
@@ -282,10 +290,9 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="home-header">
 <div style="text-align:center;padding:8px 0 4px">
 <div style="font-family:'Amiri',serif;font-size:1.6rem;color:var(--orc);font-weight:700">سوق الفلاح 🌾</div>
-
-<div style="font-size:.82rem;color:rgba(255,255,255,.7);margin-bottom:10px" id="home-name">أهلا بك 👋</div>
+<div style="font-size:.82rem;color:rgba(255,255,255,.7);margin-bottom:6px" id="home-name">أهلا بك 👋</div>
 <div style="display:flex;justify-content:center;gap:6px;margin-bottom:6px;font-size:1.6rem;animation:breathe 3s ease-in-out infinite">
-<span>🥕</span><span>🍅</span><span>🍊</span><span>🐄</span><span>🌾</span><span>🚜</span><span>🍯</span><span>🐑</span><span>🚜</span>
+<span>🥕</span><span>🍅</span><span>🍊</span><span>🐄</span><span>🌾</span><span>🚜</span><span>🍯</span><span>🐑</span>
 </div>
 <div style="font-family:'Amiri',serif;font-size:1rem;color:rgba(255,255,255,.9);font-weight:700;margin-bottom:12px">منتجات فلاحية</div>
 </div>
@@ -569,17 +576,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div>
 <div id="ma-list" style="padding:12px"><div class="loading"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
 </div>
-<div id="pub-menu" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);width:90%;max-width:380px;background:#fff;border-radius:16px;box-shadow:var(--shd);z-index:200;padding:12px">
-<div onclick="hidePubMenu();goTo('publish')" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;cursor:pointer;margin-bottom:8px;background:var(--vertp)">
-<span style="font-size:1.5rem">🌾</span>
-<div><div style="font-weight:800;font-size:.95rem;color:var(--vert)">نشر منتج فلاحي</div><div style="font-size:.75rem;color:var(--gris)">خضر، فواكه، حيوانات...</div></div>
-</div>
-<div onclick="hidePubMenu();goTo('publish-mat')" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;cursor:pointer;background:var(--marronp)">
-<span style="font-size:1.5rem">🚜</span>
-<div><div style="font-weight:800;font-size:.95rem;color:var(--marron)">نشر آلية أو معدة</div><div style="font-size:.75rem;color:var(--gris)">بيع أو كراء معدات فلاحية</div></div>
-</div>
-</div>
-<div id="pub-menu-bg" style="display:none;position:fixed;inset:0;z-index:199" onclick="hidePubMenu()"></div>
+
 <div class="bnav" id="bnav" style="display:none">
 <div class="nav-item active" id="ni-home" onclick="goTo('home')"><div class="nav-icon">🌾</div><div class="nav-label">منتجات</div></div>
 <div class="nav-item" id="ni-materiel" onclick="goTo('materiel')"><div class="nav-icon">🚜</div><div class="nav-label">آليات</div></div>
@@ -668,6 +665,15 @@ function showApp(){
   checkUnread();
   if(_interval)clearInterval(_interval);
   _interval=setInterval(checkUnread,30000);
+}
+
+function showPubMenu(){
+  document.getElementById('pub-menu').style.display='block';
+  document.getElementById('pub-menu-bg').style.display='block';
+}
+function hidePubMenu(){
+  document.getElementById('pub-menu').style.display='none';
+  document.getElementById('pub-menu-bg').style.display='none';
 }
 
 function switchAuth(t){
@@ -843,12 +849,7 @@ function openA(i){
     '<button class="cbtn star" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\')">⭐ قيم البياع</button>')+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header"><div class="det-title">'+em+' '+a.produit+'</div></div>'+img+info+tags+vcard+btns;
-  document.body.appendChild(div);document.getElementById('cinp').addEventListener('focus',function(){
-  setTimeout(function(){
-    var c=document.getElementById('cmsg');
-    if(c)c.scrollTop=c.scrollHeight;
-  },300);
-});
+  document.body.appendChild(div);
   history.pushState(null,'',location.href);
 }
 
@@ -925,7 +926,6 @@ function openMatDem(i){
 }
 
 function closeDet(){var d=document.getElementById('det');if(d)d.remove();}
-
 
 function ouvrirNotation(annId,userId){
   _nAid=annId;_nUid=userId;_nStar=0;
@@ -1096,17 +1096,18 @@ async function loadMA(){
     var r3=await sb.from('materiel').select('*').eq('vendeur_id',CU.id).order('created_at',{ascending:false});
     var r4=await sb.from('materiel_dem').select('*').eq('acheteur_id',CU.id).order('created_at',{ascending:false});
     var all=[];
-    if(!r3.error&&r3.data)r3.data.forEach(function(m){all.push({...m,_src:'mat'});});
-    if(!r4.error&&r4.data)r4.data.forEach(function(m){all.push({...m,_src:'matd'});});
+    if(!r3.error&&r3.data)r3.data.forEach(function(m){all.push(Object.assign({},m,{_src:'mat'}));});
+    if(!r4.error&&r4.data)r4.data.forEach(function(m){all.push(Object.assign({},m,{_src:'matd'}));});
     if(all.length===0){list.innerHTML='<div style="text-align:center;padding:40px"><div style="font-size:3rem">🚜</div><div style="font-weight:800;margin-top:14px">ما عندكش إعلانات آليات بعد</div></div>';return;}
     list.innerHTML=all.map(function(m){
       var em=EM[m.nom_materiel]||'🚜';
       var isKra=m.type_op==='kra';
       var st=m._src==='mat'?(m.statut==='active'?'<span class="ma-statut st-active">فعال</span>':'<span class="ma-statut st-vendue">منتهي</span>'):'<span class="ma-statut st-kra">طلب</span>';
+      var prix=m._src==='mat'?m.prix:m.prix_max;
       var btns=m._src==='mat'?
         '<button class="btn-sm" style="background:var(--marronp);color:var(--marron)" onclick="window._cmat='+JSON.stringify(m).replace(/'/g,"\\'")+';openEditMat(\''+m.id+'\')">✏️ تعديل</button><button class="btn-sm" style="background:#fdecea;color:var(--rouge)" onclick="delMat(\''+m.id+'\')">🗑️ حذف</button>':
         '<button class="btn-sm" style="background:#fdecea;color:var(--rouge)" onclick="delMatDem(\''+m.id+'\')">🗑️ حذف</button>';
-      return '<div class="ma-card"><div class="ma-header"><div class="ma-produit">'+em+' '+m.nom_materiel+'</div>'+st+'</div><div class="ma-info">📍 '+m.ville+' · '+m.prix+(m._src==='matd'?m.prix_max:'')+'  د.م · '+(isKra?'كراء':'بيع')+'</div><div class="ma-btns">'+btns+'</div></div>';
+      return '<div class="ma-card"><div class="ma-header"><div class="ma-produit">'+em+' '+m.nom_materiel+'</div>'+st+'</div><div class="ma-info">📍 '+m.ville+' · '+prix+' د.م · '+(isKra?'كراء':'بيع')+'</div><div class="ma-btns">'+btns+'</div></div>';
     }).join('');
   }
 }
@@ -1127,17 +1128,30 @@ function openChat(aid,uid,nom,prod){
   var old=document.getElementById('chat');if(old)old.remove();
   var em=EM[prod]||'🌾';
   var div=document.createElement('div');div.id='chat';div.className='chat-screen';
-  div.innerHTML='<div class="chat-header"><div class="chat-info"><div class="chat-name">'+nom+'</div><div class="chat-sub">'+em+' '+prod+'</div></div></div><div class="chat-msgs" id="cmsg"><div style="text-align:center;color:var(--gris);padding:20px">ابدأ المحادثة 👋</div></div><div class="chat-bar"><button class="chat-send" onclick="sendMsg(\''+aid+'\',\''+uid+'\')">➤</button><input class="chat-inp" id="cinp" placeholder="اكتب رسالتك..." onkeypress="if(event.key===\'Enter\')sendMsg(\''+aid+'\',\''+uid+'\')"/></div>';
+  div.innerHTML='<div class="chat-header"><button onclick="closeChat()" style="background:rgba(255,255,255,.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;flex-shrink:0">‹</button><div class="chat-info"><div class="chat-name">'+nom+'</div><div class="chat-sub">'+em+' '+prod+'</div></div></div><div class="chat-msgs" id="cmsg"></div><div class="chat-bar"><button class="chat-send" onclick="sendMsg(\''+aid+'\',\''+uid+'\')">➤</button><input class="chat-inp" id="cinp" type="text" placeholder="اكتب رسالتك..." onkeypress="if(event.key===\'Enter\')sendMsg(\''+aid+'\',\''+uid+'\')"/></div>';
   document.body.appendChild(div);
   history.pushState(null,'',location.href);
   loadChat(aid,uid);
+  setTimeout(function(){
+    var inp=document.getElementById('cinp');
+    if(inp){
+      inp.addEventListener('focus',function(){
+        setTimeout(function(){
+          var c=document.getElementById('cmsg');
+          if(c)c.scrollTop=c.scrollHeight;
+        },400);
+      });
+    }
+  },300);
 }
 
 function closeChat(){var c=document.getElementById('chat');if(c)c.remove();}
 
 async function loadChat(aid,uid){
-  var r=await sb.from('messages').select('*').eq('annonce_id',aid).or('expediteur_id.eq.'+CU.id+',destinataire_id.eq.'+CU.id).order('created_at',{ascending:true});
   var c=document.getElementById('cmsg');if(!c)return;
+  c.innerHTML='<div style="text-align:center;color:var(--gris);padding:20px">ابدأ المحادثة 👋</div>';
+  var r=await sb.from('messages').select('*').eq('annonce_id',aid).or('expediteur_id.eq.'+CU.id+',destinataire_id.eq.'+CU.id).order('created_at',{ascending:true});
+  if(!c)return;
   if(!r.data||r.data.length===0){c.innerHTML='<div style="text-align:center;color:var(--gris);padding:20px">ابدأ المحادثة 👋</div>';return;}
   c.innerHTML=r.data.map(function(m){
     var s=m.expediteur_id===CU.id;
@@ -1151,6 +1165,7 @@ async function sendMsg(aid,uid){
   var inp=document.getElementById('cinp');
   var txt=inp?inp.value.trim():'';if(!txt)return;
   inp.value='';
+  inp.focus();
   await sb.from('messages').insert([{annonce_id:aid,expediteur_id:CU.id,destinataire_id:uid,contenu:txt}]);
   loadChat(aid,uid);
 }
@@ -1183,6 +1198,7 @@ function resetPub(){
   ['p-qte','p-prix','p-ville','p-desc','ag-nom','a-nom'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('photo-prev').style.display='none';
   document.getElementById('photo-txt').style.display='block';
+  document.getElementById('sell-photo').style.display='block';
   document.getElementById('pt-sell').className='pub-type-btn active-sell';
   document.getElementById('pt-buy').className='pub-type-btn';
   document.getElementById('p-btn').textContent='📢 نشر الإعلان الآن';
@@ -1214,9 +1230,10 @@ function setPT(t){
 
 function setPTMat(t){
   PTM=t;
-  ['pt-mat-kra','pt-mat-sell','pt-mat-dem-kra','pt-mat-dem-bai3'].forEach(function(id){document.getElementById(id).className='pub-type-btn';});
-  var clsMap={'kra':'active-kra','bai3':'active-sell','dem-kra':'active-kra-dem','dem-bai3':'active-buy'};
-  document.getElementById('pt-mat-'+(t==='bai3'?'sell':t==='dem-kra'?'dem-kra':'dem-bai3'==='dem-bai3'&&t==='dem-bai3'?'dem-bai3':'kra')).className='pub-type-btn '+(clsMap[t]||'active-kra');
+  document.getElementById('pt-mat-kra').className='pub-type-btn'+(t==='kra'?' active-kra':'');
+  document.getElementById('pt-mat-sell').className='pub-type-btn'+(t==='bai3'?' active-sell':'');
+  document.getElementById('pt-mat-dem-kra').className='pub-type-btn'+(t==='dem-kra'?' active-kra-dem':'');
+  document.getElementById('pt-mat-dem-bai3').className='pub-type-btn'+(t==='dem-bai3'?' active-buy':'');
   var lbl={'kra':'السعر (د.م/يوم)','bai3':'سعر البيع (د.م)','dem-kra':'السعر الأقصى/يوم','dem-bai3':'السعر الأقصى'};
   document.getElementById('mat-prix-lbl').textContent=lbl[t]||'السعر';
   document.getElementById('mat-btn').textContent=t==='kra'?'🔑 نشر عرض الكراء':t==='bai3'?'💰 نشر عرض البيع':t==='dem-kra'?'🔑 نشر طلب الكراء':'💰 نشر طلب الشراء';
@@ -1252,13 +1269,13 @@ function selA(el){
 
 function selAN(){
   var n=document.getElementById('a-nom').value.trim();SP=n;
-  if(n){document.getElementById('step3').style.display='block';document.getElementById('sel-disp').textContent='✏️ '+n;}
+  if(n){document.getElementById('step3').style.display='block';document.getElementById('sel-disp').textContent='✏️ '+n;setTimeout(function(){document.getElementById('step3').scrollIntoView({behavior:'smooth',block:'start'});},100);}
   else document.getElementById('step3').style.display='none';
 }
 
 function selL(){
   var n=document.getElementById('ag-nom').value.trim();SP=n;
-  if(n){document.getElementById('step3').style.display='block';document.getElementById('sel-disp').textContent='🌾 '+n;}
+  if(n){document.getElementById('step3').style.display='block';document.getElementById('sel-disp').textContent='🌾 '+n;setTimeout(function(){document.getElementById('step3').scrollIntoView({behavior:'smooth',block:'start'});},100);}
   else document.getElementById('step3').style.display='none';
 }
 
@@ -1362,9 +1379,8 @@ async function pubMat(){
 }
 
 async function toggleGratuit(){
-  var r=await sb.from('config').select('valeur').eq('cle','mode_gratuit').single();
   var actif=_gratuit;
-var newVal=actif?'false':'true';
+  var newVal=actif?'false':'true';
   await sb.from('config').update({valeur:newVal}).eq('cle','mode_gratuit');
   _gratuit=newVal==='true';
   showToast(newVal==='true'?'✅ الوضع المجاني مفعل للجميع':'❌ الوضع المجاني موقف');
@@ -1373,14 +1389,7 @@ var newVal=actif?'false':'true';
     adminBtn.innerHTML='<div class="profil-item-left"><span>🎛️</span><span class="profil-item-label">'+(_gratuit?'✅ الوضع المجاني مفعل — إيقاف':'❌ الوضع المجاني موقف — تفعيل')+'</span></div><span>›</span>';
   }
 }
-function showPubMenu(){
-  document.getElementById('pub-menu').style.display='block';
-  document.getElementById('pub-menu-bg').style.display='block';
-}
-function hidePubMenu(){
-  document.getElementById('pub-menu').style.display='none';
-  document.getElementById('pub-menu-bg').style.display='none';
-}
+
 async function loadProfil(){
   if(!CU)return;
   var r=await sb.from('utilisateurs').select('*').eq('id',CU.id).single();
@@ -1398,8 +1407,8 @@ async function loadProfil(){
     if(CU.telephone==='0661996001'){
       adminBtn.style.display='flex';
       sb.from('config').select('valeur').eq('cle','mode_gratuit').single().then(function(rc){
-        var actif=!rc.error&&rc.data&&rc.data.valeur==='true';
-        adminBtn.innerHTML='<div class="profil-item-left"><span>🎛️</span><span class="profil-item-label">'+(actif?'✅ الوضع المجاني مفعل — إيقاف':'❌ الوضع المجاني موقف — تفعيل')+'</span></div><span>›</span>';
+        _gratuit=(!rc.error&&rc.data&&rc.data.valeur==='true');
+        adminBtn.innerHTML='<div class="profil-item-left"><span>🎛️</span><span class="profil-item-label">'+(_gratuit?'✅ الوضع المجاني مفعل — إيقاف':'❌ الوضع المجاني موقف — تفعيل')+'</span></div><span>›</span>';
       });
     }else{adminBtn.style.display='none';}
   }
