@@ -280,9 +280,13 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 
 <div class="screen" id="screen-home">
 <div class="home-header">
-<div class="home-greeting" style="color:rgba(255,255,255,.7)">سوق المنتجات</div>
-<div class="home-name">🌾 منتجات فلاحية</div>
-<div class="home-name" id="home-name" style="font-size:.9rem;margin-bottom:12px;opacity:.8"></div>
+<div style="text-align:center;padding:8px 0 4px">
+<div style="font-family:'Amiri',serif;font-size:1.6rem;color:var(--orc);font-weight:700">سوق الفلاح 🌾</div>
+<div style="font-size:.82rem;color:rgba(255,255,255,.7);margin-bottom:10px" id="home-name">أهلا بك 👋</div>
+<div style="display:flex;justify-content:center;gap:6px;margin-bottom:12px;font-size:1.6rem;animation:breathe 3s ease-in-out infinite">
+<span>🥕</span><span>🍅</span><span>🍊</span><span>🐄</span><span>🌾</span><span>🚜</span><span>🍯</span><span>🐑</span>
+</div>
+</div>
 <div class="home-tabs">
 <button class="home-tab active" id="tab-offres" onclick="switchTab('offres')">📢 عروض البيع</button>
 <button class="home-tab" id="tab-demandes" onclick="switchTab('demandes')">🛒 طلبات الشراء</button>
@@ -301,7 +305,14 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="filter-chip" onclick="fDem(this,'fruits')">🍊 فواكه</div>
 <div class="filter-chip" onclick="fDem(this,'agricole')">🌾 فلاحية</div>
 <div class="filter-chip" onclick="fDem(this,'animal')">🐄 حيوانية</div>
-</div></div>
+</div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 12px 4px">
+<div onclick="fAnn(document.querySelector('#fo .filter-chip:nth-child(2)'),\'legumes\')" style="background:#fff;border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;box-shadow:var(--sh);border:1.5px solid var(--border)"><div style="font-size:1.6rem">🥕</div><div style="font-size:.72rem;font-weight:700;color:var(--vert);margin-top:4px">خضر</div></div>
+<div onclick="fAnn(document.querySelector('#fo .filter-chip:nth-child(3)'),\'fruits\')" style="background:#fff;border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;box-shadow:var(--sh);border:1.5px solid var(--border)"><div style="font-size:1.6rem">🍊</div><div style="font-size:.72rem;font-weight:700;color:#e65100;margin-top:4px">فواكه</div></div>
+<div onclick="fAnn(document.querySelector('#fo .filter-chip:nth-child(4)'),\'agricole\')" style="background:#fff;border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;box-shadow:var(--sh);border:1.5px solid var(--border)"><div style="font-size:1.6rem">🌾</div><div style="font-size:.72rem;font-weight:700;color:#6a1b9a;margin-top:4px">فلاحية</div></div>
+<div onclick="fAnn(document.querySelector('#fo .filter-chip:nth-child(5)'),\'animal\')" style="background:#fff;border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;box-shadow:var(--sh);border:1.5px solid var(--border)"><div style="font-size:1.6rem">🐄</div><div style="font-size:.72rem;font-weight:700;color:#880e4f;margin-top:4px">حيوانية</div></div>
+<div onclick="goTo(\'materiel\')" style="background:#fff;border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;box-shadow:var(--sh);border:1.5px solid var(--marron)"><div style="font-size:1.6rem">🚜</div><div style="font-size:.72rem;font-weight:700;color:var(--marron);margin-top:4px">آليات</div></div>
+<div onclick="fAnn(document.querySelector('#fo .filter-chip:nth-child(6)'),\'region\')" style="background:#fff;border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;box-shadow:var(--sh);border:1.5px solid var(--border)"><div style="font-size:1.6rem">📍</div><div style="font-size:.72rem;font-weight:700;color:var(--bleu);margin-top:4px">منطقتي</div></div>
+</div>
 <div class="section-title" id="sec-lbl">إعلانات اليوم</div>
 <div class="annonces-grid" id="grid"><div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
 <button class="fab" onclick="goTo('publish')">＋</button>
