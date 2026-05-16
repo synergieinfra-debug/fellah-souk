@@ -1263,6 +1263,7 @@ function selMat(el,nom){
   document.getElementById('mat-az').style.display='none';
   document.getElementById('mat-step2').style.display='block';
   document.getElementById('mat-sel-disp').textContent=(EM[nom]||'🚜')+' '+nom;
+  setTimeout(function(){document.getElementById('mat-step2').scrollIntoView({behavior:'smooth',block:'start'});},100);
 }
 
 function selMatA(el){
