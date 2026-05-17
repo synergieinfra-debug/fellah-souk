@@ -1063,7 +1063,8 @@ function openDem(i){
     '<button class="cbtn r" onclick="delDem(\''+d.id+'\')">🗑️ حذف الطلب</button>':
     (isPremium()?
       '<button class="cbtn b" onclick="openChat(\''+d.id+'\',\''+d.acheteur_id+'\',\''+unom+'\',\''+d.produit+'\')">💬 أنا عندي هذا المنتج</button>':
-      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع المشترين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>'))+'</div>';
+      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع المشترين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div>'<button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>')+
+'<button class="cbtn" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;margin-top:4px" onclick="shareAnn(\''+d.produit+'\',\''+d.prix_max+'\',\''+d.ville+'\')">🔗 شارك هاد الطلب</button>')+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header bleu"><div class="det-title">🛒 '+d.produit+'</div></div>'+img+info+tags+vcard+btns;
   document.body.appendChild(div);history.pushState(null,'',location.href);
