@@ -1038,7 +1038,8 @@ function openA(i){
     '<button class="cbtn r" onclick="delAnn(\''+a.id+'\')">🗑️ حذف الإعلان</button>':
     (isPremium()?
       '<button class="cbtn g" onclick="openChat(\''+a.id+'\',\''+a.vendeur_id+'\',\''+unom+'\',\''+a.produit+'\')">💬 تواصل مع البياع</button>':
-      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع البائعين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>')+
+      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع البائعين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div>'<button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>')+
+'<button class="cbtn" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;margin-top:4px" onclick="shareAnn(\''+d.produit+'\',\''+d.prix_max+'\',\''+d.ville+'\')">🔗 شارك هاد الطلب</button>')+'</div>';
     '<button class="cbtn star" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\')">⭐ قيم البياع</button>'+
 '<button class="cbtn" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff" onclick="shareAnn(\''+a.produit+'\',\''+a.prix+'\',\''+a.ville+'\')">🔗 شارك هاد الإعلان</button>')+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
