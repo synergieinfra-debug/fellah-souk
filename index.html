@@ -750,8 +750,16 @@ async function login(){
   var r=await sb.from('utilisateurs').select('*').eq('telephone',tel).eq('nom',nom).single();
   btn.disabled=false;btn.textContent='🔑 دخول';
   if(r.error||!r.data){showErr('ما لقيناكش — تحقق من الاسم ورقم الهاتف');return;}
-  CU=r.data;localStorage.setItem('fellah_user',JSON.stringify(CU));
-  showApp();showToast('مرحبا '+CU.nom+' 👋');
+  if(r.data.telephone==='0661996001'){
+  var pass=prompt('🔐 كلمة المرور الخاصة بالأدمين:');
+  if(pass!=='##V135396bh%%'){
+    showErr('❌ كلمة المرور غير صحيحة');
+    btn.disabled=false;btn.textContent='🔑 دخول';
+    return;
+  }
+}
+CU=r.data;localStorage.setItem('fellah_user',JSON.stringify(CU));
+showApp();showToast('مرحبا '+CU.nom+' 👋');
 }
 
 async function register(){
