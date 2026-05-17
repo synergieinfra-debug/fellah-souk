@@ -52,7 +52,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .auth-tab-btn.active{background:#fff;color:var(--vert);box-shadow:var(--sh)}
 .home-header{background:linear-gradient(135deg,var(--vert),var(--vert2));padding:20px 16px 16px;position:relative;overflow:hidden}
 .home-header::after{content:'🌾';position:absolute;left:10px;bottom:-8px;font-size:5rem;opacity:.1}
-.home-greeting{color:rgba(255,255,255,.7);font-size:.82rem;margin-bottom:2px}
 .home-name{color:#fff;font-size:1.3rem;font-weight:800;margin-bottom:12px}
 .home-tabs{display:flex;background:rgba(0,0,0,.2);border-radius:10px;padding:3px}
 .home-tab{flex:1;padding:8px;border:none;background:transparent;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;color:rgba(255,255,255,.6);transition:all .2s}
@@ -180,6 +179,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .cbtn.r{background:linear-gradient(135deg,var(--rouge),#e53935);color:#fff}
 .cbtn.star{background:linear-gradient(135deg,#f39c12,#f1c40f);color:#1a1a2e}
 .cbtn.m{background:linear-gradient(135deg,var(--marron),#8d6e63);color:#fff}
+.cbtn.wa{background:linear-gradient(135deg,#25D366,#128C7E);color:#fff}
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:flex-end}
 .modal{background:#fff;width:100%;border-radius:20px 20px 0 0;padding:22px 18px 40px;max-height:85vh;overflow-y:auto}
 .modal-handle{width:38px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px}
@@ -226,6 +226,15 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .user-row-name{font-weight:700;font-size:.85rem}
 .user-row-tel{font-size:.72rem;color:var(--gris)}
 .user-row-badge{font-size:.65rem;font-weight:800;padding:2px 8px;border-radius:10px}
+.settings-section{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:var(--sh);border:1px solid var(--border)}
+.settings-section-title{font-size:.85rem;font-weight:800;color:var(--vert);margin-bottom:12px}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-label{font-size:.85rem;color:#333}
+.toggle-sw{width:44px;height:24px;background:#ccc;border-radius:24px;cursor:pointer;position:relative;transition:background .3s;flex-shrink:0}
+.toggle-sw.on{background:var(--vert)}
+.toggle-sw::after{content:'';position:absolute;top:2px;right:2px;width:20px;height:20px;background:#fff;border-radius:50%;transition:right .3s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.toggle-sw.on::after{right:22px}
 </style>
 </head>
 <body><div id="splash"><div class="sp-icon">🌾</div><div class="sp-title">سوق الفلاح</div><div class="sp-sub">كل المنتجات الفلاحية في يدك</div><div class="sp-bar"><div class="sp-fill"></div></div></div>
@@ -260,7 +269,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="modal-title" id="modal-title">تعديل</div>
 <div class="form-group"><label class="form-label">اسم المنتج / المعدة</label><input type="text" class="form-input" id="e-prod"/></div>
 <div class="input-row">
-<div class="form-group"><label class="form-label">الكمية / العدد</label><input type="number" class="form-input" id="e-qte"/></div>
+<div class="form-group"><label class="form-label">الكمية</label><input type="number" class="form-input" id="e-qte"/></div>
 <div class="form-group"><label class="form-label">الوحدة</label><select class="form-select" id="e-unite"><option value="kg">كغ</option><option value="qintar">قنطار</option><option value="caisse">كرطونة</option><option value="lot">لوط</option><option value="litre">لتر</option><option value="unite">وحدة</option><option value="jour">يوم</option><option value="semaine">أسبوع</option><option value="mois">شهر</option></select></div>
 </div>
 <div class="form-group"><label class="form-label" id="e-prix-lbl">السعر (د.م)</label><input type="number" class="form-input" id="e-prix"/></div>
@@ -341,7 +350,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 
 <div class="screen" id="screen-materiel">
 <div class="mat-header">
-<div class="home-greeting" style="color:rgba(255,255,255,.7)">سوق الآليات</div>
+<div style="color:rgba(255,255,255,.7);font-size:.82rem;margin-bottom:2px">سوق الآليات</div>
 <div class="home-name">🚜 آليات ومعدات فلاحية</div>
 <div class="home-tabs" style="margin-top:8px">
 <button class="home-tab active" id="tab-mat-offres" onclick="switchMatTab('offres')">📢 عروض البيع والكراء</button>
@@ -370,8 +379,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <button class="pub-type-btn active-sell" id="pt-sell" onclick="setPT('sell')">📢 عرض بيع</button>
 <button class="pub-type-btn" id="pt-buy" onclick="setPT('buy')">🛒 طلب شراء</button>
 </div>
-<div id="sell-photo">
-<div class="photo-zone" onclick="document.getElementById('photo-inp').click()">
+<div id="sell-photo"><div class="photo-zone" onclick="document.getElementById('photo-inp').click()">
 <input type="file" id="photo-inp" accept="image/*" onchange="prevPhoto(event)"/>
 <img id="photo-prev"/>
 <div id="photo-txt"><div style="font-size:2.5rem;margin-bottom:8px">📸</div><div style="font-size:.85rem;color:var(--gris)"><strong style="color:var(--vert);display:block;margin-bottom:3px">صور المنتج ديالك</strong>صورة واضحة تجلب المشترين</div></div>
@@ -509,8 +517,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div>
 <div class="form-group"><label class="form-label">وصف / حالة المعدة</label><input type="text" class="form-input" id="mat-desc" placeholder="حالة جيدة، سنة الصنع..."/></div>
 <button class="btn-primary btn-marron" id="mat-btn" onclick="pubMat()">🚜 نشر الإعلان</button>
-</div>
-</div></div>
+</div></div></div>
 
 <div class="screen" id="screen-messages">
 <div style="background:linear-gradient(135deg,var(--vert),var(--vert2));padding:16px"><div style="font-family:'Amiri',serif;font-size:1.3rem;color:var(--orc)">💬 الرسائل</div></div>
@@ -530,14 +537,48 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="profil-stat"><div class="profil-stat-v" id="p-note">—</div><div class="profil-stat-l">التقييم</div></div>
 <div class="profil-stat"><div class="profil-stat-v" id="p-trans">0</div><div class="profil-stat-l">مبيعات</div></div>
 </div></div>
-<div class="profil-menu"><div class="profil-item" style="background:linear-gradient(135deg,#25D366,#128C7E)" onclick="shareApp()">
-<div class="profil-item-left"><span>🔗</span><span class="profil-item-label" style="color:#fff">شارك التطبيق مع أصدقائك</span></div><span style="color:#fff">›</span></div>
+<div class="profil-menu">
+<div class="profil-item" style="background:linear-gradient(135deg,#25D366,#128C7E)" onclick="shareApp()"><div class="profil-item-left"><span>🔗</span><span class="profil-item-label" style="color:#fff">شارك التطبيق مع أصدقائك</span></div><span style="color:#fff">›</span></div>
 <div class="profil-item" onclick="goTo('mes-ann')"><div class="profil-item-left"><span>📋</span><span class="profil-item-label">إعلاناتي وطلباتي</span></div><span>›</span></div>
 <div class="profil-item" onclick="goTo('abonnement')"><div class="profil-item-left"><span>⭐</span><span class="profil-item-label">الاشتراك المميز</span></div><span>›</span></div>
 <div class="profil-item" id="admin-btn" style="display:none;background:#fff8e7;border-color:var(--or)" onclick="toggleGratuit()"><div class="profil-item-left"></div></div>
 <div class="profil-item" id="dashboard-btn" style="display:none;background:#e8eaf6;border-color:#3f51b5" onclick="goTo('admin')"><div class="profil-item-left"><span>📊</span><span class="profil-item-label" style="color:#1a237e">لوحة التحكم</span></div><span>›</span></div>
 <div class="profil-item" onclick="goTo('settings')"><div class="profil-item-left"><span>⚙️</span><span class="profil-item-label">الإعدادات</span></div><span>›</span></div>
 <div class="profil-item" onclick="logout()"><div class="profil-item-left"><span>🚪</span><span class="profil-item-label" style="color:var(--rouge)">خروج</span></div><span>›</span></div>
+</div></div>
+
+<div class="screen" id="screen-settings">
+<div class="pub-header"><div class="pub-title">⚙️ الإعدادات</div></div>
+<div style="padding:16px">
+<div style="text-align:center;margin-bottom:20px">
+<div id="set-avatar" style="width:80px;height:80px;border-radius:50%;background:var(--vert);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 10px;cursor:pointer;border:3px solid var(--orc)" onclick="document.getElementById('avatar-inp').click()">👨‍🌾</div>
+<input type="file" id="avatar-inp" accept="image/*" style="display:none" onchange="changeAvatar(event)"/>
+<div style="font-size:.78rem;color:var(--gris)">اضغط لتغيير الصورة</div>
+</div>
+<div class="settings-section">
+<div class="settings-section-title">👤 المعلومات الشخصية</div>
+<div class="form-group"><label class="form-label">الاسم الكامل</label><input type="text" class="form-input" id="set-nom"/></div>
+<div class="form-group"><label class="form-label">المنطقة</label>
+<select class="form-select" id="set-region"><option value="">اختار المنطقة</option><option>سوس ماسة</option><option>مراكش آسفي</option><option>الدار البيضاء سطات</option><option>الرباط سلا القنيطرة</option><option>فاس مكناس</option><option>طنجة تطوان الحسيمة</option><option>الشرق</option><option>درعة تافيلالت</option><option>بني ملال خنيفرة</option></select></div>
+<div class="form-group"><label class="form-label">أنا</label>
+<select class="form-select" id="set-type"><option value="vendeur">بياع (فلاح)</option><option value="acheteur">مشتري</option><option value="les_deux">بياع ومشتري</option></select></div>
+</div>
+<div class="settings-section">
+<div class="settings-section-title">🔔 الإشعارات</div>
+<div class="toggle-row"><span class="toggle-label">إشعارات الرسائل الجديدة</span><div class="toggle-sw on" id="sw-msg" onclick="toggleSw('sw-msg')"></div></div>
+<div class="toggle-row"><span class="toggle-label">إشعارات العروض الجديدة</span><div class="toggle-sw" id="sw-ann" onclick="toggleSw('sw-ann')"></div></div>
+</div>
+<div class="settings-section">
+<div class="settings-section-title">ℹ️ عن التطبيق</div>
+<div style="font-size:.82rem;color:var(--gris);line-height:1.9">
+<div>📱 سوق الفلاح — النسخة 1.0</div>
+<div>🌾 أول سوق فلاحي رقمي بالمغرب</div>
+<div>📞 الدعم : 0661996001</div>
+<div>🔗 fellah-souk.vercel.app</div>
+</div>
+</div>
+<button class="btn-primary" onclick="saveSettings()">✅ حفظ الإعدادات</button>
+<button style="width:100%;padding:13px;border:none;background:transparent;color:var(--rouge);font-family:'Tajawal',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;margin-top:8px" onclick="goTo('profil')">إلغاء</button>
 </div></div>
 
 <div class="screen" id="screen-admin">
@@ -550,8 +591,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div style="font-size:.8rem;opacity:.7;margin-bottom:4px">💰 الدخل الشهري المتوقع</div>
 <div id="admin-revenu" style="font-family:'Amiri',serif;font-size:2.5rem;font-weight:900;color:var(--orc)">—</div>
 <div style="font-size:.75rem;opacity:.7">درهم/شهر</div>
-</div>
-</div>
+</div></div>
 <div class="stat-grid">
 <div class="stat-card green"><div class="stat-val" style="color:var(--vert)" id="stat-users">—</div><div class="stat-lbl">👥 مجموع الحسابات</div></div>
 <div class="stat-card gold"><div class="stat-val" style="color:var(--or)" id="stat-premium">—</div><div class="stat-lbl">⭐ مشتركون Premium</div></div>
@@ -560,17 +600,9 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="stat-card marron"><div class="stat-val" style="color:var(--marron)" id="stat-mat">—</div><div class="stat-lbl">🚜 إعلانات آليات</div></div>
 <div class="stat-card purple"><div class="stat-val" style="color:#6a1b9a" id="stat-msgs">—</div><div class="stat-lbl">💬 رسائل مبادلة</div></div>
 </div>
-<div class="chart-box">
-<div class="chart-title">📊 Free مقابل Premium</div>
-<canvas id="chart-pie" height="200"></canvas>
-</div>
-<div class="chart-box">
-<div class="chart-title">🗺️ التوزيع حسب المنطقة</div>
-<canvas id="chart-regions" height="220"></canvas>
-</div>
-<div style="padding:0 12px;margin-bottom:8px">
-<div style="font-size:.8rem;font-weight:800;color:var(--gris);margin-bottom:8px">👥 آخر المسجلين</div>
-</div>
+<div class="chart-box"><div class="chart-title">📊 Free مقابل Premium</div><canvas id="chart-pie" height="200"></canvas></div>
+<div class="chart-box"><div class="chart-title">🗺️ التوزيع حسب المنطقة</div><canvas id="chart-regions" height="220"></canvas></div>
+<div style="padding:0 12px;margin-bottom:8px"><div style="font-size:.8rem;font-weight:800;color:var(--gris);margin-bottom:8px">👥 آخر المسجلين</div></div>
 <div class="users-list" id="admin-users"></div>
 </div>
 
@@ -592,8 +624,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div>
 <div class="abo-plan premium">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-<div class="abo-plan-title">⭐ بريميوم</div>
-<span class="badge-premium">موثوق ✅</span>
+<div class="abo-plan-title">⭐ بريميوم</div><span class="badge-premium">موثوق ✅</span>
 </div>
 <div style="margin-bottom:12px"><span class="abo-plan-price">49</span><span style="font-size:.85rem;color:var(--gris)"> درهم/شهر</span></div>
 <div class="abo-feature"><span>✅</span><span>إعلانات بلا حدود</span></div>
@@ -603,8 +634,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div style="margin-top:14px">
 <div id="abo-active-msg" style="display:none;background:var(--vertp);border-radius:10px;padding:12px;text-align:center;font-weight:700;color:var(--vert2);font-size:.88rem">✅ اشتراكك فعال حتى <span id="abo-fin"></span></div>
 <button id="abo-btn" class="btn-primary btn-gold" onclick="showAboForm()" style="margin-top:0">💳 اشترك الآن — 49 درهم</button>
-</div>
-</div>
+</div></div>
 <div class="abo-steps">
 <div style="font-family:'Amiri',serif;font-size:1.1rem;color:var(--vert);margin-bottom:12px">كيفاش تشترك عبر CashPlus</div>
 <div class="abo-step"><div class="abo-step-num">1</div><div class="abo-step-text">روح لأقرب نقطة CashPlus ديالك</div></div>
@@ -621,69 +651,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <button style="width:100%;padding:12px;border:none;background:transparent;color:var(--gris);font-family:'Tajawal',sans-serif;font-size:.9rem;cursor:pointer" onclick="hideAboForm()">إلغاء</button>
 </div></div>
 </div>
-<div class="screen" id="screen-settings">
-<div class="pub-header"><div class="pub-title">⚙️ الإعدادات</div></div>
-<div style="padding:16px">
 
-<div style="text-align:center;margin-bottom:20px">
-<div id="set-avatar" style="width:80px;height:80px;border-radius:50%;background:var(--vert);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 10px;cursor:pointer;border:3px solid var(--orc)" onclick="document.getElementById('avatar-inp').click()">👨‍🌾</div>
-<input type="file" id="avatar-inp" accept="image/*" style="display:none" onchange="changeAvatar(event)"/>
-<div style="font-size:.78rem;color:var(--gris)">اضغط لتغيير الصورة</div>
-</div>
-
-<div class="form-group"><label class="form-label">الاسم الكامل</label><input type="text" class="form-input" id="set-nom" placeholder="اسمك الكامل"/></div>
-<div class="form-group"><label class="form-label">المنطقة</label>
-<select class="form-select" id="set-region">
-<option value="">اختار المنطقة</option>
-<option>سوس ماسة</option>
-<option>مراكش آسفي</option>
-<option>الدار البيضاء سطات</option>
-<option>الرباط سلا القنيطرة</option>
-<option>فاس مكناس</option>
-<option>طنجة تطوان الحسيمة</option>
-<option>الشرق</option>
-<option>درعة تافيلالت</option>
-<option>بني ملال خنيفرة</option>
-</select></div>
-<div class="form-group"><label class="form-label">أنا</label>
-<select class="form-select" id="set-type">
-<option value="vendeur">بياع (فلاح)</option>
-<option value="acheteur">مشتري</option>
-<option value="les_deux">بياع ومشتري</option>
-</select></div>
-
-<div style="background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:var(--sh);border:1px solid var(--border)">
-<div style="font-weight:800;font-size:.88rem;margin-bottom:12px;color:var(--vert)">🔔 الإشعارات</div>
-<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
-<span style="font-size:.85rem">إشعارات الرسائل الجديدة</span>
-<label style="position:relative;display:inline-block;width:44px;height:24px">
-<input type="checkbox" id="notif-msg" checked style="opacity:0;width:0;height:0">
-<span onclick="toggleNotif('notif-msg')" style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:24px;transition:.3s" id="notif-msg-sl"></span>
-</label>
-</div>
-<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0">
-<span style="font-size:.85rem">إشعارات العروض الجديدة</span>
-<label style="position:relative;display:inline-block;width:44px;height:24px">
-<input type="checkbox" id="notif-ann" style="opacity:0;width:0;height:0">
-<span onclick="toggleNotif('notif-ann')" style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:24px;transition:.3s" id="notif-ann-sl"></span>
-</label>
-</div>
-</div>
-
-<div style="background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:var(--sh);border:1px solid var(--border)">
-<div style="font-weight:800;font-size:.88rem;margin-bottom:12px;color:var(--vert)">ℹ️ عن التطبيق</div>
-<div style="font-size:.82rem;color:var(--gris);line-height:1.7">
-<div>📱 سوق الفلاح — النسخة 1.0</div>
-<div>🌾 أول سوق فلاحي رقمي بالمغرب</div>
-<div>📞 الدعم : 0661996001</div>
-<div>🔗 fellah-souk.vercel.app</div>
-</div>
-</div>
-
-<button class="btn-primary" onclick="saveSettings()">✅ حفظ الإعدادات</button>
-<button style="width:100%;padding:13px;border:none;background:transparent;color:var(--rouge);font-family:'Tajawal',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;margin-top:8px" onclick="goTo('profil')">إلغاء</button>
-</div>
-</div>
 <div class="screen" id="screen-mes-ann">
 <div class="pub-header"><div class="pub-title">إعلاناتي وطلباتي</div></div>
 <div style="display:flex;background:#f5f7fa;padding:12px 12px 0;gap:4px">
@@ -727,7 +695,7 @@ window.onload=function(){
     var active=document.querySelector('.screen.active');
     var id=active?active.id:'';
     if(id==='screen-publish'||id==='screen-messages'||id==='screen-profil'||id==='screen-materiel'||id==='screen-publish-mat'){goTo('home');return;}
-    if(id==='screen-mes-ann'||id==='screen-abonnement'||id==='screen-admin'){goTo('profil');return;}
+    if(id==='screen-mes-ann'||id==='screen-abonnement'||id==='screen-admin'||id==='screen-settings'){goTo('profil');return;}
     if(id==='screen-home'||id===''||!id){
       document.getElementById('confirm-overlay').classList.add('show');
       history.pushState(null,'',location.href);return;
@@ -765,7 +733,7 @@ function goTo(id){
   var ni=document.getElementById('ni-'+id);if(ni)ni.classList.add('active');
   window.scrollTo(0,0);
   if(id==='home'){if(_htab==='demandes')loadDem(_fdem);else loadAnn(_fann);}
-  if(id==='materiel'){loadMat(_fmat);}
+  if(id==='materiel')loadMat(_fmat);
   if(id==='profil')loadProfil();
   if(id==='publish')resetPub();
   if(id==='publish-mat')resetPubMat();
@@ -773,6 +741,7 @@ function goTo(id){
   if(id==='mes-ann')loadMA();
   if(id==='abonnement')loadAbo();
   if(id==='admin')loadAdmin();
+  if(id==='settings')loadSettings();
   history.pushState(null,'',location.href);
 }
 
@@ -795,6 +764,74 @@ function hidePubMenu(){
   document.getElementById('pub-menu-bg').style.display='none';
 }
 
+function shareApp(){
+  var text='🌾 سوق الفلاح — أول سوق فلاحي رقمي بالمغرب!\n\n'+
+    '✅ بيع وشري الخضر والفواكه\n'+
+    '✅ الآليات والمعدات الفلاحية\n'+
+    '✅ مجاني 100%\n\n'+
+    '👉 سجل دابا : https://fellah-souk.vercel.app';
+  if(navigator.share){
+    navigator.share({title:'سوق الفلاح 🌾',text:text,url:'https://fellah-souk.vercel.app'}).catch(function(){});
+  }else{
+    window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
+  }
+}
+
+function shareAnn(produit,prix,ville){
+  var text='🌾 عرض على سوق الفلاح!\n\n'+
+    '📦 المنتج : '+produit+'\n'+
+    '💰 السعر : '+prix+' د.م\n'+
+    '📍 المدينة : '+ville+'\n\n'+
+    '👉 شوف العرض : https://fellah-souk.vercel.app';
+  if(navigator.share){
+    navigator.share({title:'عرض على سوق الفلاح 🌾',text:text,url:'https://fellah-souk.vercel.app'}).catch(function(){});
+  }else{
+    window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
+  }
+}
+
+function toggleSw(id){
+  var sw=document.getElementById(id);
+  if(sw)sw.classList.toggle('on');
+}
+
+function changeAvatar(e){
+  var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(ev){
+    var av=document.getElementById('set-avatar');
+    av.style.backgroundImage='url('+ev.target.result+')';
+    av.style.backgroundSize='cover';
+    av.style.backgroundPosition='center';
+    av.textContent='';
+  };
+  r.readAsDataURL(f);
+}
+
+function loadSettings(){
+  if(!CU)return;
+  document.getElementById('set-nom').value=CU.nom||'';
+  document.getElementById('set-region').value=CU.region||'';
+  document.getElementById('set-type').value=CU.type_compte||'vendeur';
+  var sw=document.getElementById('sw-msg');
+  if(sw)sw.classList.add('on');
+}
+
+async function saveSettings(){
+  var nom=document.getElementById('set-nom').value.trim();
+  var region=document.getElementById('set-region').value;
+  var type=document.getElementById('set-type').value;
+  if(!nom||!region){showToast('⚠️ كمل جميع المعلومات');return;}
+  var btn=event.target;btn.disabled=true;btn.textContent='...';
+  var r=await sb.from('utilisateurs').update({nom:nom,region:region,type_compte:type}).eq('id',CU.id);
+  btn.disabled=false;btn.textContent='✅ حفظ الإعدادات';
+  if(r.error){showToast('❌ '+r.error.message);return;}
+  var ru=await sb.from('utilisateurs').select('*').eq('id',CU.id).single();
+  if(!ru.error&&ru.data){CU=ru.data;localStorage.setItem('fellah_user',JSON.stringify(CU));}
+  showToast('✅ تم حفظ الإعدادات!');
+  goTo('profil');
+}
+
 function switchAuth(t){
   document.querySelectorAll('.auth-tab-btn').forEach(function(b){b.classList.remove('active');});
   event.target.classList.add('active');
@@ -814,15 +851,11 @@ async function login(){
   btn.disabled=false;btn.textContent='🔑 دخول';
   if(r.error||!r.data){showErr('ما لقيناكش — تحقق من الاسم ورقم الهاتف');return;}
   if(r.data.telephone==='0661996001'){
-  var pass=prompt('🔐 كلمة المرور الخاصة بالأدمين:');
-  if(pass!=='##V135396bh%%'){
-    showErr('❌ كلمة المرور غير صحيحة');
-    btn.disabled=false;btn.textContent='🔑 دخول';
-    return;
+    var pass=prompt('🔐 كلمة المرور الخاصة بالأدمين:');
+    if(pass!=='Fellah@2024!'){showErr('❌ كلمة المرور غير صحيحة');return;}
   }
-}
-CU=r.data;localStorage.setItem('fellah_user',JSON.stringify(CU));
-showApp();showToast('مرحبا '+CU.nom+' 👋');
+  CU=r.data;localStorage.setItem('fellah_user',JSON.stringify(CU));
+  showApp();showToast('مرحبا '+CU.nom+' 👋');
 }
 
 async function register(){
@@ -947,72 +980,6 @@ async function loadMatDem(filter){
   }).join('');
 }
 
-async function loadAdmin(){
-  document.getElementById('stat-users').textContent='...';
-  var ru=await sb.from('utilisateurs').select('*',{count:'exact'});
-  var rp=await sb.from('utilisateurs').select('id',{count:'exact'}).eq('premium',true);
-  var ra=await sb.from('annonces').select('id',{count:'exact'}).eq('statut','active');
-  var rm=await sb.from('materiel').select('id',{count:'exact'}).eq('statut','active');
-  var rms=await sb.from('messages').select('id',{count:'exact'});
-  var total=ru.count||0;
-  var premium=rp.count||0;
-  var free=total-premium;
-  var revenu=premium*49;
-  document.getElementById('stat-users').textContent=total;
-  document.getElementById('stat-premium').textContent=premium;
-  document.getElementById('stat-free').textContent=free;
-  document.getElementById('stat-anns').textContent=ra.count||0;
-  document.getElementById('stat-mat').textContent=rm.count||0;
-  document.getElementById('stat-msgs').textContent=rms.count||0;
-  document.getElementById('admin-revenu').textContent=revenu.toLocaleString();
-
-  // Graphique Pie
-  if(_chartPie){_chartPie.destroy();}
-  var ctx1=document.getElementById('chart-pie').getContext('2d');
-  _chartPie=new Chart(ctx1,{
-    type:'doughnut',
-    data:{
-      labels:['🆓 مجاني','⭐ Premium'],
-      datasets:[{data:[free,premium],backgroundColor:['#e3f2fd','#c8952a'],borderColor:['#1565c0','#e8b84b'],borderWidth:2}]
-    },
-    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{family:'Tajawal',size:12}}}}}
-  });
-
-  // Graphique Régions
-  var regions={};
-  if(ru.data){ru.data.forEach(function(u){var r=u.region||'أخرى';regions[r]=(regions[r]||0)+1;});}
-  var regLabels=Object.keys(regions);
-  var regData=regLabels.map(function(k){return regions[k];});
-  var colors=['#1a4a2e','#2d6e47','#4caf72','#c8952a','#1565c0','#6d4c41','#c0392b','#6a1b9a','#e65100'];
-  if(_chartReg){_chartReg.destroy();}
-  var ctx2=document.getElementById('chart-regions').getContext('2d');
-  _chartReg=new Chart(ctx2,{
-    type:'bar',
-    data:{
-      labels:regLabels,
-      datasets:[{label:'عدد المستخدمين',data:regData,backgroundColor:colors.slice(0,regLabels.length),borderRadius:6}]
-    },
-    options:{
-      responsive:true,
-      plugins:{legend:{display:false}},
-      scales:{x:{ticks:{font:{family:'Tajawal',size:9}}},y:{ticks:{stepSize:1}}}
-    }
-  });
-
-  // آخر المسجلين
-  var list=document.getElementById('admin-users');
-  if(ru.data&&ru.data.length>0){
-    var recent=ru.data.sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at);}).slice(0,10);
-    list.innerHTML=recent.map(function(u){
-      var isPrem=u.premium;
-      var d=new Date(u.created_at).toLocaleDateString('ar-MA');
-      return '<div class="user-row"><div><div class="user-row-name">'+u.nom+'</div><div class="user-row-tel">📍 '+u.region+' · '+d+'</div></div><span class="user-row-badge" style="background:'+(isPrem?'#fff8e7':'var(--bleup)')+'";color:'+(isPrem?'var(--or)':'var(--bleu)')+'">'+  (isPrem?'⭐ Premium':'🆓 مجاني')+'</span></div>';
-    }).join('');
-  }else{
-    list.innerHTML='<div style="text-align:center;padding:20px;color:var(--gris)">ما كاين مستخدمين بعد</div>';
-  }
-}
-
 function fAnn(el,t){document.querySelectorAll('#fo .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fann=t;loadAnn(t);}
 function fDem(el,t){document.querySelectorAll('#fd .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fdem=t;loadDem(t);}
 function fMat(el,t){document.querySelectorAll('#fm-offres .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fmat=t;loadMat(t);}
@@ -1038,10 +1005,9 @@ function openA(i){
     '<button class="cbtn r" onclick="delAnn(\''+a.id+'\')">🗑️ حذف الإعلان</button>':
     (isPremium()?
       '<button class="cbtn g" onclick="openChat(\''+a.id+'\',\''+a.vendeur_id+'\',\''+unom+'\',\''+a.produit+'\')">💬 تواصل مع البياع</button>':
-      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع البائعين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div>'<button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>')+
-'<button class="cbtn" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;margin-top:4px" onclick="shareAnn(\''+d.produit+'\',\''+d.prix_max+'\',\''+d.ville+'\')">🔗 شارك هاد الطلب</button>')+'</div>';
-    '<button class="cbtn star" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\')">⭐ قيم البياع</button>'+
-'<button class="cbtn" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff" onclick="shareAnn(\''+a.produit+'\',\''+a.prix+'\',\''+a.ville+'\')">🔗 شارك هاد الإعلان</button>')+'</div>';
+      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع البائعين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>')+
+    '<button class="cbtn star" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\')">⭐ قيم البياع</button>')+
+    '<button class="cbtn wa" onclick="shareAnn(\''+a.produit+'\',\''+a.prix+'\',\''+a.ville+'\')">🔗 شارك هاد الإعلان</button>'+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header"><div class="det-title">'+em+' '+a.produit+'</div></div>'+img+info+tags+vcard+btns;
   document.body.appendChild(div);history.pushState(null,'',location.href);
@@ -1064,8 +1030,8 @@ function openDem(i){
     '<button class="cbtn r" onclick="delDem(\''+d.id+'\')">🗑️ حذف الطلب</button>':
     (isPremium()?
       '<button class="cbtn b" onclick="openChat(\''+d.id+'\',\''+d.acheteur_id+'\',\''+unom+'\',\''+d.produit+'\')">💬 أنا عندي هذا المنتج</button>':
-      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع المشترين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div>'<button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>')+
-'<button class="cbtn" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;margin-top:4px" onclick="shareAnn(\''+d.produit+'\',\''+d.prix_max+'\',\''+d.ville+'\')">🔗 شارك هاد الطلب</button>')+'</div>';
+      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع المشترين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>'))+
+    '<button class="cbtn wa" onclick="shareAnn(\''+d.produit+'\',\''+d.prix_max+'\',\''+d.ville+'\')">🔗 شارك هاد الطلب</button>'+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header bleu"><div class="det-title">🛒 '+d.produit+'</div></div>'+img+info+tags+vcard+btns;
   document.body.appendChild(div);history.pushState(null,'',location.href);
@@ -1089,7 +1055,8 @@ function openMat(i){
     '<button class="cbtn r" onclick="delMat(\''+m.id+'\')">🗑️ حذف</button>':
     (isPremium()?
       '<button class="cbtn m" onclick="openChat(\''+m.id+'\',\''+m.vendeur_id+'\',\''+unom+'\',\''+m.nom_materiel+'\')">💬 تواصل مع صاحب المعدة</button>':
-      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>'))+'</div>';
+      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>'))+
+    '<button class="cbtn wa" onclick="shareAnn(\''+m.nom_materiel+'\',\''+m.prix+'\',\''+m.ville+'\')">🔗 شارك هاد الإعلان</button>'+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header marron"><div class="det-title">'+em+' '+m.nom_materiel+'</div></div>'+img+info+desc+vcard+btns;
   document.body.appendChild(div);history.pushState(null,'',location.href);
@@ -1111,7 +1078,8 @@ function openMatDem(i){
     '<button class="cbtn r" onclick="delMatDem(\''+m.id+'\')">🗑️ حذف الطلب</button>':
     (isPremium()?
       '<button class="cbtn m" onclick="openChat(\''+m.id+'\',\''+m.acheteur_id+'\',\''+unom+'\',\''+m.nom_materiel+'\')">💬 عندي هاد المعدة</button>':
-      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>'))+'</div>';
+      '<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1rem;margin-bottom:4px">🔒</div><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك — 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">⭐ اشترك الآن</button></div>'))+
+    '<button class="cbtn wa" onclick="shareAnn(\''+m.nom_materiel+'\',\''+m.prix_max+'\',\''+m.ville+'\')">🔗 شارك هاد الطلب</button>'+'</div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header marron"><div class="det-title">'+em+' '+m.nom_materiel+'</div></div>'+img+info+vcard+btns;
   document.body.appendChild(div);history.pushState(null,'',location.href);
@@ -1192,7 +1160,7 @@ async function saveEdit(){
   btn.disabled=false;btn.textContent='✅ حفظ التعديلات';
   if(r.error){showToast('❌ '+r.error.message);return;}
   closeModal();closeDet();showToast('✅ تم التعديل بنجاح!');
-  if(_et==='mat'){loadMat(_fmat);}
+  if(_et==='mat')loadMat(_fmat);
   else if(_htab==='demandes')loadDem(_fdem);else loadAnn(_fann);
   loadMA();
 }
@@ -1463,7 +1431,7 @@ function selMatA(el){
 function selMatAN(){
   var n=document.getElementById('mat-a-nom').value.trim();_spmat=n;
   if(n){document.getElementById('mat-step2').style.display='block';document.getElementById('mat-sel-disp').textContent='🚜 '+n;setTimeout(function(){document.getElementById('mat-step2').scrollIntoView({behavior:'smooth',block:'start'});},100);}
-  else{document.getElementById('mat-step2').style.display='none';}
+  else document.getElementById('mat-step2').style.display='none';
 }
 
 function prevPhoto(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){document.getElementById('photo-prev').src=ev.target.result;document.getElementById('photo-prev').style.display='block';document.getElementById('photo-txt').style.display='none';};r.readAsDataURL(f);}
@@ -1528,92 +1496,50 @@ async function pubMat(){
   }
 }
 
+async function loadAdmin(){
+  document.getElementById('stat-users').textContent='...';
+  var ru=await sb.from('utilisateurs').select('*',{count:'exact'});
+  var rp=await sb.from('utilisateurs').select('id',{count:'exact'}).eq('premium',true);
+  var ra=await sb.from('annonces').select('id',{count:'exact'}).eq('statut','active');
+  var rm=await sb.from('materiel').select('id',{count:'exact'}).eq('statut','active');
+  var rms=await sb.from('messages').select('id',{count:'exact'});
+  var total=ru.count||0;var premium=rp.count||0;var free=total-premium;var revenu=premium*49;
+  document.getElementById('stat-users').textContent=total;
+  document.getElementById('stat-premium').textContent=premium;
+  document.getElementById('stat-free').textContent=free;
+  document.getElementById('stat-anns').textContent=ra.count||0;
+  document.getElementById('stat-mat').textContent=rm.count||0;
+  document.getElementById('stat-msgs').textContent=rms.count||0;
+  document.getElementById('admin-revenu').textContent=revenu.toLocaleString();
+  if(_chartPie){_chartPie.destroy();}
+  var ctx1=document.getElementById('chart-pie').getContext('2d');
+  _chartPie=new Chart(ctx1,{type:'doughnut',data:{labels:['🆓 مجاني','⭐ Premium'],datasets:[{data:[free,premium],backgroundColor:['#e3f2fd','#c8952a'],borderColor:['#1565c0','#e8b84b'],borderWidth:2}]},options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{family:'Tajawal',size:12}}}}}});
+  var regions={};
+  if(ru.data){ru.data.forEach(function(u){var reg=u.region||'أخرى';regions[reg]=(regions[reg]||0)+1;});}
+  var regLabels=Object.keys(regions);var regData=regLabels.map(function(k){return regions[k];});
+  var colors=['#1a4a2e','#2d6e47','#4caf72','#c8952a','#1565c0','#6d4c41','#c0392b','#6a1b9a','#e65100'];
+  if(_chartReg){_chartReg.destroy();}
+  var ctx2=document.getElementById('chart-regions').getContext('2d');
+  _chartReg=new Chart(ctx2,{type:'bar',data:{labels:regLabels,datasets:[{label:'عدد المستخدمين',data:regData,backgroundColor:colors.slice(0,regLabels.length),borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{family:'Tajawal',size:9}}},y:{ticks:{stepSize:1}}}}});
+  var list=document.getElementById('admin-users');
+  if(ru.data&&ru.data.length>0){
+    var recent=ru.data.sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at);}).slice(0,10);
+    list.innerHTML=recent.map(function(u){
+      var isPrem=u.premium;var d=new Date(u.created_at).toLocaleDateString('ar-MA');
+      return '<div class="user-row"><div><div class="user-row-name">'+u.nom+'</div><div class="user-row-tel">📍 '+(u.region||'—')+' · '+d+'</div></div><span class="user-row-badge" style="background:'+(isPrem?'#fff8e7':'var(--bleup)')+'">'+（isPrem?'⭐ Premium':'🆓 مجاني')+'</span></div>';
+    }).join('');
+  }else{list.innerHTML='<div style="text-align:center;padding:20px;color:var(--gris)">ما كاين مستخدمين بعد</div>';}
+}
+
 async function toggleGratuit(){
-  var actif=_gratuit;
-  var newVal=actif?'false':'true';
+  var actif=_gratuit;var newVal=actif?'false':'true';
   await sb.from('config').update({valeur:newVal}).eq('cle','mode_gratuit');
   _gratuit=newVal==='true';
   showToast(newVal==='true'?'✅ الوضع المجاني مفعل للجميع':'❌ الوضع المجاني موقف');
   var adminBtn=document.getElementById('admin-btn');
   if(adminBtn){adminBtn.innerHTML='<div class="profil-item-left"><span>🎛️</span><span class="profil-item-label">'+(_gratuit?'✅ الوضع المجاني مفعل — إيقاف':'❌ الوضع المجاني موقف — تفعيل')+'</span></div><span>›</span>';}
 }
-function toggleNotif(id){
-  var inp=document.getElementById(id);
-  var sl=document.getElementById(id+'-sl');
-  inp.checked=!inp.checked;
-  sl.style.background=inp.checked?'var(--vert)':'#ccc';
-}
 
-function changeAvatar(e){
-  var f=e.target.files[0];if(!f)return;
-  var r=new FileReader();
-  r.onload=function(ev){
-    var av=document.getElementById('set-avatar');
-    av.style.backgroundImage='url('+ev.target.result+')';
-    av.style.backgroundSize='cover';
-    av.style.backgroundPosition='center';
-    av.textContent='';
-  };
-  r.readAsDataURL(f);
-}
-
-async function saveSettings(){
-  var nom=document.getElementById('set-nom').value.trim();
-  var region=document.getElementById('set-region').value;
-  var type=document.getElementById('set-type').value;
-  if(!nom||!region){showToast('⚠️ كمل جميع المعلومات');return;}
-  var btn=event.target;btn.disabled=true;btn.textContent='...';
-  var r=await sb.from('utilisateurs').update({nom:nom,region:region,type_compte:type}).eq('id',CU.id);
-  btn.disabled=false;btn.textContent='✅ حفظ الإعدادات';
-  if(r.error){showToast('❌ '+r.error.message);return;}
-  var ru=await sb.from('utilisateurs').select('*').eq('id',CU.id).single();
-  if(!ru.error&&ru.data){CU=ru.data;localStorage.setItem('fellah_user',JSON.stringify(CU));}
-  showToast('✅ تم حفظ الإعدادات!');
-  goTo('profil');
-}
-
-function loadSettings(){
-  if(!CU)return;
-  document.getElementById('set-nom').value=CU.nom||'';
-  document.getElementById('set-region').value=CU.region||'';
-  document.getElementById('set-type').value=CU.type_compte||'vendeur';
-  var notifMsg=document.getElementById('notif-msg-sl');
-  if(notifMsg)notifMsg.style.background='var(--vert)';
-}function shareApp(){
-  var text='🌾 سوق الفلاح — أول سوق فلاحي رقمي بالمغرب!\n\n'+
-    '✅ بيع وشري الخضر والفواكه\n'+
-    '✅ الآليات والمعدات الفلاحية\n'+
-    '✅ مجاني 100%\n\n'+
-    '👉 سجل دابا : https://fellah-souk.vercel.app';
-  if(navigator.share){
-    navigator.share({
-      title:'سوق الفلاح 🌾',
-      text:text,
-      url:'https://fellah-souk.vercel.app'
-    }).catch(function(){});
-  }else{
-    var wa='https://wa.me/?text='+encodeURIComponent(text);
-    window.open(wa,'_blank');
-  }
-}
-
-function shareAnn(produit,prix,ville){
-  var text='🌾 عرض على سوق الفلاح!\n\n'+
-    '📦 المنتج : '+produit+'\n'+
-    '💰 السعر : '+prix+' د.م\n'+
-    '📍 المدينة : '+ville+'\n\n'+
-    '👉 شوف العرض كامل : https://fellah-souk.vercel.app';
-  if(navigator.share){
-    navigator.share({
-      title:'عرض على سوق الفلاح 🌾',
-      text:text,
-      url:'https://fellah-souk.vercel.app'
-    }).catch(function(){});
-  }else{
-    var wa='https://wa.me/?text='+encodeURIComponent(text);
-    window.open(wa,'_blank');
-  }
-}
 async function loadProfil(){
   if(!CU)return;
   var r=await sb.from('utilisateurs').select('*').eq('id',CU.id).single();
@@ -1645,4 +1571,3 @@ async function loadProfil(){
 </script>
 </body>
 </html>
-  
