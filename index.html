@@ -1578,6 +1578,40 @@ function loadSettings(){
   document.getElementById('set-type').value=CU.type_compte||'vendeur';
   var notifMsg=document.getElementById('notif-msg-sl');
   if(notifMsg)notifMsg.style.background='var(--vert)';
+}function shareApp(){
+  var text='🌾 سوق الفلاح — أول سوق فلاحي رقمي بالمغرب!\n\n'+
+    '✅ بيع وشري الخضر والفواكه\n'+
+    '✅ الآليات والمعدات الفلاحية\n'+
+    '✅ مجاني 100%\n\n'+
+    '👉 سجل دابا : https://fellah-souk.vercel.app';
+  if(navigator.share){
+    navigator.share({
+      title:'سوق الفلاح 🌾',
+      text:text,
+      url:'https://fellah-souk.vercel.app'
+    }).catch(function(){});
+  }else{
+    var wa='https://wa.me/?text='+encodeURIComponent(text);
+    window.open(wa,'_blank');
+  }
+}
+
+function shareAnn(produit,prix,ville){
+  var text='🌾 عرض على سوق الفلاح!\n\n'+
+    '📦 المنتج : '+produit+'\n'+
+    '💰 السعر : '+prix+' د.م\n'+
+    '📍 المدينة : '+ville+'\n\n'+
+    '👉 شوف العرض كامل : https://fellah-souk.vercel.app';
+  if(navigator.share){
+    navigator.share({
+      title:'عرض على سوق الفلاح 🌾',
+      text:text,
+      url:'https://fellah-souk.vercel.app'
+    }).catch(function(){});
+  }else{
+    var wa='https://wa.me/?text='+encodeURIComponent(text);
+    window.open(wa,'_blank');
+  }
 }
 async function loadProfil(){
   if(!CU)return;
