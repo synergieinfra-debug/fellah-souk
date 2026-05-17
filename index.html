@@ -1533,7 +1533,49 @@ async function toggleGratuit(){
   var adminBtn=document.getElementById('admin-btn');
   if(adminBtn){adminBtn.innerHTML='<div class="profil-item-left"><span>🎛️</span><span class="profil-item-label">'+(_gratuit?'✅ الوضع المجاني مفعل — إيقاف':'❌ الوضع المجاني موقف — تفعيل')+'</span></div><span>›</span>';}
 }
+function toggleNotif(id){
+  var inp=document.getElementById(id);
+  var sl=document.getElementById(id+'-sl');
+  inp.checked=!inp.checked;
+  sl.style.background=inp.checked?'var(--vert)':'#ccc';
+}
 
+function changeAvatar(e){
+  var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(ev){
+    var av=document.getElementById('set-avatar');
+    av.style.backgroundImage='url('+ev.target.result+')';
+    av.style.backgroundSize='cover';
+    av.style.backgroundPosition='center';
+    av.textContent='';
+  };
+  r.readAsDataURL(f);
+}
+
+async function saveSettings(){
+  var nom=document.getElementById('set-nom').value.trim();
+  var region=document.getElementById('set-region').value;
+  var type=document.getElementById('set-type').value;
+  if(!nom||!region){showToast('⚠️ كمل جميع المعلومات');return;}
+  var btn=event.target;btn.disabled=true;btn.textContent='...';
+  var r=await sb.from('utilisateurs').update({nom:nom,region:region,type_compte:type}).eq('id',CU.id);
+  btn.disabled=false;btn.textContent='✅ حفظ الإعدادات';
+  if(r.error){showToast('❌ '+r.error.message);return;}
+  var ru=await sb.from('utilisateurs').select('*').eq('id',CU.id).single();
+  if(!ru.error&&ru.data){CU=ru.data;localStorage.setItem('fellah_user',JSON.stringify(CU));}
+  showToast('✅ تم حفظ الإعدادات!');
+  goTo('profil');
+}
+
+function loadSettings(){
+  if(!CU)return;
+  document.getElementById('set-nom').value=CU.nom||'';
+  document.getElementById('set-region').value=CU.region||'';
+  document.getElementById('set-type').value=CU.type_compte||'vendeur';
+  var notifMsg=document.getElementById('notif-msg-sl');
+  if(notifMsg)notifMsg.style.background='var(--vert)';
+}
 async function loadProfil(){
   if(!CU)return;
   var r=await sb.from('utilisateurs').select('*').eq('id',CU.id).single();
