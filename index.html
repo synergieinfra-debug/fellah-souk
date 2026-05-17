@@ -308,7 +308,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="form-group"><label class="form-label">الاسم الكامل</label><input type="text" class="form-input" id="reg-nom" placeholder="مثلا: سي محمد"/></div>
 <div class="form-group"><label class="form-label">رقم الهاتف</label><input type="tel" class="form-input" id="reg-tel" placeholder="06XXXXXXXX"/></div>
 <div class="form-group"><label class="form-label">المنطقة</label>
-<select class="form-select" id="reg-region"><option value="">اختار المنطقة</option><option>سوس ماسة</option><option>مراكش آسفي</option><option>الدار البيضاء سطات</option><option>الرباط سلا القنيطرة</option><option>فاس مكناس</option><option>طنجة تطوان الحسيمة</option><option>الشرق</option><option>درعة تافيلالت</option><option>بني ملال خنيفرة</option><option>كلميم واد نون</option><option>العيون الساقية الحمراء</option><option>الداخلة وادي الذهب</option></select>
+<select class="form-select" id="reg-region"><option value="">اختار المنطقة</option><option>سوس ماسة</option><option>مراكش آسفي</option><option>الدار البيضاء سطات</option><option>الرباط سلا القنيطرة</option><option>فاس مكناس</option><option>طنجة تطوان الحسيمة</option><option>الشرق</option><option>درعة تافيلالت</option><option>بني ملال خنيفرة</option></select></div>
 <div class="form-group"><label class="form-label">أنا</label>
 <select class="form-select" id="reg-type"><option value="vendeur">بياع (فلاح)</option><option value="acheteur">مشتري</option><option value="les_deux">بياع ومشتري</option></select></div>
 <button class="btn-primary" onclick="register()">انشاء الحساب</button>
@@ -548,7 +548,18 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div></div>
 
 <div class="screen" id="screen-settings">
-<div class="pub-header"><div class="pub-title">الاعدادات</div></div><select class="form-select" id="set-region"><option value="">اختار المنطقة</option><option>سوس ماسة</option><option>مراكش آسفي</option><option>الدار البيضاء سطات</option><option>الرباط سلا القنيطرة</option><option>فاس مكناس</option><option>طنجة تطوان الحسيمة</option><option>الشرق</option><option>درعة تافيلالت</option><option>بني ملال خنيفرة</option><option>كلميم واد نون</option><option>العيون الساقية الحمراء</option><option>الداخلة وادي الذهب</option></select>
+<div class="pub-header"><div class="pub-title">الاعدادات</div></div>
+<div style="padding:16px">
+<div style="text-align:center;margin-bottom:20px">
+<div id="set-avatar" style="width:80px;height:80px;border-radius:50%;background:var(--vert);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 10px;cursor:pointer;border:3px solid var(--orc)" onclick="document.getElementById('avatar-inp').click()">👨‍🌾</div>
+<input type="file" id="avatar-inp" accept="image/*" style="display:none" onchange="changeAvatar(event)"/>
+<div style="font-size:.78rem;color:var(--gris)">اضغط لتغيير الصورة</div>
+</div>
+<div class="settings-section">
+<div class="settings-section-title">المعلومات الشخصية</div>
+<div class="form-group"><label class="form-label">الاسم الكامل</label><input type="text" class="form-input" id="set-nom"/></div>
+<div class="form-group"><label class="form-label">المنطقة</label>
+<select class="form-select" id="set-region"><option value="">اختار المنطقة</option><option>سوس ماسة</option><option>مراكش آسفي</option><option>الدار البيضاء سطات</option><option>الرباط سلا القنيطرة</option><option>فاس مكناس</option><option>طنجة تطوان الحسيمة</option><option>الشرق</option><option>درعة تافيلالت</option><option>بني ملال خنيفرة</option></select></div>
 <div class="form-group"><label class="form-label">انا</label>
 <select class="form-select" id="set-type"><option value="vendeur">بياع (فلاح)</option><option value="acheteur">مشتري</option><option value="les_deux">بياع ومشتري</option></select></div>
 </div>
