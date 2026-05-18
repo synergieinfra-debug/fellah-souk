@@ -652,7 +652,18 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <button style="width:100%;padding:12px;border:none;background:transparent;color:var(--gris);font-family:'Tajawal',sans-serif;font-size:.9rem;cursor:pointer" onclick="hideAboForm()">الغاء</button>
 </div></div>
 </div>
-
+<div class="screen" id="screen-broadcast">
+<div class="pub-header" style="background:linear-gradient(135deg,#c2185b,#e91e63)"><div class="pub-title">📢 رسائل سوق الفلاح</div></div>
+<div style="padding:16px">
+<div id="broadcast-admin-form" style="display:none;background:#fff;border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:var(--sh)">
+<div style="font-size:.88rem;font-weight:800;color:#c2185b;margin-bottom:10px">ارسال رسالة جديدة للجميع</div>
+<div class="form-group"><label class="form-label">العنوان</label><input type="text" class="form-input" id="bc-titre" placeholder="مثلا: تحديث جديد..."/></div>
+<div class="form-group"><label class="form-label">الرسالة</label><textarea class="form-input" id="bc-contenu" rows="4" placeholder="اكتب رسالتك هنا..." style="resize:none"></textarea></div>
+<button class="btn-primary" style="background:linear-gradient(135deg,#c2185b,#e91e63)" onclick="sendBroadcast()">📢 ارسال للجميع</button>
+</div>
+<div id="broadcast-list"></div>
+</div>
+</div>
 <div class="screen" id="screen-mes-ann">
 <div class="pub-header"><div class="pub-title">اعلاناتي وطلباتي</div></div>
 <div style="display:flex;background:#f5f7fa;padding:12px 12px 0;gap:4px">
