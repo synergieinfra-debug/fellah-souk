@@ -1602,9 +1602,16 @@ if(bcBtn2)bcBtn2.style.display='none';
   if(CU&&CU.telephone==='0661996001'){if(form)form.style.display='block';}else{if(form)form.style.display='none';}
   var list=document.getElementById('broadcast-list');
   list.innerHTML='<div class="loading"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
-  var r=await sb.from('broadcast').select('*').order('created_at',{ascending:false});
-  if(r.error||!r.data||r.data.length===0){
-    list.innerHTML='<div style="text-align:center;padding:40px"><div style="font-size:3rem">📢</div><div style="font-weight:800;margin-top:14px">ما كاين رسائل بعد</div></div>';return;
+  var rbCount=await sb.from('broadcast').select('id',{count:'exact'});
+  if(!rbCount.error&&rbCount.count){
+    localStorage.setItem('bc_lu_'+CU.id,String(rbCount.count));
+  }
+  var b=document.getElementById('msg-badge');
+  if(b){
+    var msgs=await sb.from('messages').select('id',{count:'exact'}).eq('destinataire_id',CU.id).eq('lu',false);
+    var msgCount=(!msgs.error&&msgs.count)?msgs.count:0;
+    if(msgCount>0){b.textContent=msgCount;b.style.display='block';}
+    else{b.style.display='none';}
   }
   list.innerHTML=r.data.map(function(b){
     var d=new Date(b.created_at).toLocaleDateString('ar-MA');
