@@ -726,7 +726,12 @@ function checkUnread(){
   if(!CU)return;
   sb.from('messages').select('id',{count:'exact'}).eq('destinataire_id',CU.id).eq('lu',false).then(function(r){
     var b=document.getElementById('msg-badge');if(!b)return;
-    if(!r.error&&r.count>0){b.textContent=r.count;b.style.display='block';}else{b.style.display='none';}
+    var count=(!r.error&&r.count)?r.count:0;
+    sb.from('broadcast').select('id',{count:'exact'}).then(function(rb){
+      var bcCount=(!rb.error&&rb.count)?rb.count:0;
+      var total=count+bcCount;
+      if(total>0){b.textContent=total;b.style.display='block';}else{b.style.display='none';}
+    });
   });
 }
 
