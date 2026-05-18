@@ -728,8 +728,10 @@ function checkUnread(){
     var b=document.getElementById('msg-badge');if(!b)return;
     var count=(!r.error&&r.count)?r.count:0;
     sb.from('broadcast').select('id',{count:'exact'}).then(function(rb){
-      var bcCount=(!rb.error&&rb.count)?rb.count:0;
-      var total=count+bcCount;
+      var bcTotal=(!rb.error&&rb.count)?rb.count:0;
+      var bcLu=parseInt(localStorage.getItem('bc_lu_'+CU.id)||'0');
+      var bcUnread=Math.max(0,bcTotal-bcLu);
+      var total=count+bcUnread;
       if(total>0){b.textContent=total;b.style.display='block';}else{b.style.display='none';}
     });
   });
