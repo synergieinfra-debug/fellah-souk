@@ -705,7 +705,7 @@ window.onload=function(){
     var active=document.querySelector('.screen.active');
     var id=active?active.id:'';
     if(id==='screen-publish'||id==='screen-messages'||id==='screen-profil'||id==='screen-materiel'||id==='screen-publish-mat'){goTo('home');return;}
-    if(id==='screen-mes-ann'||id==='screen-abonnement'||id==='screen-admin'||id==='screen-settings'){goTo('profil');return;}
+    if(id==='screen-mes-ann'||id==='screen-abonnement'||id==='screen-admin'||id==='screen-settings'||id==='screen-broadcast'){goTo('profil');return;}
     if(id==='screen-home'||id===''||!id){document.getElementById('confirm-overlay').classList.add('show');history.pushState(null,'',location.href);return;}
     history.pushState(null,'',location.href);
   });
@@ -746,6 +746,7 @@ function goTo(id){
   if(id==='abonnement')loadAbo();
   if(id==='admin')loadAdmin();
   if(id==='settings')loadSettings();
+if(id==='broadcast')loadBroadcast();
   history.pushState(null,'',location.href);
 }
 
