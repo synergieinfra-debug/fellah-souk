@@ -1219,7 +1219,9 @@ async function activerAbonnement(){
 async function loadMA(){
   if(!CU)return;
   var list=document.getElementById('ma-list');
-  list.innerHTML='<div class="loading"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
+  list.innerHTML='<div class="loading"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';sb.from('broadcast').select('id',{count:'exact'}).then(function(rb){
+  if(!rb.error&&rb.count){localStorage.setItem('bc_lu_'+CU.id,rb.count);}
+});
   if(_matab==='ann'){
     var r=await sb.from('annonces').select('*').eq('vendeur_id',CU.id).order('created_at',{ascending:false});
     if(r.error||!r.data||r.data.length===0){list.innerHTML='<div style="text-align:center;padding:40px"><div style="font-size:3rem">📋</div><div style="font-weight:800;margin-top:14px">ما عندكش اعلانات بعد</div></div>';return;}
