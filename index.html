@@ -1316,7 +1316,7 @@ async function loadMsgs(){
   checkUnread();
   var seen=new Set();
   var uniq=r.data.filter(function(m){var k=m.annonce_id+'_'+(m.expediteur_id===CU.id?m.destinataire_id:m.expediteur_id);if(seen.has(k))return false;seen.add(k);return true;});
-  list.innerHTML=uniq.map(function(m){
+  list.innerHTML=bcHtml+uniq.map(function(m){
     var isE=m.expediteur_id===CU.id;
     var autre=isE?(m.dest&&m.dest.nom?m.dest.nom:'?'):(m.exp&&m.exp.nom?m.exp.nom:'?');
     var aid=isE?m.destinataire_id:m.expediteur_id;
