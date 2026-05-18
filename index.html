@@ -1598,6 +1598,7 @@ var bcBtn2=document.getElementById('broadcast-btn');
 if(bcBtn2)bcBtn2.style.display='none';
   }
 }async function loadBroadcast(){
+ async function loadBroadcast(){
   var form=document.getElementById('broadcast-admin-form');
   if(CU&&CU.telephone==='0661996001'){if(form)form.style.display='block';}else{if(form)form.style.display='none';}
   var list=document.getElementById('broadcast-list');
@@ -1613,10 +1614,14 @@ if(bcBtn2)bcBtn2.style.display='none';
     if(msgCount>0){b.textContent=msgCount;b.style.display='block';}
     else{b.style.display='none';}
   }
+  var r=await sb.from('broadcast').select('*').order('created_at',{ascending:false});
+  if(r.error||!r.data||r.data.length===0){
+    list.innerHTML='<div style="text-align:center;padding:40px"><div style="font-size:3rem">📢</div><div style="font-weight:800;margin-top:14px">ما كاين رسائل بعد</div></div>';return;
+  }
   list.innerHTML=r.data.map(function(b){
     var d=new Date(b.created_at).toLocaleDateString('ar-MA');
     var isAdmin=CU&&CU.telephone==='0661996001';
-    var delBtn=isAdmin?'<button onclick="delBroadcast(\''+b.id+'\')" style="background:none;border:none;color:var(--rouge);font-size:.8rem;cursor:pointer;margin-top:6px">🗑️ حذف</button>':'';
+    var delBtn=isAdmin?'<button onclick="delBroadcast(\''+b.id+'\')" style="background:none;border:none;color:var(--rouge);font-size:.8rem;cursor:pointer;margin-top:6px">حذف</button>':'';
     return '<div style="background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-right:4px solid #e91e63"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:1.2rem">📢</span><div style="font-weight:800;font-size:.88rem;color:#c2185b">'+(b.titre||'رسالة من سوق الفلاح')+'</div></div><div style="font-size:.85rem;color:#333;line-height:1.6">'+b.contenu+'</div><div style="font-size:.7rem;color:var(--gris);margin-top:6px">'+d+'</div>'+delBtn+'</div>';
   }).join('');
 }
