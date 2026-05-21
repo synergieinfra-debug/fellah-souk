@@ -804,12 +804,13 @@ function toggleSw(id){var sw=document.getElementById(id);if(sw)sw.classList.togg
 
 function zoomImg(url){
   var ov=document.createElement('div');
+  ov.id='img-zoom';
   ov.className='img-zoom-overlay';
   ov.innerHTML='<img src="'+url+'"/>';
-  ov.onclick=function(){ov.remove();};
+  ov.onclick=function(){ov.remove();history.pushState(null,'',location.href);};
   document.body.appendChild(ov);
+  history.pushState(null,'',location.href);
 }
-
 function changeAvatar(e){
   var f=e.target.files[0];if(!f)return;
   var r=new FileReader();
