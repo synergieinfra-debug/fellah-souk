@@ -718,7 +718,7 @@ window.onload=function(){
     if(ov&&ov.classList.contains('show')){ov.classList.remove('show');history.pushState(null,'',location.href);return;}
     if(document.getElementById('chat')){closeChat();history.pushState(null,'',location.href);return;}
     if(document.getElementById('det')){closeDet();history.pushState(null,'',location.href);return;}
-    if(document.getElementById('modal-bg')&&document.getElementById('modal-bg').style.display!=='none'){closeModal();history.pushState(null,'',location.href);return;}
+    if(document.getElementById('img-zoom')){document.getElementById('img-zoom').remove();history.pushState(null,'',location.href);return;}
     if(document.getElementById('nota-bg')&&document.getElementById('nota-bg').style.display!=='none'){closeNotation();history.pushState(null,'',location.href);return;}
     var active=document.querySelector('.screen.active');
     var id=active?active.id:'';
