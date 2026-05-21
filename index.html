@@ -807,7 +807,7 @@ function zoomImg(url){
   ov.id='img-zoom';
   ov.className='img-zoom-overlay';
   ov.innerHTML='<img src="'+url+'"/>';
-  ov.onclick=function(){ov.remove();history.pushState(null,'',location.href);};
+  ov.onclick=function(){ov.remove();};
   document.body.appendChild(ov);
   history.pushState(null,'',location.href);
 }
