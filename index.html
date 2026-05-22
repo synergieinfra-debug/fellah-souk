@@ -248,7 +248,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <body>
 <div id="splash"><div class="sp-icon">🌾</div><div class="sp-title">سوق الفلاح</div><div class="sp-sub">كل المنتجات الفلاحية في يدك</div><div class="sp-bar"><div class="sp-fill"></div></div></div>
 <div class="toast" id="toast"></div>
-
 <div id="confirm-overlay" class="confirm-overlay">
 <div class="confirm-box">
 <div class="confirm-box-title">🌾 سوق الفلاح</div>
@@ -259,7 +258,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div>
 </div>
 </div>
-
 <div id="pub-menu-bg" style="display:none;position:fixed;inset:0;z-index:199" onclick="hidePubMenu()"></div>
 <div id="pub-menu" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);width:90%;max-width:380px;background:#fff;border-radius:16px;box-shadow:var(--shd);z-index:200;padding:12px">
 <div onclick="hidePubMenu();goTo('publish')" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;cursor:pointer;margin-bottom:8px;background:var(--vertp)">
@@ -271,7 +269,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div><div style="font-weight:800;font-size:.95rem;color:var(--marron)">نشر آلية أو معدة</div><div style="font-size:.75rem;color:var(--gris)">بيع أو كراء معدات فلاحية</div></div>
 </div>
 </div>
-
 <div id="modal-bg" class="modal-bg" style="display:none" onclick="closeModal()">
 <div class="modal" onclick="event.stopPropagation()">
 <div class="modal-handle"></div>
@@ -291,7 +288,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div></div>
 <button class="btn-primary" id="e-save" onclick="saveEdit()">حفظ التعديلات</button>
 </div></div>
-
 <div id="nota-bg" class="nota-bg" style="display:none">
 <div class="nota-box">
 <div style="width:38px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px"></div>
@@ -308,7 +304,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <button class="btn-primary" onclick="saveNotation()">ارسال التقييم</button>
 <button style="width:100%;padding:12px;border:none;background:transparent;color:var(--gris);font-family:'Tajawal',sans-serif;font-size:.9rem;cursor:pointer;margin-top:8px" onclick="closeNotation()">تخطي</button>
 </div></div>
-
 <div class="screen active" id="screen-auth">
 <div class="auth-wrap"><div class="auth-card">
 <div class="auth-logo"><span class="auth-logo-icon">🌾</span><div class="auth-logo-title">سوق الفلاح</div><div class="auth-logo-sub">كل المنتجات الفلاحية في يدك</div></div>
@@ -328,15 +323,12 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <select class="form-select" id="reg-type"><option value="vendeur">بياع (فلاح)</option><option value="acheteur">مشتري</option><option value="les_deux">بياع ومشتري</option></select></div>
 <button class="btn-primary" onclick="register()">انشاء الحساب</button>
 </div></div></div></div>
-
 <div class="screen" id="screen-home">
 <div class="home-header">
 <div style="text-align:center;padding:8px 0 4px">
 <div style="font-family:'Amiri',serif;font-size:1.6rem;color:var(--orc);font-weight:700">سوق الفلاح</div>
 <div style="font-size:.82rem;color:rgba(255,255,255,.7);margin-bottom:6px" id="home-name">أهلا بك</div>
-<div style="display:flex;justify-content:center;gap:6px;margin-bottom:6px;font-size:1.6rem">
-<span>🥕</span><span>🍅</span><span>🍊</span><span>🐄</span><span>🌾</span><span>🚜</span><span>🍯</span><span>🐑</span>
-</div>
+<div style="display:flex;justify-content:center;gap:6px;margin-bottom:6px;font-size:1.6rem"><span>🥕</span><span>🍅</span><span>🍊</span><span>🐄</span><span>🌾</span><span>🚜</span><span>🍯</span><span>🐑</span></div>
 <div style="font-family:'Amiri',serif;font-size:1rem;color:rgba(255,255,255,.9);font-weight:700;margin-bottom:12px">منتجات فلاحية</div>
 </div>
 <div class="home-tabs">
@@ -362,7 +354,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="annonces-grid" id="grid"></div>
 <button class="fab" onclick="goTo('publish')">+</button>
 </div>
-
 <div class="screen" id="screen-materiel">
 <div class="mat-header">
 <div style="color:rgba(255,255,255,.7);font-size:.82rem;margin-bottom:2px">سوق الآليات</div>
@@ -386,7 +377,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="annonces-grid" id="mat-grid"></div>
 <button class="fab" style="background:linear-gradient(135deg,var(--marron),#8d6e63);box-shadow:0 4px 20px rgba(109,76,65,.5)" onclick="goTo('publish-mat')">+</button>
 </div>
-
 <div class="screen" id="screen-publish">
 <div class="pub-header"><div class="pub-title">نشر اعلان</div></div>
 <div class="pub-body">
@@ -484,7 +474,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div></div>
 <button class="btn-primary btn-gold" id="p-btn" onclick="pub()">نشر الاعلان الآن</button>
 </div></div></div>
-
 <div class="screen" id="screen-publish-mat">
 <div class="pub-header marron"><div class="pub-title">نشر آلية او معدة</div></div>
 <div class="pub-body">
@@ -533,12 +522,10 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div>
 <button class="btn-primary btn-marron" id="mat-btn" onclick="pubMat()">نشر الاعلان</button>
 </div></div></div>
-
 <div class="screen" id="screen-messages">
 <div style="background:linear-gradient(135deg,var(--vert),var(--vert2));padding:16px"><div style="font-family:'Amiri',serif;font-size:1.3rem;color:var(--orc)">الرسائل</div></div>
 <div class="msg-list" id="msg-list"></div>
 </div>
-
 <div class="screen" id="screen-profil">
 <div class="profil-header">
 <div class="profil-avatar">👨‍🌾</div>
@@ -562,7 +549,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="profil-item" onclick="goTo('settings')"><div class="profil-item-left"><span>⚙️</span><span class="profil-item-label">الاعدادات</span></div><span>›</span></div>
 <div class="profil-item" onclick="logout()"><div class="profil-item-left"><span>🚪</span><span class="profil-item-label" style="color:var(--rouge)">خروج</span></div><span>›</span></div>
 </div></div>
-
 <div class="screen" id="screen-settings">
 <div class="pub-header"><div class="pub-title">الاعدادات</div></div>
 <div style="padding:16px">
@@ -596,7 +582,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <button class="btn-primary" onclick="saveSettings()">حفظ الاعدادات</button>
 <button style="width:100%;padding:13px;border:none;background:transparent;color:var(--rouge);font-family:'Tajawal',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;margin-top:8px" onclick="goTo('profil')">الغاء</button>
 </div></div>
-
 <div class="screen" id="screen-broadcast">
 <div class="pub-header" style="background:linear-gradient(135deg,#c2185b,#e91e63)"><div class="pub-title">📢 رسائل سوق الفلاح</div></div>
 <div style="padding:16px">
@@ -609,7 +594,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div id="broadcast-list"></div>
 </div>
 </div>
-
 <div class="screen" id="screen-admin">
 <div class="pub-header admin">
 <button onclick="goTo('profil')" style="background:rgba(255,255,255,.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;flex-shrink:0">&#8249;</button>
@@ -634,7 +618,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div style="padding:0 12px;margin-bottom:8px"><div style="font-size:.8rem;font-weight:800;color:var(--gris);margin-bottom:8px">آخر المسجلين</div></div>
 <div class="users-list" id="admin-users"></div>
 </div>
-
 <div class="screen" id="screen-abonnement">
 <div class="pub-header"><div class="pub-title">الاشتراك المميز</div></div>
 <div class="abo-header">
@@ -680,7 +663,6 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <button style="width:100%;padding:12px;border:none;background:transparent;color:var(--gris);font-family:'Tajawal',sans-serif;font-size:.9rem;cursor:pointer" onclick="hideAboForm()">الغاء</button>
 </div></div>
 </div>
-
 <div class="screen" id="screen-mes-ann">
 <div class="pub-header"><div class="pub-title">اعلاناتي وطلباتي</div></div>
 <div style="display:flex;background:#f5f7fa;padding:12px 12px 0;gap:4px">
@@ -690,15 +672,13 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 </div>
 <div id="ma-list" style="padding:12px"></div>
 </div>
-
 <div class="bnav" id="bnav" style="display:none">
 <div class="nav-item active" id="ni-home" onclick="goTo('home')"><div class="nav-icon">🌾</div><div class="nav-label">منتجات</div></div>
 <div class="nav-item" id="ni-materiel" onclick="goTo('materiel')"><div class="nav-icon">🚜</div><div class="nav-label">آليات</div></div>
 <div class="nav-item" id="ni-publish" onclick="showPubMenu()"><div class="nav-icon">➕</div><div class="nav-label">نشر</div></div>
 <div class="nav-item" id="ni-messages" onclick="goTo('messages')" style="position:relative"><div class="nav-icon">💬</div><div class="nav-label">رسائل</div><div id="msg-badge" class="msg-badge"></div></div>
 <div class="nav-item" id="ni-profil" onclick="goTo('profil')"><div class="nav-icon">👤</div><div class="nav-label">حسابي</div></div>
-</div>
-<script>
+</div><script>
 var sb=supabase.createClient('https://ryzhqtcukeypsqqbxrqp.supabase.co','sb_publishable__s1wfkhIKodWAGThY8r-pw_Tg6NioE1');
 var CU=null,SP='',SC='',PT='sell',_a=[],_d=[],_mat=[],_matd=[],_eid=null,_et=null,_htab='offres',_matab='ann',_fann='',_fdem='',_fmat='',_fmatd='',_mattab='offres',PTM='kra',_spmat='';
 var EM={'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','البصلة':'🧅','البطاطا':'🥔','الجزر':'🥕','الثوم':'🧄','الكوسة':'🥬','الباذنجان':'🍆','الملفوف':'🥦','الخس':'🥗','اللوبية':'🫘','الحمص':'🟡','العدس':'🟤','الفول':'🫘','الذرة':'🌽','الفلفل الحار':'🌶️','الكرفس':'🌿','الشمندر':'🔴','اللفت':'🟣','البرتقال':'🍊','الحامض':'🍋','البطيخ':'🍉','التفاح':'🍎','العنب':'🍇','التين':'🫐','الكليمنتين':'🍊','الرمان':'🍎','المشماش':'🍑','حب الملوك':'🍒','الخوخ':'🍑','الفريز':'🍓','الموز':'🍌','الافوكا':'🥑','التمر':'🌴','الزيتون':'🫒','الدلاح':'🍈','حليب':'🥛','دجاج':'🐓','بيض':'🥚','اغنام':'🐑','بقر':'🐄','ماعز':'🐐','سمك':'🐟','عسل':'🍯','جرار':'🚜','حفارة':'🏗️','لودار':'🚛','بولدوزار':'🚧','الحراثة':'⚙️','الفريزة':'⚙️','المسوية':'⚙️','الديسك':'⚙️','مضخة/بومبا':'💧','معدات التنقيط':'💧','الخرطوم':'💧','الحصادة':'🌾','الدراسة':'🌾','آلة جني الزيتون':'🫒','الريموركي':'🚚','الصهريج':'🚰','الراشة':'🌿','آلة التسميد':'🌱'};
@@ -716,10 +696,14 @@ window.onload=function(){
   window.addEventListener('popstate',function(){
     var ov=document.getElementById('confirm-overlay');
     if(ov&&ov.classList.contains('show')){ov.classList.remove('show');history.pushState(null,'',location.href);return;}
+    var zoom=document.getElementById('img-zoom');
+    if(zoom){zoom.remove();history.pushState(null,'',location.href);return;}
     if(document.getElementById('chat')){closeChat();history.pushState(null,'',location.href);return;}
     if(document.getElementById('det')){closeDet();history.pushState(null,'',location.href);return;}
-    if(document.getElementById('img-zoom')){document.getElementById('img-zoom').remove();history.pushState(null,'',location.href);return;}
-    if(document.getElementById('nota-bg')&&document.getElementById('nota-bg').style.display!=='none'){closeNotation();history.pushState(null,'',location.href);return;}
+    var mb=document.getElementById('modal-bg');
+    if(mb&&mb.style.display==='flex'){closeModal();history.pushState(null,'',location.href);return;}
+    var nb=document.getElementById('nota-bg');
+    if(nb&&nb.style.display==='flex'){closeNotation();history.pushState(null,'',location.href);return;}
     var active=document.querySelector('.screen.active');
     var id=active?active.id:'';
     if(id==='screen-publish'||id==='screen-messages'||id==='screen-profil'||id==='screen-materiel'||id==='screen-publish-mat'){goTo('home');return;}
@@ -811,6 +795,7 @@ function zoomImg(url){
   document.body.appendChild(ov);
   history.pushState(null,'',location.href);
 }
+
 function changeAvatar(e){
   var f=e.target.files[0];if(!f)return;
   var r=new FileReader();
@@ -1120,6 +1105,7 @@ function ouvrirNotation(annId,userId){
   for(var i=1;i<=5;i++){document.getElementById('star'+i).classList.remove('on');}
   document.getElementById('nota-comment').value='';
   document.getElementById('nota-bg').style.display='flex';
+  history.pushState(null,'',location.href);
 }
 function selStar(n){_nStar=n;for(var i=1;i<=5;i++){var s=document.getElementById('star'+i);if(i<=n)s.classList.add('on');else s.classList.remove('on');}}
 function closeNotation(){document.getElementById('nota-bg').style.display='none';}
@@ -1151,6 +1137,7 @@ function openEdit(id,type){
   document.getElementById('e-photo-prev').style.display='none';
   document.getElementById('e-photo-txt').style.display='block';
   document.getElementById('modal-bg').style.display='flex';
+  history.pushState(null,'',location.href);
 }
 
 function openEditMat(id){
@@ -1166,6 +1153,7 @@ function openEditMat(id){
   document.getElementById('e-photo-prev').style.display='none';
   document.getElementById('e-photo-txt').style.display='block';
   document.getElementById('modal-bg').style.display='flex';
+  history.pushState(null,'',location.href);
 }
 
 function closeModal(){document.getElementById('modal-bg').style.display='none';}
