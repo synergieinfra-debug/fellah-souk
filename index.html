@@ -66,6 +66,10 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 .filters{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%}
 .filter-chip{padding:6px 4px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-family:'Tajawal',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;color:#555}
 .filter-chip.active{background:var(--vert);border-color:var(--vert);color:#fff}
+.search-bar{padding:8px 12px 4px}
+.search-inner{display:flex;align-items:center;background:#fff;border-radius:12px;padding:8px 14px;box-shadow:var(--sh);border:1.5px solid var(--border);gap:8px}
+.search-inner input{border:none;outline:none;font-family:'Tajawal',sans-serif;font-size:.9rem;width:100%;direction:rtl;background:transparent;color:#1a1a2e}
+.search-inner input::placeholder{color:#bbb}
 .section-title{padding:8px 16px 6px;font-size:.72rem;font-weight:800;color:var(--gris);text-transform:uppercase;letter-spacing:.1em}
 .annonces-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px}
 .ann-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--sh);cursor:pointer;transition:all .2s;border:1px solid var(--border)}
@@ -350,6 +354,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="filter-chip" onclick="fDem(this,'agricole')">فلاحية</div>
 <div class="filter-chip" onclick="fDem(this,'animal')">حيوانية</div>
 </div></div>
+<div class="search-bar"><div class="search-inner"><span style="font-size:1.1rem">🔍</span><input type="text" id="search-ann" placeholder="ابحث عن منتج أو مدينة..." oninput="searchAnn(this.value)"/></div></div>
 <div class="section-title" id="sec-lbl">اعلانات اليوم</div>
 <div class="annonces-grid" id="grid"></div>
 <button class="fab" onclick="goTo('publish')">+</button>
@@ -373,6 +378,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div class="filter-chip" onclick="fMatDem(this,'bai3')">شراء</div>
 <div class="filter-chip" onclick="fMatDem(this,'kra')">كراء</div>
 </div></div>
+<div class="search-bar"><div class="search-inner"><span style="font-size:1.1rem">🔍</span><input type="text" id="search-mat" placeholder="ابحث عن آلية أو مدينة..." oninput="searchMat(this.value)"/></div></div>
 <div class="section-title" id="mat-lbl">عروض الآليات</div>
 <div class="annonces-grid" id="mat-grid"></div>
 <button class="fab" style="background:linear-gradient(135deg,var(--marron),#8d6e63);box-shadow:0 4px 20px rgba(109,76,65,.5)" onclick="goTo('publish-mat')">+</button>
@@ -745,8 +751,14 @@ function goTo(id){
   var sc=document.getElementById('screen-'+id);if(sc)sc.classList.add('active');
   var ni=document.getElementById('ni-'+id);if(ni)ni.classList.add('active');
   window.scrollTo(0,0);
-  if(id==='home'){if(_htab==='demandes')loadDem(_fdem);else loadAnn(_fann);}
-  if(id==='materiel')loadMat(_fmat);
+  if(id==='home'){
+    var si=document.getElementById('search-ann');if(si)si.value='';
+    if(_htab==='demandes')loadDem(_fdem);else loadAnn(_fann);
+  }
+  if(id==='materiel'){
+    var sm=document.getElementById('search-mat');if(sm)sm.value='';
+    loadMat(_fmat);
+  }
   if(id==='profil')loadProfil();
   if(id==='publish')resetPub();
   if(id==='publish-mat')resetPubMat();
@@ -894,6 +906,7 @@ function logout(){
 
 function switchTab(tab){
   _htab=tab;_fann='';_fdem='';
+  var si=document.getElementById('search-ann');if(si)si.value='';
   document.getElementById('tab-offres').classList.toggle('active',tab==='offres');
   document.getElementById('tab-demandes').classList.toggle('active',tab==='demandes');
   document.getElementById('fo').style.display=tab==='offres'?'block':'none';
@@ -908,6 +921,7 @@ function switchTab(tab){
 
 function switchMatTab(tab){
   _mattab=tab;_fmat='';_fmatd='';
+  var sm=document.getElementById('search-mat');if(sm)sm.value='';
   document.getElementById('tab-mat-offres').classList.toggle('active',tab==='offres');
   document.getElementById('tab-mat-dem').classList.toggle('active',tab==='demandes');
   document.getElementById('fm-offres').style.display=tab==='offres'?'block':'none';
@@ -932,7 +946,7 @@ async function loadAnn(filter){
   var r=await q;
   if(r.error||!r.data||r.data.length===0){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:50px 20px"><div style="font-size:3.5rem;margin-bottom:14px">🌾</div><div style="font-size:1.1rem;font-weight:800">ما كاين عروض بعد</div></div>';return;}
   _a=r.data;
-  g.innerHTML=r.data.map(function(a,i){
+  g.innerHTML=_a.map(function(a,i){
     var em=EM[a.produit]||'🌾';
     var isPrem=a.u&&a.u.premium;
     var note=a.u&&a.u.note_moyenne?'<div style="font-size:.65rem;color:var(--or)">'+a.u.note_moyenne+' ⭐</div>':'';
@@ -949,7 +963,7 @@ async function loadDem(filter){
   var r=await q;
   if(r.error||!r.data||r.data.length===0){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:50px 20px"><div style="font-size:3.5rem;margin-bottom:14px">🛒</div><div style="font-size:1.1rem;font-weight:800">ما كاين طلبات بعد</div></div>';return;}
   _d=r.data;
-  g.innerHTML=r.data.map(function(d,i){
+  g.innerHTML=_d.map(function(d,i){
     var em=EM[d.produit]||'🛒';
     return '<div class="ann-card" onclick="openDem('+i+')"><div class="ann-pp bleu">'+em+'</div><div class="ann-body"><div class="ann-produit">'+em+' '+d.produit+'</div><div class="ann-region">'+d.ville+'</div><div class="ann-footer"><div><span class="ann-prix bleu">'+d.prix_max+'</span><span class="ann-unite"> د.م/'+d.unite+'</span></div><div class="ann-qty bleu">'+d.quantite+' '+d.unite+'</div></div></div></div>';
   }).join('');
@@ -965,7 +979,7 @@ async function loadMat(filter){
   var r=await q;
   if(r.error||!r.data||r.data.length===0){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:50px 20px"><div style="font-size:3.5rem;margin-bottom:14px">🚜</div><div style="font-size:1.1rem;font-weight:800">ما كاين عروض بعد</div></div>';return;}
   _mat=r.data;
-  g.innerHTML=r.data.map(function(m,i){
+  g.innerHTML=_mat.map(function(m,i){
     var em=EM[m.nom_materiel]||'🚜';var isKra=m.type_op==='kra';
     var badge=isKra?'<div style="margin-bottom:4px"><span class="badge-kra">كراء</span></div>':'<div style="margin-bottom:4px"><span class="badge-premium">بيع</span></div>';
     return '<div class="ann-card'+(isKra?' kra':'')+'" onclick="openMat('+i+')">'+(m.photo_url?'<img class="ann-photo" src="'+m.photo_url+'" loading="lazy"/>':'<div class="ann-pp marron">'+em+'</div>')+'<div class="ann-body">'+badge+'<div class="ann-produit">'+em+' '+m.nom_materiel+'</div><div class="ann-region">'+m.ville+'</div><div class="ann-footer"><div><span class="ann-prix marron">'+m.prix+'</span><span class="ann-unite"> د.م'+(isKra?'/يوم':'')+'</span></div><div class="ann-qty marron">'+(isKra?'كراء':'بيع')+'</div></div></div></div>';
@@ -981,16 +995,61 @@ async function loadMatDem(filter){
   var r=await q;
   if(r.error||!r.data||r.data.length===0){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:50px 20px"><div style="font-size:3.5rem;margin-bottom:14px">🚜</div><div style="font-size:1.1rem;font-weight:800">ما كاين طلبات بعد</div></div>';return;}
   _matd=r.data;
-  g.innerHTML=r.data.map(function(m,i){
+  g.innerHTML=_matd.map(function(m,i){
     var em=EM[m.nom_materiel]||'🚜';var isKra=m.type_op==='kra';
     return '<div class="ann-card kra" onclick="openMatDem('+i+')"><div class="ann-pp marron">'+em+'</div><div class="ann-body"><div style="margin-bottom:4px"><span class="badge-kra">'+(isKra?'طلب كراء':'طلب شراء')+'</span></div><div class="ann-produit">'+em+' '+m.nom_materiel+'</div><div class="ann-region">'+m.ville+'</div><div class="ann-footer"><div><span class="ann-prix marron">'+m.prix_max+'</span><span class="ann-unite"> اقصى</span></div><div class="ann-qty marron">'+(isKra?'كراء':'شراء')+'</div></div></div></div>';
   }).join('');
 }
 
-function fAnn(el,t){document.querySelectorAll('#fo .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fann=t;loadAnn(t);}
-function fDem(el,t){document.querySelectorAll('#fd .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fdem=t;loadDem(t);}
-function fMat(el,t){document.querySelectorAll('#fm-offres .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fmat=t;loadMat(t);}
-function fMatDem(el,t){document.querySelectorAll('#fm-dem .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fmatd=t;loadMatDem(t);}
+function fAnn(el,t){document.querySelectorAll('#fo .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fann=t;var si=document.getElementById('search-ann');if(si)si.value='';loadAnn(t);}
+function fDem(el,t){document.querySelectorAll('#fd .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fdem=t;var si=document.getElementById('search-ann');if(si)si.value='';loadDem(t);}
+function fMat(el,t){document.querySelectorAll('#fm-offres .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fmat=t;var sm=document.getElementById('search-mat');if(sm)sm.value='';loadMat(t);}
+function fMatDem(el,t){document.querySelectorAll('#fm-dem .filter-chip').forEach(function(c){c.classList.remove('active');});el.classList.add('active');_fmatd=t;var sm=document.getElementById('search-mat');if(sm)sm.value='';loadMatDem(t);}
+
+function searchAnn(q){
+  if(!q){if(_htab==='demandes')loadDem(_fdem);else loadAnn(_fann);return;}
+  q=q.toLowerCase();
+  var g=document.getElementById('grid');
+  if(_htab==='offres'){
+    var filtered=_a.filter(function(a){return a.produit.toLowerCase().includes(q)||a.ville.toLowerCase().includes(q)||(a.region&&a.region.toLowerCase().includes(q));});
+    if(filtered.length===0){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px"><div style="font-size:3rem">🔍</div><div style="font-weight:800;margin-top:14px">ما لقينا نتيجة</div></div>';return;}
+    g.innerHTML=filtered.map(function(a){
+      var i=_a.indexOf(a);var em=EM[a.produit]||'🌾';var isPrem=a.u&&a.u.premium;
+      var note=a.u&&a.u.note_moyenne?'<div style="font-size:.65rem;color:var(--or)">'+a.u.note_moyenne+' ⭐</div>':'';
+      var badge=isPrem?'<div style="margin-bottom:4px"><span class="badge-premium">موثوق</span></div>':'';
+      return '<div class="ann-card'+(isPrem?' premium':'')+'" onclick="openA('+i+')">'+(a.photo_url?'<img class="ann-photo" src="'+a.photo_url+'" loading="lazy"/>':'<div class="ann-pp">'+em+'</div>')+'<div class="ann-body">'+badge+'<div class="ann-produit">'+em+' '+a.produit+'</div><div class="ann-region">'+a.ville+'</div><div class="ann-footer"><div><span class="ann-prix">'+a.prix+'</span><span class="ann-unite"> د.م/'+a.unite+'</span></div><div><div class="ann-qty">'+a.quantite+' '+a.unite+'</div>'+note+'</div></div></div></div>';
+    }).join('');
+  }else{
+    var filtered2=_d.filter(function(d){return d.produit.toLowerCase().includes(q)||d.ville.toLowerCase().includes(q);});
+    if(filtered2.length===0){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px"><div style="font-size:3rem">🔍</div><div style="font-weight:800;margin-top:14px">ما لقينا نتيجة</div></div>';return;}
+    g.innerHTML=filtered2.map(function(d){
+      var i=_d.indexOf(d);var em=EM[d.produit]||'🛒';
+      return '<div class="ann-card" onclick="openDem('+i+')"><div class="ann-pp bleu">'+em+'</div><div class="ann-body"><div class="ann-produit">'+em+' '+d.produit+'</div><div class="ann-region">'+d.ville+'</div><div class="ann-footer"><div><span class="ann-prix bleu">'+d.prix_max+'</span><span class="ann-unite"> د.م/'+d.unite+'</span></div><div class="ann-qty bleu">'+d.quantite+' '+d.unite+'</div></div></div></div>';
+    }).join('');
+  }
+}
+
+function searchMat(q){
+  if(!q){if(_mattab==='demandes')loadMatDem(_fmatd);else loadMat(_fmat);return;}
+  q=q.toLowerCase();
+  var g=document.getElementById('mat-grid');
+  if(_mattab==='offres'){
+    var filtered=_mat.filter(function(m){return m.nom_materiel.toLowerCase().includes(q)||m.ville.toLowerCase().includes(q);});
+    if(filtered.length===0){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px"><div style="font-size:3rem">🔍</div><div style="font-weight:800;margin-top:14px">ما لقينا نتيجة</div></div>';return;}
+    g.innerHTML=filtered.map(function(m){
+      var i=_mat.indexOf(m);var em=EM[m.nom_materiel]||'🚜';var isKra=m.type_op==='kra';
+      var badge=isKra?'<div style="margin-bottom:4px"><span class="badge-kra">كراء</span></div>':'<div style="margin-bottom:4px"><span class="badge-premium">بيع</span></div>';
+      return '<div class="ann-card'+(isKra?' kra':'')+'" onclick="openMat('+i+')">'+(m.photo_url?'<img class="ann-photo" src="'+m.photo_url+'" loading="lazy"/>':'<div class="ann-pp marron">'+em+'</div>')+'<div class="ann-body">'+badge+'<div class="ann-produit">'+em+' '+m.nom_materiel+'</div><div class="ann-region">'+m.ville+'</div><div class="ann-footer"><div><span class="ann-prix marron">'+m.prix+'</span><span class="ann-unite"> د.م'+(isKra?'/يوم':'')+'</span></div><div class="ann-qty marron">'+(isKra?'كراء':'بيع')+'</div></div></div></div>';
+    }).join('');
+  }else{
+    var filtered2=_matd.filter(function(m){return m.nom_materiel.toLowerCase().includes(q)||m.ville.toLowerCase().includes(q);});
+    if(filtered2.length===0){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px"><div style="font-size:3rem">🔍</div><div style="font-weight:800;margin-top:14px">ما لقينا نتيجة</div></div>';return;}
+    g.innerHTML=filtered2.map(function(m){
+      var i=_matd.indexOf(m);var em=EM[m.nom_materiel]||'🚜';var isKra=m.type_op==='kra';
+      return '<div class="ann-card kra" onclick="openMatDem('+i+')"><div class="ann-pp marron">'+em+'</div><div class="ann-body"><div style="margin-bottom:4px"><span class="badge-kra">'+(isKra?'طلب كراء':'طلب شراء')+'</span></div><div class="ann-produit">'+em+' '+m.nom_materiel+'</div><div class="ann-region">'+m.ville+'</div><div class="ann-footer"><div><span class="ann-prix marron">'+m.prix_max+'</span><span class="ann-unite"> اقصى</span></div><div class="ann-qty marron">'+(isKra?'كراء':'شراء')+'</div></div></div></div>';
+    }).join('');
+  }
+}
 
 function openA(i){
   var a=_a[i];if(!a)return;
@@ -1007,15 +1066,8 @@ function openA(i){
   var tags='<div style="display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;border-bottom:1px solid var(--border)"><span style="background:#f5f7fa;border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:.75rem;font-weight:600">'+a.quantite+' '+a.unite+'</span>'+(a.description?'<span style="background:#f5f7fa;border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:.75rem;font-weight:600">'+a.description+'</span>':'')+'</div>';
   var vcard='<div style="margin:10px 16px;background:var(--vertp);border-radius:12px;padding:10px;display:flex;align-items:center;gap:10px"><div style="width:38px;height:38px;border-radius:50%;background:var(--vert);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">👨‍🌾</div><div><div style="font-weight:800;font-size:.85rem">'+unom+(isPrem?' <span class="badge-premium">موثوق</span>':'')+'</div><div style="font-size:.7rem;color:var(--gris)">'+ureg+' - '+unote+'</div></div></div>';
   var btns='<div style="padding:10px 16px 20px">';
-  if(own){
-    btns+='<button class="cbtn o" onclick="openEdit(\''+a.id+'\',\'ann\')">تعديل الاعلان</button>';
-    btns+='<button class="cbtn g" onclick="markVendu(\''+a.id+'\')">تم البيع</button>';
-    btns+='<button class="cbtn r" onclick="delAnn(\''+a.id+'\')">حذف الاعلان</button>';
-  }else{
-    if(isPremium()){btns+='<button class="cbtn g" onclick="openChat(\''+a.id+'\',\''+a.vendeur_id+'\',\''+unom+'\',\''+a.produit+'\')">تواصل مع البياع</button>';}
-    else{btns+='<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع البائعين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك - 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">اشترك الآن</button></div>';}
-    btns+='<button class="cbtn star" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\')">قيم البياع</button>';
-  }
+  if(own){btns+='<button class="cbtn o" onclick="openEdit(\''+a.id+'\',\'ann\')">تعديل الاعلان</button><button class="cbtn g" onclick="markVendu(\''+a.id+'\')">تم البيع</button><button class="cbtn r" onclick="delAnn(\''+a.id+'\')">حذف الاعلان</button>';}
+  else{if(isPremium()){btns+='<button class="cbtn g" onclick="openChat(\''+a.id+'\',\''+a.vendeur_id+'\',\''+unom+'\',\''+a.produit+'\')">تواصل مع البياع</button>';}else{btns+='<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع البائعين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك - 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">اشترك الآن</button></div>';}btns+='<button class="cbtn star" onclick="ouvrirNotation(\''+a.id+'\',\''+a.vendeur_id+'\')">قيم البياع</button>';}
   btns+='<button class="cbtn wa" onclick="shareAnn(\''+a.produit+'\',\''+a.prix+'\',\''+a.ville+'\')">شارك هاد الاعلان</button></div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header"><div class="det-title">'+em+' '+a.produit+'</div></div>'+img+info+tags+vcard+btns;
@@ -1034,13 +1086,8 @@ function openDem(i){
   var info='<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fff;border-bottom:1px solid var(--border)"><div><div style="background:var(--bleup);border-radius:8px;padding:3px 8px;font-size:.72rem;color:var(--bleu);font-weight:700;display:inline-block;margin-bottom:4px">طلب شراء</div><div style="font-size:1.1rem;font-weight:900">'+em+' '+d.produit+'</div><div style="font-size:.75rem;color:var(--gris);margin-top:2px">'+d.ville+'</div></div><div style="text-align:left"><div style="font-family:Amiri,serif;font-size:1.4rem;font-weight:700;color:var(--bleu)">'+d.prix_max+'</div><div style="font-size:.65rem;color:var(--gris)">اقصى/'+d.unite+'</div></div></div>';
   var vcard='<div style="margin:10px 16px;background:var(--bleup);border-radius:12px;padding:10px;display:flex;align-items:center;gap:10px"><div style="width:38px;height:38px;border-radius:50%;background:var(--bleu);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">🛒</div><div><div style="font-weight:800;font-size:.85rem">'+unom+'</div><div style="font-size:.7rem;color:var(--gris)">'+ureg+'</div></div></div>';
   var btns='<div style="padding:10px 16px 20px">';
-  if(own){
-    btns+='<button class="cbtn o" onclick="openEdit(\''+d.id+'\',\'dem\')">تعديل الطلب</button>';
-    btns+='<button class="cbtn r" onclick="delDem(\''+d.id+'\')">حذف الطلب</button>';
-  }else{
-    if(isPremium()){btns+='<button class="cbtn b" onclick="openChat(\''+d.id+'\',\''+d.acheteur_id+'\',\''+unom+'\',\''+d.produit+'\')">انا عندي هذا المنتج</button>';}
-    else{btns+='<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع المشترين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك - 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">اشترك الآن</button></div>';}
-  }
+  if(own){btns+='<button class="cbtn o" onclick="openEdit(\''+d.id+'\',\'dem\')">تعديل الطلب</button><button class="cbtn r" onclick="delDem(\''+d.id+'\')">حذف الطلب</button>';}
+  else{if(isPremium()){btns+='<button class="cbtn b" onclick="openChat(\''+d.id+'\',\''+d.acheteur_id+'\',\''+unom+'\',\''+d.produit+'\')">انا عندي هذا المنتج</button>';}else{btns+='<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل مع المشترين</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك - 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">اشترك الآن</button></div>';}}
   btns+='<button class="cbtn wa" onclick="shareAnn(\''+d.produit+'\',\''+d.prix_max+'\',\''+d.ville+'\')">شارك هاد الطلب</button></div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header bleu"><div class="det-title">'+em+' '+d.produit+'</div></div>'+img+info+vcard+btns;
@@ -1061,13 +1108,8 @@ function openMat(i){
   var desc=m.description?'<div style="padding:10px 16px;border-bottom:1px solid var(--border);font-size:.85rem;color:#555">'+m.description+'</div>':'';
   var vcard='<div style="margin:10px 16px;background:var(--marronp);border-radius:12px;padding:10px;display:flex;align-items:center;gap:10px"><div style="width:38px;height:38px;border-radius:50%;background:var(--marron);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">🚜</div><div><div style="font-weight:800;font-size:.85rem">'+unom+'</div><div style="font-size:.7rem;color:var(--gris)">'+ureg+'</div></div></div>';
   var btns='<div style="padding:10px 16px 20px">';
-  if(own){
-    btns+='<button class="cbtn o" onclick="openEditMat(\''+m.id+'\')">تعديل</button>';
-    btns+='<button class="cbtn r" onclick="delMat(\''+m.id+'\')">حذف</button>';
-  }else{
-    if(isPremium()){btns+='<button class="cbtn m" onclick="openChat(\''+m.id+'\',\''+m.vendeur_id+'\',\''+unom+'\',\''+m.nom_materiel+'\')">تواصل مع صاحب المعدة</button>';}
-    else{btns+='<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك - 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">اشترك الآن</button></div>';}
-  }
+  if(own){btns+='<button class="cbtn o" onclick="openEditMat(\''+m.id+'\')">تعديل</button><button class="cbtn r" onclick="delMat(\''+m.id+'\')">حذف</button>';}
+  else{if(isPremium()){btns+='<button class="cbtn m" onclick="openChat(\''+m.id+'\',\''+m.vendeur_id+'\',\''+unom+'\',\''+m.nom_materiel+'\')">تواصل مع صاحب المعدة</button>';}else{btns+='<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك - 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">اشترك الآن</button></div>';}}
   btns+='<button class="cbtn wa" onclick="shareAnn(\''+m.nom_materiel+'\',\''+m.prix+'\',\''+m.ville+'\')">شارك هاد الاعلان</button></div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header marron"><div class="det-title">'+em+' '+m.nom_materiel+'</div></div>'+img+info+desc+vcard+btns;
@@ -1088,10 +1130,7 @@ function openMatDem(i){
   var vcard='<div style="margin:10px 16px;background:var(--marronp);border-radius:12px;padding:10px;display:flex;align-items:center;gap:10px"><div style="width:38px;height:38px;border-radius:50%;background:var(--marron);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">🚜</div><div><div style="font-weight:800;font-size:.85rem">'+unom+'</div><div style="font-size:.7rem;color:var(--gris)">'+ureg+'</div></div></div>';
   var btns='<div style="padding:10px 16px 20px">';
   if(own){btns+='<button class="cbtn r" onclick="delMatDem(\''+m.id+'\')">حذف الطلب</button>';}
-  else{
-    if(isPremium()){btns+='<button class="cbtn m" onclick="openChat(\''+m.id+'\',\''+m.acheteur_id+'\',\''+unom+'\',\''+m.nom_materiel+'\')">عندي هاد المعدة</button>';}
-    else{btns+='<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك - 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">اشترك الآن</button></div>';}
-  }
+  else{if(isPremium()){btns+='<button class="cbtn m" onclick="openChat(\''+m.id+'\',\''+m.acheteur_id+'\',\''+unom+'\',\''+m.nom_materiel+'\')">عندي هاد المعدة</button>';}else{btns+='<div style="background:#fff8e7;border:1px solid var(--orc);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px"><div style="font-weight:800;margin-bottom:3px;font-size:.88rem">للتواصل</div><div style="font-size:.78rem;color:var(--gris);margin-bottom:8px">اشترك - 49 درهم/شهر</div><button class="cbtn o" onclick="closeDet();goTo(\'abonnement\')" style="margin-bottom:0">اشترك الآن</button></div>';}}
   btns+='<button class="cbtn wa" onclick="shareAnn(\''+m.nom_materiel+'\',\''+m.prix_max+'\',\''+m.ville+'\')">شارك هاد الطلب</button></div>';
   var div=document.createElement('div');div.id='det';div.className='det';
   div.innerHTML='<div class="det-header marron"><div class="det-title">'+em+' '+m.nom_materiel+'</div></div>'+img+info+vcard+btns;
@@ -1269,8 +1308,7 @@ async function loadMA(){
     if(!r4.error&&r4.data)r4.data.forEach(function(m){all.push(Object.assign({},m,{_src:'matd'}));});
     if(all.length===0){list.innerHTML='<div style="text-align:center;padding:40px"><div style="font-size:3rem">🚜</div><div style="font-weight:800;margin-top:14px">ما عندكش اعلانات آليات بعد</div></div>';return;}
     list.innerHTML=all.map(function(m){
-      var em=EM[m.nom_materiel]||'🚜';
-      var isKra=m.type_op==='kra';
+      var em=EM[m.nom_materiel]||'🚜';var isKra=m.type_op==='kra';
       var st=m._src==='mat'?(m.statut==='active'?'<span class="ma-statut st-active">فعال</span>':'<span class="ma-statut st-vendue">منتهي</span>'):'<span class="ma-statut st-kra">طلب</span>';
       var prix=m._src==='mat'?m.prix:m.prix_max;
       var btns=m._src==='mat'?'<button class="btn-sm" style="background:var(--marronp);color:var(--marron)" onclick="window._cmat='+JSON.stringify(m).replace(/'/g,"\\'")+';openEditMat(\''+m.id+'\')">تعديل</button><button class="btn-sm" style="background:#fdecea;color:var(--rouge)" onclick="delMat(\''+m.id+'\')">حذف</button>':'<button class="btn-sm" style="background:#fdecea;color:var(--rouge)" onclick="delMatDem(\''+m.id+'\')">حذف</button>';
@@ -1558,15 +1596,12 @@ async function loadAdmin(){
     var recent=ru.data.sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at);}).slice(0,10);
     var html='';
     recent.forEach(function(u){
-      var isPrem=u.premium;
-      var d=new Date(u.created_at).toLocaleDateString('ar-MA');
+      var isPrem=u.premium;var d=new Date(u.created_at).toLocaleDateString('ar-MA');
       var bg=isPrem?'background:#fff8e7;color:var(--or)':'background:var(--bleup);color:var(--bleu)';
       html+='<div class="user-row"><div><div class="user-row-name">'+u.nom+'</div><div class="user-row-tel">'+(u.region||'')+' '+d+'</div></div><span class="user-row-badge" style="'+bg+'">'+(isPrem?'Premium':'مجاني')+'</span></div>';
     });
     list.innerHTML=html;
-  }else{
-    list.innerHTML='<div style="text-align:center;padding:20px;color:var(--gris)">ما كاين مستخدمين بعد</div>';
-  }
+  }else{list.innerHTML='<div style="text-align:center;padding:20px;color:var(--gris)">ما كاين مستخدمين بعد</div>';}
 }
 
 async function toggleGratuit(){
@@ -1596,9 +1631,7 @@ async function loadBroadcast(){
     else{badge.style.display='none';}
   }
   var r=await sb.from('broadcast').select('*').order('created_at',{ascending:false});
-  if(r.error||!r.data||r.data.length===0){
-    list.innerHTML='<div style="text-align:center;padding:40px"><div style="font-size:3rem">📢</div><div style="font-weight:800;margin-top:14px">ما كاين رسائل بعد</div></div>';return;
-  }
+  if(r.error||!r.data||r.data.length===0){list.innerHTML='<div style="text-align:center;padding:40px"><div style="font-size:3rem">📢</div><div style="font-weight:800;margin-top:14px">ما كاين رسائل بعد</div></div>';return;}
   list.innerHTML=r.data.map(function(msg){
     var d=new Date(msg.created_at).toLocaleDateString('ar-MA');
     var isAdmin=CU&&CU.telephone==='0661996001';
@@ -1617,15 +1650,13 @@ async function sendBroadcast(){
   if(r.error){showToast('خطا: '+r.error.message);return;}
   document.getElementById('bc-titre').value='';
   document.getElementById('bc-contenu').value='';
-  showToast('تم الارسال للجميع');
-  loadBroadcast();
+  showToast('تم الارسال للجميع');loadBroadcast();
 }
 
 async function delBroadcast(id){
   if(!confirm('حذف هذه الرسالة؟'))return;
   await sb.from('broadcast').delete().eq('id',id);
-  showToast('تم الحذف');
-  loadBroadcast();
+  showToast('تم الحذف');loadBroadcast();
 }
 
 async function loadProfil(){
