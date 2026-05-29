@@ -972,7 +972,7 @@ async function loadDem(filter){
 async function loadMat(filter){
   var g=document.getElementById('mat-grid');
   g.innerHTML='<div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
-  var q=sb.from('materiel').select('*,u:utilisateurs(nom,region,note_moyenne,premium)').eq('statut','active').order('created_at',{ascending:false}).limit(30);
+  var q=sb.from('materiel').select('*,u:utilisateurs(nom,region,note_moyenne,premium,telephone)').eq('statut','active')
   if(filter==='bai3')q=q.eq('type_op','bai3');
   else if(filter==='kra')q=q.eq('type_op','kra');
   else if(filter==='region'&&CU)q=q.eq('region',CU.region);
