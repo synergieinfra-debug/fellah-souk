@@ -631,16 +631,15 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div style="font-family:'Amiri',serif;font-size:1.5rem;color:#1a1a2e;font-weight:700">كن بياع موثوق</div>
 <div style="font-size:.85rem;color:rgba(0,0,0,.6);margin-top:4px">وصل لاكثر مشترين وبيع اسرع</div>
 </div>
-<div class="abo-plan">
-<div class="abo-plan-title">مجاني - دائما</div>
-<div style="font-size:.82rem;color:var(--gris);margin-bottom:12px">الاساسيات مجانية</div>
+<div class="abo-plan" id="plan-free">
+<div class="abo-plan-title">مجاني - دائما 🎉</div>
+<div style="font-size:.82rem;color:var(--gris);margin-bottom:12px">جميع الخدمات مجانية الآن</div>
 <div class="abo-feature"><span>✅</span><span>رؤية جميع الاعلانات</span></div>
-<div class="abo-feature"><span>✅</span><span>3 اعلانات فعالة</span></div>
-<div class="abo-feature"><span>❌</span><span style="color:var(--gris)">التواصل مع البائعين</span></div>
-<div class="abo-feature"><span>❌</span><span style="color:var(--gris)">badge موثوق</span></div>
-<div class="abo-feature"><span>❌</span><span style="color:var(--gris)">اعلانات بلا حدود</span></div>
+<div class="abo-feature"><span>✅</span><span>اعلانات بلا حدود</span></div>
+<div class="abo-feature"><span>✅</span><span>التواصل مع البائعين والمشترين</span></div>
+<div class="abo-feature"><span>✅</span><span>جميع الخدمات مجانية</span></div>
 </div>
-<div class="abo-plan premium">
+<div class="abo-plan premium" id="plan-premium" style="display:none">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
 <div class="abo-plan-title">بريميوم</div><span class="badge-premium">موثوق</span>
 </div>
@@ -653,7 +652,7 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 <div id="abo-active-msg" style="display:none;background:var(--vertp);border-radius:10px;padding:12px;text-align:center;font-weight:700;color:var(--vert2);font-size:.88rem">اشتراكك فعال حتى <span id="abo-fin"></span></div>
 <button id="abo-btn" class="btn-primary btn-gold" onclick="showAboForm()" style="margin-top:0">اشترك الآن - 49 درهم</button>
 </div></div>
-<div class="abo-steps">
+<div class="abo-steps" id="abo-steps-section" style="display:none">
 <div style="font-family:'Amiri',serif;font-size:1.1rem;color:var(--vert);margin-bottom:12px">كيفاش تشترك عبر CashPlus</div>
 <div class="abo-step"><div class="abo-step-num">1</div><div class="abo-step-text">روح لاقرب نقطة CashPlus ديالك</div></div>
 <div class="abo-step"><div class="abo-step-num">2</div><div class="abo-step-text">حول <strong>49 درهم</strong> على الرقم: <strong style="color:var(--vert)">0661996001</strong></div></div>
@@ -688,14 +687,11 @@ body{font-family:'Tajawal',sans-serif;background:#f5f7fa;color:#1a1a2e;max-width
 var sb=supabase.createClient('https://ryzhqtcukeypsqqbxrqp.supabase.co','sb_publishable__s1wfkhIKodWAGThY8r-pw_Tg6NioE1');
 var CU=null,SP='',SC='',PT='sell',_a=[],_d=[],_mat=[],_matd=[],_eid=null,_et=null,_htab='offres',_matab='ann',_fann='',_fdem='',_fmat='',_fmatd='',_mattab='offres',PTM='kra',_spmat='';
 var EM={'الطماطم':'🍅','الفلفلة':'🫑','الخيار':'🥒','البصلة':'🧅','البطاطا':'🥔','الجزر':'🥕','الثوم':'🧄','الكوسة':'🥬','الباذنجان':'🍆','الملفوف':'🥦','الخس':'🥗','اللوبية':'🫘','الحمص':'🟡','العدس':'🟤','الفول':'🫘','الذرة':'🌽','الفلفل الحار':'🌶️','الكرفس':'🌿','الشمندر':'🔴','اللفت':'🟣','البرتقال':'🍊','الحامض':'🍋','البطيخ':'🍉','التفاح':'🍎','العنب':'🍇','التين':'🫐','الكليمنتين':'🍊','الرمان':'🍎','المشماش':'🍑','حب الملوك':'🍒','الخوخ':'🍑','الفريز':'🍓','الموز':'🍌','الافوكا':'🥑','التمر':'🌴','الزيتون':'🫒','الدلاح':'🍈','حليب':'🥛','دجاج':'🐓','بيض':'🥚','اغنام':'🐑','بقر':'🐄','ماعز':'🐐','سمك':'🐟','عسل':'🍯','جرار':'🚜','حفارة':'🏗️','لودار':'🚛','بولدوزار':'🚧','الحراثة':'⚙️','الفريزة':'⚙️','المسوية':'⚙️','الديسك':'⚙️','مضخة/بومبا':'💧','معدات التنقيط':'💧','الخرطوم':'💧','الحصادة':'🌾','الدراسة':'🌾','آلة جني الزيتون':'🫒','الريموركي':'🚚','الصهريج':'🚰','الراشة':'🌿','آلة التسميد':'🌱'};
-var CL={'legumes':'خضر','fruits':'فواكه','agricole':'فلاحية','animal':'حيوانية','materiel':'آليات'};
 var _nAid=null,_nUid=null,_nStar=0,_interval=null,_gratuit=false,_chartPie=null,_chartReg=null;
 
 function fmtDate(d){
   if(!d)return'';
-  var dt=new Date(d);
-  var now=new Date();
-  var diff=Math.floor((now-dt)/1000);
+  var dt=new Date(d);var now=new Date();var diff=Math.floor((now-dt)/1000);
   if(diff<60)return'الآن';
   if(diff<3600)return Math.floor(diff/60)+' دقيقة';
   if(diff<86400)return Math.floor(diff/3600)+' ساعة';
@@ -945,8 +941,7 @@ async function loadAnn(filter){
   if(r.error||!r.data||r.data.length===0){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:50px 20px"><div style="font-size:3.5rem;margin-bottom:14px">🌾</div><div style="font-size:1.1rem;font-weight:800">ما كاين عروض بعد</div></div>';return;}
   _a=r.data;
   g.innerHTML=_a.map(function(a,i){
-    var em=EM[a.produit]||'🌾';
-    var isPrem=a.u&&a.u.premium;
+    var em=EM[a.produit]||'🌾';var isPrem=a.u&&a.u.premium;
     var note=a.u&&a.u.note_moyenne?'<div style="font-size:.65rem;color:var(--or)">'+a.u.note_moyenne+' ⭐</div>':'';
     var badge=isPrem?'<div style="margin-bottom:4px"><span class="badge-premium">موثوق</span></div>':'';
     var dateStr='<div style="font-size:.62rem;color:var(--gris);margin-top:2px">🕒 '+fmtDate(a.created_at)+'</div>';
@@ -1010,8 +1005,7 @@ function fMatDem(el,t){document.querySelectorAll('#fm-dem .filter-chip').forEach
 
 function searchAnn(q){
   if(!q){if(_htab==='demandes')loadDem(_fdem);else loadAnn(_fann);return;}
-  q=q.toLowerCase();
-  var g=document.getElementById('grid');
+  q=q.toLowerCase();var g=document.getElementById('grid');
   if(_htab==='offres'){
     var filtered=_a.filter(function(a){return a.produit.toLowerCase().includes(q)||a.ville.toLowerCase().includes(q)||(a.region&&a.region.toLowerCase().includes(q));});
     if(filtered.length===0){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px"><div style="font-size:3rem">🔍</div><div style="font-weight:800;margin-top:14px">ما لقينا نتيجة</div></div>';return;}
@@ -1035,8 +1029,7 @@ function searchAnn(q){
 
 function searchMat(q){
   if(!q){if(_mattab==='demandes')loadMatDem(_fmatd);else loadMat(_fmat);return;}
-  q=q.toLowerCase();
-  var g=document.getElementById('mat-grid');
+  q=q.toLowerCase();var g=document.getElementById('mat-grid');
   if(_mattab==='offres'){
     var filtered=_mat.filter(function(m){return m.nom_materiel.toLowerCase().includes(q)||m.ville.toLowerCase().includes(q);});
     if(filtered.length===0){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px"><div style="font-size:3rem">🔍</div><div style="font-weight:800;margin-top:14px">ما لقينا نتيجة</div></div>';return;}
@@ -1255,9 +1248,25 @@ async function delMatDem(id){if(!confirm('تاكيد: حذف؟'))return;await sb
 
 async function loadAbo(){
   if(!CU)return;
-  var r=await sb.from('abonnements').select('*').eq('user_id',CU.id).eq('statut','active').order('created_at',{ascending:false}).limit(1);
+  var rc=await sb.from('config').select('valeur').eq('cle','mode_gratuit').single();
+  var isFree=(!rc.error&&rc.data&&rc.data.valeur==='true');
+  var planFree=document.getElementById('plan-free');
+  var planPremium=document.getElementById('plan-premium');
+  var aboSteps=document.getElementById('abo-steps-section');
+  var aboForm=document.getElementById('abo-form');
+  if(isFree){
+    if(planFree)planFree.style.display='block';
+    if(planPremium)planPremium.style.display='none';
+    if(aboSteps)aboSteps.style.display='none';
+    if(aboForm)aboForm.style.display='none';
+    return;
+  }
+  if(planFree)planFree.style.display='none';
+  if(planPremium)planPremium.style.display='block';
+  if(aboSteps)aboSteps.style.display='block';
   var aboBtn=document.getElementById('abo-btn');
   var aboMsg=document.getElementById('abo-active-msg');
+  var r=await sb.from('abonnements').select('*').eq('user_id',CU.id).eq('statut','active').order('created_at',{ascending:false}).limit(1);
   if(!r.error&&r.data&&r.data.length>0){
     var fin=new Date(r.data[0].date_fin);
     if(fin>new Date()){aboMsg.style.display='block';document.getElementById('abo-fin').textContent=fin.toLocaleDateString('ar-MA');aboBtn.style.display='none';return;}
