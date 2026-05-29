@@ -937,7 +937,7 @@ function switchMatTab(tab){
 async function loadAnn(filter){
   var g=document.getElementById('grid');
   g.innerHTML='<div class="loading" style="grid-column:1/-1"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
-  var q=sb.from('annonces').select('*,u:utilisateurs(nom,region,note_moyenne,premium)').eq('statut','active').order('created_at',{ascending:false}).limit(30);
+  var q=sb.from('annonces').select('*,u:utilisateurs(nom,region,note_moyenne,premium,telephone)').eq('statut','active')
   if(filter==='legumes')q=q.eq('categorie','legumes');
   else if(filter==='fruits')q=q.eq('categorie','fruits');
   else if(filter==='agricole')q=q.eq('categorie','agricole');
